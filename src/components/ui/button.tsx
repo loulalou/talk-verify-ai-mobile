@@ -18,12 +18,18 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        voice: "bg-gradient-accent text-white hover:scale-105 transition-all duration-300 shadow-xl hover:shadow-voice border-0",
+        "voice-active": "bg-gradient-accent text-white animate-pulse-soft shadow-voice border-0",
+        confirm: "bg-ai-accent text-white hover:bg-ai-accent/90 shadow-lg",
+        surface: "bg-ai-surface-elevated text-foreground hover:bg-ai-surface border border-border/50",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        voice: "h-20 w-20 rounded-full",
+        "voice-lg": "h-24 w-24 rounded-full",
       },
     },
     defaultVariants: {
