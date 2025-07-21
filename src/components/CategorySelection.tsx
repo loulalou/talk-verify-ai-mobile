@@ -133,7 +133,13 @@ export function CategorySelection() {
   const handleContinue = () => {
     if (selectedCategory) {
       navigate(`/periods/${selectedCategory.id}`, { 
-        state: { category: selectedCategory }
+        state: { 
+          categoryId: selectedCategory.id,
+          categoryName: selectedCategory.name,
+          categoryDescription: selectedCategory.description,
+          categoryColor: selectedCategory.color,
+          categoryPeriods: selectedCategory.periods
+        }
       });
     }
   };

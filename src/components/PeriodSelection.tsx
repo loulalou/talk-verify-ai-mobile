@@ -6,15 +6,128 @@ import {
   ArrowLeft, 
   Clock, 
   ChevronRight,
-  CheckCircle
+  CheckCircle,
+  BookOpen, 
+  Globe, 
+  Calculator, 
+  Atom, 
+  Palette,
+  Languages
 } from "lucide-react";
 import { StudyCategory } from "./CategorySelection";
 
 export function PeriodSelection() {
   const location = useLocation();
   const navigate = useNavigate();
-  const category = location.state?.category as StudyCategory;
+  const categoryData = location.state;
   const [selectedPeriods, setSelectedPeriods] = useState<string[]>([]);
+
+  if (!categoryData?.categoryId) {
+    navigate('/');
+    return null;
+  }
+
+  // Find the category from our data to get the icon
+  const studyCategories: StudyCategory[] = [
+    {
+      id: "history",
+      name: "History",
+      description: "World events, civilizations, and timelines",
+      icon: <BookOpen className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      periods: [
+        "Ancient History (3000 BCE - 500 CE)",
+        "Medieval Period (500 - 1500 CE)", 
+        "Renaissance (1400 - 1600 CE)",
+        "Age of Exploration (1400 - 1700 CE)",
+        "Industrial Revolution (1760 - 1840 CE)",
+        "Modern History (1800 - 1945 CE)",
+        "Contemporary History (1945 - Present)"
+      ]
+    },
+    {
+      id: "geography",
+      name: "Geography", 
+      description: "Countries, capitals, physical features",
+      icon: <Globe className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      periods: [
+        "Physical Geography",
+        "Political Geography", 
+        "Europe",
+        "Asia",
+        "Africa", 
+        "Americas",
+        "Oceania"
+      ]
+    },
+    {
+      id: "mathematics",
+      name: "Mathematics",
+      description: "Algebra, geometry, calculus, and more",
+      icon: <Calculator className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      periods: [
+        "Basic Arithmetic",
+        "Algebra",
+        "Geometry",
+        "Trigonometry",
+        "Calculus",
+        "Statistics",
+        "Advanced Mathematics"
+      ]
+    },
+    {
+      id: "science",
+      name: "Science",
+      description: "Physics, chemistry, biology concepts",
+      icon: <Atom className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-purple-500 to-pink-600",
+      periods: [
+        "General Science",
+        "Physics",
+        "Chemistry", 
+        "Biology",
+        "Earth Science",
+        "Environmental Science",
+        "Advanced Sciences"
+      ]
+    },
+    {
+      id: "literature",
+      name: "Literature",
+      description: "Classic works, authors, and literary periods",
+      icon: <Palette className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-rose-500 to-red-600",
+      periods: [
+        "Classical Literature",
+        "Medieval Literature",
+        "Renaissance Literature",
+        "Romantic Period",
+        "Victorian Era",
+        "Modern Literature",
+        "Contemporary Literature"
+      ]
+    },
+    {
+      id: "languages",
+      name: "Languages",
+      description: "Grammar, vocabulary, and language skills",
+      icon: <Languages className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-cyan-500 to-blue-600",
+      periods: [
+        "Basic Grammar",
+        "Vocabulary Building",
+        "Reading Comprehension",
+        "Writing Skills",
+        "Speaking Practice",
+        "Advanced Grammar",
+        "Literature Analysis"
+      ]
+    }
+  ];
+
+  const category = studyCategories.find(cat => cat.id === categoryData.categoryId);
 
   if (!category) {
     navigate('/');
@@ -33,7 +146,9 @@ export function PeriodSelection() {
     if (selectedPeriods.length > 0) {
       navigate('/study', { 
         state: { 
-          category,
+          categoryId: category.id,
+          categoryName: category.name,
+          categoryColor: category.color,
           periods: selectedPeriods 
         }
       });

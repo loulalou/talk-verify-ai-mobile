@@ -13,14 +13,74 @@ import { StudyCategory } from "@/components/CategorySelection";
 const StudySession = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const category = location.state?.category as StudyCategory;
+  const categoryData = location.state;
   const periods = location.state?.periods as string[];
 
   // Redirect if no category/periods selected
-  if (!category || !periods || periods.length === 0) {
+  if (!categoryData?.categoryId || !periods || periods.length === 0) {
     navigate('/');
     return null;
   }
+
+  // Find the category from our data to get the icon
+  const studyCategories: StudyCategory[] = [
+    {
+      id: "history",
+      name: "History",
+      description: "World events, civilizations, and timelines",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      periods: []
+    },
+    {
+      id: "geography",
+      name: "Geography", 
+      description: "Countries, capitals, physical features",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      periods: []
+    },
+    {
+      id: "mathematics",
+      name: "Mathematics",
+      description: "Algebra, geometry, calculus, and more",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      periods: []
+    },
+    {
+      id: "science",
+      name: "Science",
+      description: "Physics, chemistry, biology concepts",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-purple-500 to-pink-600",
+      periods: []
+    },
+    {
+      id: "literature",
+      name: "Literature",
+      description: "Classic works, authors, and literary periods",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-rose-500 to-red-600",
+      periods: []
+    },
+    {
+      id: "languages",
+      name: "Languages",
+      description: "Grammar, vocabulary, and language skills",
+      icon: <Brain className="w-8 h-8" />,
+      color: "bg-gradient-to-br from-cyan-500 to-blue-600",
+      periods: []
+    }
+  ];
+
+  const category = studyCategories.find(cat => cat.id === categoryData.categoryId) || {
+    id: categoryData.categoryId,
+    name: categoryData.categoryName,
+    description: "",
+    icon: <Brain className="w-8 h-8" />,
+    color: categoryData.categoryColor
+  };
   const [messages, setMessages] = useState<Message[]>([]);
   const [knowledgeItems, setKnowledgeItems] = useState<KnowledgeItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
