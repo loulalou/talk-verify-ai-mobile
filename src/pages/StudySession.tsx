@@ -3,12 +3,15 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { VoiceRecorder } from "@/components/VoiceRecorder";
 import { ChatMessage, Message } from "@/components/ChatMessage";
 import { KnowledgeCard, KnowledgeItem } from "@/components/KnowledgeCard";
+import { ApiKeySetup } from "@/components/ApiKeySetup";
+import { DocumentationCard } from "@/components/DocumentationCard";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target } from "lucide-react";
+import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
+import { PerplexityService } from "@/utils/PerplexityService";
 
 const StudySession = () => {
   const location = useLocation();
@@ -85,6 +88,9 @@ const StudySession = () => {
   const [knowledgeItems, setKnowledgeItems] = useState<KnowledgeItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState<'chat' | 'knowledge'>('chat');
+  const [hasApiKey, setHasApiKey] = useState(!!PerplexityService.getApiKey());
+  const [topicDocumentation, setTopicDocumentation] = useState<Record<string, string>>({});
+  const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -220,6 +226,64 @@ const StudySession = () => {
     });
   };
 
+  const fetchTopicDocumentation = async (topic: string) => {
+    if (!hasApiKey) return;
+
+    setLoadingTopics(prev => new Set(prev).add(topic));
+    
+    try {
+      const result = await PerplexityService.getTopicDocumentation(topic, category.name);
+      
+      if (result.success && result.content) {
+        setTopicDocumentation(prev => ({
+          ...prev,
+          [topic]: result.content!
+        }));
+        toast({
+          title: "Documentation fetched",
+          description: `Retrieved information about ${topic}`,
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || "Failed to fetch documentation",
+          variant: "destructive",
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to fetch documentation",
+        variant: "destructive",
+      });
+    } finally {
+      setLoadingTopics(prev => {
+        const newSet = new Set(prev);
+        newSet.delete(topic);
+        return newSet;
+      });
+    }
+  };
+
+  const fetchAllDocumentation = async () => {
+    if (!hasApiKey || periods.length === 0) return;
+
+    // Fetch documentation for all periods
+    for (const period of periods) {
+      if (!topicDocumentation[period]) {
+        await fetchTopicDocumentation(period);
+      }
+    }
+  };
+
+  const handleApiKeySet = () => {
+    setHasApiKey(true);
+    toast({
+      title: "API Key Set",
+      description: "You can now fetch documentation for your study topics",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gradient-surface text-foreground">
       {/* Header */}
@@ -249,6 +313,17 @@ const StudySession = () => {
             <Button variant="surface" size="sm" onClick={clearChat}>
               Clear
             </Button>
+            {activeTab === 'knowledge' && hasApiKey && (
+              <Button 
+                variant="surface" 
+                size="sm" 
+                onClick={fetchAllDocumentation}
+                disabled={loadingTopics.size > 0}
+              >
+                <RefreshCw className={`w-4 h-4 mr-1 ${loadingTopics.size > 0 ? 'animate-spin' : ''}`} />
+                Fetch All
+              </Button>
+            )}
           </div>
         </div>
         
@@ -301,10 +376,10 @@ const StudySession = () => {
             }`}
           >
             <Lightbulb className="w-4 h-4" />
-            <span>Knowledge</span>
-            {knowledgeItems.length > 0 && (
-              <span className="bg-ai-accent text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {knowledgeItems.filter(k => k.status === 'pending').length}
+            <span>Documentation</span>
+            {!hasApiKey && (
+              <span className="bg-yellow-500 text-white text-xs rounded-full w-1 h-1 flex items-center justify-center">
+                !
               </span>
             )}
           </button>
@@ -356,28 +431,40 @@ const StudySession = () => {
           </div>
         ) : (
           <ScrollArea className="flex-1 p-4">
-            {knowledgeItems.length === 0 ? (
-              <div className="flex items-center justify-center h-full text-center">
-                <div className="space-y-3">
-                  <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto">
-                    <Lightbulb className="w-8 h-8 text-white" />
-                  </div>
-                  <div>
-                    <h3 className="font-medium">No knowledge items yet</h3>
-                    <p className="text-sm text-muted-foreground">Start a conversation to generate knowledge items</p>
-                  </div>
-                </div>
+            {!hasApiKey ? (
+              <div className="flex items-center justify-center h-full">
+                <ApiKeySetup onApiKeySet={handleApiKeySet} />
               </div>
             ) : (
               <div className="space-y-4">
-                {knowledgeItems.map((knowledge) => (
-                  <KnowledgeCard
-                    key={knowledge.id}
-                    knowledge={knowledge}
-                    onConfirm={handleKnowledgeConfirm}
-                    onReject={handleKnowledgeReject}
+                {periods.map((period) => (
+                  <DocumentationCard
+                    key={period}
+                    topic={period}
+                    category={category.name}
+                    content={topicDocumentation[period]}
+                    isLoading={loadingTopics.has(period)}
+                    onFetchDocumentation={fetchTopicDocumentation}
                   />
                 ))}
+                
+                {/* Legacy knowledge items */}
+                {knowledgeItems.length > 0 && (
+                  <>
+                    <Separator className="my-6" />
+                    <div className="space-y-4">
+                      <h3 className="text-sm font-medium text-muted-foreground">Chat Knowledge Items</h3>
+                      {knowledgeItems.map((knowledge) => (
+                        <KnowledgeCard
+                          key={knowledge.id}
+                          knowledge={knowledge}
+                          onConfirm={handleKnowledgeConfirm}
+                          onReject={handleKnowledgeReject}
+                        />
+                      ))}
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </ScrollArea>
