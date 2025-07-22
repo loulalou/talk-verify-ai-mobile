@@ -86,21 +86,6 @@ export function CategorySelection() {
           </p>
         </div>
 
-        {/* Instructions */}
-        <Card className="bg-ai-surface border-border/50 mb-8">
-          <div className="p-4">
-            <h4 className="font-medium mb-2 flex items-center">
-              <GraduationCap className="w-4 h-4 mr-2 text-ai-accent" />
-              Comment ça marche
-            </h4>
-            <ol className="text-sm text-muted-foreground space-y-1 list-decimal list-inside">
-              <li>Choisissez une catégorie de matière que vous voulez étudier</li>
-              <li>Sélectionnez la période ou le sujet spécifique que vous apprenez</li>
-              <li>Commencez à parler avec l'IA pour tester vos connaissances</li>
-              <li>Confirmez ou corrigez les informations présentées par l'IA</li>
-            </ol>
-          </div>
-        </Card>
 
         {/* Category Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
