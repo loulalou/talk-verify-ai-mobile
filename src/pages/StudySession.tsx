@@ -405,7 +405,7 @@ const StudySession = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Header */}
+      {/* Header simplifié */}
       <div className="bg-ai-surface border-b border-border/50 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
@@ -423,8 +423,8 @@ const StudySession = () => {
                 {category.icon}
               </div>
               <div>
-                <h1 className="font-semibold text-lg">Session d'étude {category.name}</h1>
-                <p className="text-sm text-muted-foreground">{periods.length} sujet{periods.length > 1 ? 's' : ''} sélectionné{periods.length > 1 ? 's' : ''}</p>
+                <h1 className="font-semibold text-lg">{category.name}</h1>
+                <p className="text-sm text-muted-foreground">{periods.length} sujet{periods.length > 1 ? 's' : ''} • Session d'étude</p>
               </div>
             </div>
           </div>
@@ -436,192 +436,141 @@ const StudySession = () => {
             >
               {useGemini ? "Gemini" : "Mode hors ligne"}
             </Button>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              onClick={() => setActiveTab(activeTab === 'chat' ? 'knowledge' : 'chat')}
+            >
+              {activeTab === 'chat' ? <Lightbulb className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
+            </Button>
             <Button variant="surface" size="sm" onClick={clearChat}>
               Effacer
             </Button>
-            {activeTab === 'knowledge' && (
-              <Button 
-                variant="surface" 
-                size="sm" 
-                onClick={fetchAllDocumentation}
-                disabled={loadingTopics.size > 0}
-              >
-                <RefreshCw className={`w-4 h-4 mr-1 ${loadingTopics.size > 0 ? 'animate-spin' : ''}`} />
-                Tout récupérer
-              </Button>
-            )}
-          </div>
-        </div>
-        
-        {/* Study Topics Bar */}
-        <div className="mt-3 flex items-center space-x-2">
-          <Target className="w-4 h-4 text-ai-accent" />
-          <div className="flex flex-wrap gap-2">
-            {periods.slice(0, 3).map((period, index) => (
-              <span 
-                key={index}
-                className="text-xs bg-ai-primary/10 text-ai-primary px-2 py-1 rounded border border-ai-primary/20"
-              >
-                {period}
-              </span>
-            ))}
-            {periods.length > 3 && (
-              <span className="text-xs text-muted-foreground px-2 py-1">
-                +{periods.length - 3} de plus
-              </span>
-            )}
           </div>
         </div>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="bg-ai-surface border-b border-border/50">
-        <div className="flex">
-          <button
-            onClick={() => setActiveTab('chat')}
-            className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 text-sm font-medium transition-colors ${
-              activeTab === 'chat' 
-                ? 'text-ai-primary border-b-2 border-ai-primary bg-ai-primary/5' 
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4" />
-            <span>Conversation</span>
-            {messages.length > 0 && (
-              <span className="bg-ai-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
-                {messages.length}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setActiveTab('knowledge')}
-            className={`flex-1 flex items-center justify-center space-x-2 py-3 px-4 text-sm font-medium transition-colors ${
-              activeTab === 'knowledge' 
-                ? 'text-ai-primary border-b-2 border-ai-primary bg-ai-primary/5' 
-                : 'text-muted-foreground hover:text-foreground'
-            }`}
-          >
-            <Lightbulb className="w-4 h-4" />
-            <span>Documentation</span>
-            {!useGemini && !hasApiKey && (
-              <span className="bg-yellow-500 text-white text-xs rounded-full w-1 h-1 flex items-center justify-center">
-                !
-              </span>
-            )}
-          </button>
-        </div>
-      </div>
-
-      {/* Content Area */}
-      <div className="flex-1 flex flex-col" style={{ height: 'calc(100vh - 140px)' }}>
+      {/* Zone de chat principale */}
+      <div className="flex-1 flex flex-col bg-gradient-to-b from-background to-muted/30" style={{ height: 'calc(100vh - 80px)' }}>
         {activeTab === 'chat' ? (
-          <div className="flex-1 flex flex-col">
-            {/* Messages */}
-            <ScrollArea className="flex-1 p-4">
-              {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full text-center">
-                  <div className="space-y-3">
-                    <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto">
-                      <MessageSquare className="w-8 h-8 text-white" />
+          <>
+            {/* Messages de chat */}
+            <div className="flex-1 overflow-hidden">
+              <ScrollArea className="h-full">
+                <div className="p-4 space-y-4">
+                  {messages.length === 0 ? (
+                    <div className="flex items-center justify-center h-full min-h-[400px]">
+                      <div className="text-center space-y-4 max-w-md">
+                        <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto">
+                          <MessageSquare className="w-8 h-8 text-white" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-lg mb-2">Commencez votre session d'étude</h3>
+                          <p className="text-sm text-muted-foreground mb-4">
+                            Utilisez le microphone ci-dessous pour poser vos questions ou expliquer ce que vous savez sur {category.name}
+                          </p>
+                          <div className="text-xs text-muted-foreground bg-muted/50 rounded-lg p-3">
+                            <strong>Sujets sélectionnés :</strong> {periods.slice(0, 2).join(', ')}
+                            {periods.length > 2 && ` et ${periods.length - 2} autre${periods.length > 3 ? 's' : ''}`}
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                    <div>
-                      <h3 className="font-medium">Commencer une conversation</h3>
-                      <p className="text-sm text-muted-foreground">Appuyez sur le microphone pour commencer à parler</p>
+                  ) : (
+                    <div className="space-y-4 pb-4">
+                      {messages.map((message) => (
+                        <ChatMessage
+                          key={message.id}
+                          message={message}
+                          onConfirm={handleMessageConfirm}
+                          onReject={handleMessageReject}
+                        />
+                      ))}
+                      <div ref={messagesEndRef} />
                     </div>
-                  </div>
+                  )}
+                </div>
+              </ScrollArea>
+            </div>
+
+            {/* Zone d'input style chat */}
+            <div className="border-t border-border/50 bg-ai-surface p-4">
+              <div className="max-w-4xl mx-auto">
+                <VoiceRecorder 
+                  onRecordingComplete={handleRecordingComplete}
+                  isProcessing={isProcessing}
+                />
+                
+                {/* Conseils rapides sous forme de badges */}
+                <div className="flex flex-wrap gap-2 mt-3">
+                  <span className="text-xs bg-muted/50 text-muted-foreground px-2 py-1 rounded-full">
+                    💡 Parlez clairement de vos connaissances
+                  </span>
+                  <span className="text-xs bg-muted/50 text-muted-foreground px-2 py-1 rounded-full">
+                    ❓ Posez des questions pour approfondir
+                  </span>
+                  <span className="text-xs bg-muted/50 text-muted-foreground px-2 py-1 rounded-full">
+                    ✅ Confirmez ou corrigez les réponses de l'IA
+                  </span>
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          /* Vue Documentation dans un panneau latéral */
+          <div className="flex-1 p-4">
+            <ScrollArea className="h-full">
+              {!useGemini && !hasApiKey ? (
+                <div className="flex items-center justify-center h-full">
+                  <ApiKeySetup onApiKeySet={handleApiKeySet} />
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {messages.map((message) => (
-                    <ChatMessage
-                      key={message.id}
-                      message={message}
-                      onConfirm={handleMessageConfirm}
-                      onReject={handleMessageReject}
+                  <div className="flex items-center justify-between mb-4">
+                    <h3 className="text-lg font-semibold">Documentation des sujets</h3>
+                    <Button 
+                      variant="outline" 
+                      size="sm" 
+                      onClick={fetchAllDocumentation}
+                      disabled={loadingTopics.size > 0}
+                    >
+                      <RefreshCw className={`w-4 h-4 mr-1 ${loadingTopics.size > 0 ? 'animate-spin' : ''}`} />
+                      Tout récupérer
+                    </Button>
+                  </div>
+                  
+                  {periods.map((period) => (
+                    <DocumentationCard
+                      key={period}
+                      topic={period}
+                      category={category.name}
+                      content={topicDocumentation[period]}
+                      isLoading={loadingTopics.has(period)}
+                      onFetchDocumentation={fetchTopicDocumentation}
                     />
                   ))}
-                  <div ref={messagesEndRef} />
+                  
+                  {/* Legacy knowledge items */}
+                  {knowledgeItems.length > 0 && (
+                    <>
+                      <Separator className="my-6" />
+                      <div className="space-y-4">
+                        <h3 className="text-sm font-medium text-muted-foreground">Éléments de connaissance du chat</h3>
+                        {knowledgeItems.map((knowledge) => (
+                          <KnowledgeCard
+                            key={knowledge.id}
+                            knowledge={knowledge}
+                            onConfirm={handleKnowledgeConfirm}
+                            onReject={handleKnowledgeReject}
+                          />
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               )}
             </ScrollArea>
-
-            <Separator />
-
-            {/* Voice Recorder */}
-            <div className="p-6 bg-ai-surface">
-              <VoiceRecorder 
-                onRecordingComplete={handleRecordingComplete}
-                isProcessing={isProcessing}
-              />
-              
-              {/* Conseils d'étude permanents */}
-              <Card className="mt-4 bg-ai-surface-elevated border-border/30">
-                <div className="p-4">
-                  <h4 className="font-medium mb-3 flex items-center text-sm">
-                    <Clock className="w-4 h-4 mr-2 text-ai-accent" />
-                    Conseils pour cette session
-                  </h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground">
-                    <div>
-                      <p className="font-medium mb-2 text-foreground">Pendant l'enregistrement :</p>
-                      <ul className="space-y-1 list-disc list-inside">
-                        <li>Parlez clairement et distinctement</li>
-                        <li>Exprimez vos connaissances librement</li>
-                        <li>N'hésitez pas à poser des questions</li>
-                      </ul>
-                    </div>
-                    <div>
-                      <p className="font-medium mb-2 text-foreground">Interaction avec l'IA :</p>
-                      <ul className="space-y-1 list-disc list-inside">
-                        <li>Confirmez ou corrigez ses réponses</li>
-                        <li>Demandez plus de détails si besoin</li>
-                        <li>Utilisez le mode Gemini pour de meilleures réponses</li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </div>
           </div>
-        ) : (
-          <ScrollArea className="flex-1 p-4">
-            {!useGemini && !hasApiKey ? (
-              <div className="flex items-center justify-center h-full">
-                <ApiKeySetup onApiKeySet={handleApiKeySet} />
-              </div>
-            ) : (
-              <div className="space-y-4">
-                {periods.map((period) => (
-                  <DocumentationCard
-                    key={period}
-                    topic={period}
-                    category={category.name}
-                    content={topicDocumentation[period]}
-                    isLoading={loadingTopics.has(period)}
-                    onFetchDocumentation={fetchTopicDocumentation}
-                  />
-                ))}
-                
-                {/* Legacy knowledge items */}
-                {knowledgeItems.length > 0 && (
-                  <>
-                    <Separator className="my-6" />
-                    <div className="space-y-4">
-                      <h3 className="text-sm font-medium text-muted-foreground">Éléments de connaissance du chat</h3>
-                      {knowledgeItems.map((knowledge) => (
-                        <KnowledgeCard
-                          key={knowledge.id}
-                          knowledge={knowledge}
-                          onConfirm={handleKnowledgeConfirm}
-                          onReject={handleKnowledgeReject}
-                        />
-                      ))}
-                    </div>
-                  </>
-                )}
-              </div>
-            )}
-          </ScrollArea>
         )}
       </div>
     </div>
