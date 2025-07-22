@@ -132,6 +132,14 @@ export function AppSidebar() {
               </div>
             </div>
             
+            {userProfile?.name && (
+              <div className="mb-3">
+                <p className="text-sm text-muted-foreground">
+                  Bonjour {userProfile.name}
+                </p>
+              </div>
+            )}
+            
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground" />
