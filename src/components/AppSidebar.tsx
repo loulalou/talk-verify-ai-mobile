@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Search, MessageSquare, User, Plus, History, Settings, Brain, X, MoreVertical, LogOut } from "lucide-react";
+import { Search, MessageSquare, User, Plus, History, Settings, Brain, X, MoreVertical, LogOut, GraduationCap } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, useSidebar } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -123,8 +123,10 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Compagnon d'étude IA</h2>
-              
+              <div className="flex items-center space-x-2">
+                <GraduationCap className="w-6 h-6 text-blue-400" />
+                <h2 className="text-lg font-semibold text-white">Compagnon d'étude IA</h2>
+              </div>
             </div>
             
             <div className="relative">
