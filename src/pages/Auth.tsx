@@ -32,9 +32,9 @@ export default function Auth() {
   // New signup flow states
   const [signupStep, setSignupStep] = useState(1);
   const [accountType, setAccountType] = useState("");
-  const [schoolLevel, setSchoolLevel] = useState("");
+  const [schoolLevel, setSchoolLevel] = useState("college");
   const [country, setCountry] = useState("");
-  const [examPreparation, setExamPreparation] = useState("none");
+  const [examPreparation, setExamPreparation] = useState("brevet");
 
   // Check if user is already logged in
   useEffect(() => {
@@ -60,28 +60,25 @@ export default function Auth() {
     setEmail("");
     setPassword("");
     setAccountType("");
-    setSchoolLevel("");
+    setSchoolLevel("college");
     setCountry("");
-    setExamPreparation("none");
+    setExamPreparation("brevet");
     setAvatar("teacher");
   };
   const getMaxSteps = () => {
-    return accountType === "student" ? 4 : 2;
+    return accountType === "student" ? 3 : 2;
   };
   const validateStep = (step: number): boolean => {
     switch (step) {
       case 1:
         return Boolean(accountType);
       case 2:
-        return Boolean(name && email && password);
-      case 3:
         if (accountType === "student") {
-          return Boolean(age && schoolLevel && country);
+          return Boolean(name && age && schoolLevel);
         }
-        return true;
-      case 4:
-        return true;
-      // Exam preparation is optional
+        return Boolean(name);
+      case 3:
+        return Boolean(email && password);
       default:
         return true;
     }
@@ -263,13 +260,36 @@ export default function Auth() {
 
                 {signupStep === 2 && <>
                     <div className="space-y-2">
-                      <Label htmlFor="signup-name">Nom {accountType === "parent" ? "de l'enfant" : ""} *</Label>
-                      <Input id="signup-name" type="text" placeholder={`Entrez ${accountType === "parent" ? "le nom de l'enfant" : "votre nom"}`} value={name} onChange={e => setName(e.target.value)} required />
+                      <Label htmlFor="signup-name">Prénom {accountType === "parent" ? "de l'enfant" : ""} *</Label>
+                      <Input id="signup-name" type="text" placeholder={`Entrez ${accountType === "parent" ? "le prénom de l'enfant" : "votre prénom"}`} value={name} onChange={e => setName(e.target.value)} required />
                     </div>
+                    {accountType === "student" && (
+                      <>
+                        <div className="space-y-2">
+                          <Label htmlFor="signup-age">Âge *</Label>
+                          <Input id="signup-age" type="number" placeholder="Entrez votre âge" value={age} onChange={e => setAge(e.target.value)} min="1" max="120" required />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Niveau scolaire *</Label>
+                          <div className="p-3 bg-muted rounded-md">
+                            <span className="text-sm">Collège</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Est-ce que vous préparez un examen ?</Label>
+                          <div className="p-3 bg-muted rounded-md">
+                            <span className="text-sm">Brevet</span>
+                          </div>
+                        </div>
+                      </>
+                    )}
                     <div className="space-y-2">
-                      <Label>Avatar</Label>
+                      <Label>Télécharger un avatar</Label>
                       <AvatarSelector value={avatar} onChange={setAvatar} />
                     </div>
+                  </>}
+
+                {signupStep === 3 && <>
                     <div className="space-y-2">
                       <Label htmlFor="signup-email">Email *</Label>
                       <Input id="signup-email" type="email" placeholder="Entrez votre email" value={email} onChange={e => setEmail(e.target.value)} required />
@@ -279,17 +299,6 @@ export default function Auth() {
                       <Input id="signup-password" type="password" placeholder="Créez un mot de passe" value={password} onChange={e => setPassword(e.target.value)} required minLength={6} />
                     </div>
                   </>}
-
-                {signupStep === 3 && accountType === "student" && <>
-                    <div className="space-y-2">
-                      <Label htmlFor="signup-age">Âge *</Label>
-                      <Input id="signup-age" type="number" placeholder="Entrez votre âge" value={age} onChange={e => setAge(e.target.value)} min="1" max="120" required />
-                    </div>
-                    <SchoolLevelSelection value={schoolLevel} onChange={setSchoolLevel} />
-                    <CountrySelection value={country} onChange={setCountry} />
-                  </>}
-
-                {signupStep === 4 && accountType === "student" && <ExamPreparationSelection value={examPreparation} onChange={setExamPreparation} />}
 
                 <div className="flex space-x-2">
                   {signupStep > 1 && <Button type="button" variant="outline" onClick={prevStep} className="flex-1">
