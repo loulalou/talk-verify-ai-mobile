@@ -9,13 +9,13 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Duolingo-Inspired Color Palette */
-    --background: 0 0% 98%; /* #f9f9f9 blanc doux */
+    --background: 0 0% 100%; /* #ffffff blanc pur */
     --foreground: 0 0% 18%; /* #2e2e2e anthracite */
 
-    --card: 0 0% 98%;
+    --card: 0 0% 100%;
     --card-foreground: 0 0% 18%;
 
-    --popover: 0 0% 98%;
+    --popover: 0 0% 100%;
     --popover-foreground: 0 0% 18%;
 
     --primary: 87 100% 40%; /* #58cc02 vert Duolingo vivant */
@@ -40,14 +40,14 @@ All colors MUST be HSL.
     --info-foreground: 0 0% 98%;
 
     --border: 112 46% 90%;
-    --input: 0 0% 98%;
+    --input: 0 0% 100%;
     --ring: 87 100% 40%;
 
     /* Enhanced Design System with Duolingo colors */
     --duolingo-primary: 87 100% 40%; /* #58cc02 */
     --duolingo-accent: 51 100% 50%; /* #ffd400 */
     --duolingo-surface: 112 46% 90%; /* #e8f5e1 */
-    --duolingo-background: 0 0% 98%; /* #f9f9f9 */
+    --duolingo-background: 0 0% 100%; /* #ffffff */
     --duolingo-text-primary: 0 0% 18%; /* #2e2e2e */
     --duolingo-text-secondary: 0 0% 43%; /* #6d6d6d */
     
@@ -67,7 +67,7 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 98%;
+    --sidebar-background: 0 0% 100%;
     --sidebar-foreground: 0 0% 18%;
     --sidebar-primary: 87 100% 40%;
     --sidebar-primary-foreground: 0 0% 98%;
@@ -131,5 +131,46 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  /* Enhanced button hover effects */
+  .btn-primary-enhanced:hover {
+    background: hsl(87 100% 35%); /* Vert plus foncé au hover */
+    box-shadow: 0 6px 25px hsla(87, 100%, 40%, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary-enhanced:hover {
+    background: hsl(112 46% 85%); /* Vert menthe plus foncé */
+    border-color: hsl(87 100% 40%);
+  }
+
+  .btn-accent-enhanced:hover {
+    background: hsl(51 100% 45%); /* Jaune plus foncé */
+    box-shadow: 0 6px 25px hsla(51, 100%, 50%, 0.4);
+    transform: translateY(-1px);
+  }
+
+  /* Enhanced hover states for interactive elements */
+  .hover-enhanced:hover {
+    background: hsl(112 46% 88%);
+    border-color: hsl(87 100% 40%);
+    box-shadow: 0 4px 15px hsla(87, 100%, 40%, 0.15);
+    transform: translateY(-0.5px);
+  }
+
+  /* Card hover effects */
+  .card-hover:hover {
+    box-shadow: 0 8px 35px hsla(87, 100%, 40%, 0.12);
+    border-color: hsl(87 100% 40%);
+    transform: translateY(-2px);
+  }
+
+  /* Input focus with more contrast */
+  .input-enhanced:focus {
+    border-color: hsl(87 100% 40%);
+    box-shadow: 0 0 0 3px hsla(87, 100%, 40%, 0.15);
   }
 }
