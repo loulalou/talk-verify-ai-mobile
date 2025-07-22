@@ -73,7 +73,7 @@ export function CategorySelection() {
       });
     }
   };
-  return <div className="bg-gradient-surface overflow-hidden">
+  return <div className="bg-gradient-surface min-h-screen">
       {/* Header */}
       
 
