@@ -54,45 +54,47 @@ function UserMenu() {
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+const App = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
       <BrowserRouter>
         <AuthProvider>
-          <Routes>
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/*" element={
-              <ProtectedRoute>
-                <SidebarProvider>
-                  <div className="flex min-h-screen w-full">
-                    <AppSidebar />
-                    <div className="flex-1 flex flex-col">
-                      <header className="h-12 flex items-center justify-between border-b border-border/50 bg-gray-950 px-4">
-                        <SidebarTrigger className="text-white hover:bg-gray-800" />
-                        <UserMenu />
-                      </header>
-                      <main className="flex-1">
-                        <Routes>
-                          <Route path="/" element={<Index />} />
-                          <Route path="/periods/:categoryId" element={<PeriodSelection />} />
-                          <Route path="/study" element={<StudySession />} />
-                          <Route path="/profile" element={<Profile />} />
-                          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                          <Route path="*" element={<NotFound />} />
-                        </Routes>
-                      </main>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <Routes>
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/*" element={
+                <ProtectedRoute>
+                  <SidebarProvider>
+                    <div className="flex min-h-screen w-full">
+                      <AppSidebar />
+                      <div className="flex-1 flex flex-col">
+                        <header className="h-12 flex items-center justify-between border-b border-border/50 bg-gray-950 px-4">
+                          <SidebarTrigger className="text-white hover:bg-gray-800" />
+                          <UserMenu />
+                        </header>
+                        <main className="flex-1">
+                          <Routes>
+                            <Route path="/" element={<Index />} />
+                            <Route path="/periods/:categoryId" element={<PeriodSelection />} />
+                            <Route path="/study" element={<StudySession />} />
+                            <Route path="/profile" element={<Profile />} />
+                            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                            <Route path="*" element={<NotFound />} />
+                          </Routes>
+                        </main>
+                      </div>
                     </div>
-                  </div>
-                </SidebarProvider>
-              </ProtectedRoute>
-            } />
-          </Routes>
+                  </SidebarProvider>
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </TooltipProvider>
         </AuthProvider>
       </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+    </QueryClientProvider>
+  );
+};
 
 export default App;
