@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowLeft, User, Mail, Calendar, BookOpen, Award, Settings, Bell } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, User, Mail, Calendar, BookOpen, Award, Settings, Bell, MapPin, GraduationCap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -8,40 +8,120 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Separator } from "@/components/ui/separator";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+
+interface UserProfile {
+  name: string;
+  age?: number;
+  country?: string;
+  school_level?: string;
+  account_type?: string;
+  exam_preparation?: string;
+  avatar: string;
+  created_at?: string;
+}
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("overview");
+  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+  const [loading, setLoading] = useState(true);
 
-  // Mock user data
-  const userData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    joinDate: "March 2024",
-    avatar: "",
-    stats: {
-      totalConversations: 47,
-      totalMessages: 1284,
-      studyHours: 127,
-      completedTopics: 23
-    },
-    recentActivity: [
-      { category: "History", topic: "Ancient Rome", time: "2 hours ago", progress: 85 },
-      { category: "Science", topic: "Photosynthesis", time: "1 day ago", progress: 92 },
-      { category: "Mathematics", topic: "Calculus", time: "3 days ago", progress: 76 },
-    ],
-    achievements: [
-      { name: "First Steps", description: "Complete your first study session", earned: true },
-      { name: "Conversationalist", description: "Send 100 messages", earned: true },
-      { name: "Knowledge Seeker", description: "Study 10 different topics", earned: true },
-      { name: "Dedicated Learner", description: "Study for 50 hours", earned: false },
-    ],
-    preferences: {
-      notifications: true,
-      autoSave: true,
-      voiceMode: true,
-    }
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (!user) return;
+
+      try {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('*')
+          .eq('user_id', user.id)
+          .maybeSingle();
+
+        if (error) {
+          toast({
+            title: "Erreur",
+            description: "Impossible de charger les données du profil",
+            variant: "destructive"
+          });
+          return;
+        }
+
+        if (data) {
+          setUserProfile(data);
+        }
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        toast({
+          title: "Erreur",
+          description: "Une erreur inattendue s'est produite",
+          variant: "destructive"
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserProfile();
+  }, [user, toast]);
+
+  // Mock stats data - in future these could come from conversation/activity tables
+  const mockStats = {
+    totalConversations: 47,
+    totalMessages: 1284,
+    studyHours: 127,
+    completedTopics: 23
   };
+
+  const mockRecentActivity = [
+    { category: "History", topic: "Ancient Rome", time: "2 hours ago", progress: 85 },
+    { category: "Science", topic: "Photosynthesis", time: "1 day ago", progress: 92 },
+    { category: "Mathematics", topic: "Calculus", time: "3 days ago", progress: 76 },
+  ];
+
+  const mockAchievements = [
+    { name: "First Steps", description: "Complete your first study session", earned: true },
+    { name: "Conversationalist", description: "Send 100 messages", earned: true },
+    { name: "Knowledge Seeker", description: "Study 10 different topics", earned: true },
+    { name: "Dedicated Learner", description: "Study for 50 hours", earned: false },
+  ];
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-surface text-foreground flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Chargement du profil...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!userProfile || !user) {
+    return (
+      <div className="min-h-screen bg-gradient-surface text-foreground flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Profil non trouvé</p>
+          <Button onClick={() => navigate(-1)} className="mt-4">
+            Retour
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
+  // Format join date
+  const joinDate = userProfile.created_at 
+    ? new Date(userProfile.created_at).toLocaleDateString('fr-FR', { 
+        year: 'numeric', 
+        month: 'long' 
+      })
+    : "Date inconnue";
 
   return (
     <div className="min-h-screen bg-gradient-surface text-foreground">
@@ -73,40 +153,58 @@ const Profile = () => {
           <CardContent className="p-6">
             <div className="flex items-start space-x-6">
               <Avatar className="h-20 w-20">
-                <AvatarImage src={userData.avatar} alt={userData.name} />
+                <AvatarImage src="" alt={userProfile.name} />
                 <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-                  {userData.name.split(' ').map(n => n[0]).join('')}
+                  {userProfile.name.split(' ').map(n => n[0]).join('')}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1">
-                <h2 className="text-2xl font-bold text-foreground">{userData.name}</h2>
+                <h2 className="text-2xl font-bold text-foreground">{userProfile.name}</h2>
                 <p className="text-muted-foreground flex items-center mt-1">
                   <Mail className="w-4 h-4 mr-1" />
-                  {userData.email}
+                  {user.email}
                 </p>
                 <p className="text-muted-foreground flex items-center mt-1">
                   <Calendar className="w-4 h-4 mr-1" />
-                  Membre depuis {userData.joinDate}
+                  Membre depuis {joinDate}
                 </p>
+                {userProfile.age && (
+                  <p className="text-muted-foreground flex items-center mt-1">
+                    <User className="w-4 h-4 mr-1" />
+                    {userProfile.age} ans
+                  </p>
+                )}
+                {userProfile.country && (
+                  <p className="text-muted-foreground flex items-center mt-1">
+                    <MapPin className="w-4 h-4 mr-1" />
+                    {userProfile.country}
+                  </p>
+                )}
+                {userProfile.school_level && (
+                  <p className="text-muted-foreground flex items-center mt-1">
+                    <GraduationCap className="w-4 h-4 mr-1" />
+                    {userProfile.school_level}
+                  </p>
+                )}
               </div>
             </div>
 
             {/* Quick Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
               <div className="text-center p-4 bg-gradient-primary/5 rounded-lg border border-primary/20">
-                <div className="text-2xl font-bold text-primary">{userData.stats.totalConversations}</div>
+                <div className="text-2xl font-bold text-primary">{mockStats.totalConversations}</div>
                 <div className="text-sm text-muted-foreground">Conversations</div>
               </div>
               <div className="text-center p-4 bg-gradient-accent/5 rounded-lg border border-accent/20">
-                <div className="text-2xl font-bold text-accent">{userData.stats.totalMessages}</div>
+                <div className="text-2xl font-bold text-accent">{mockStats.totalMessages}</div>
                 <div className="text-sm text-muted-foreground">Messages</div>
               </div>
               <div className="text-center p-4 bg-gradient-surface/50 rounded-lg border border-border/50">
-                <div className="text-2xl font-bold text-foreground">{userData.stats.studyHours}</div>
+                <div className="text-2xl font-bold text-foreground">{mockStats.studyHours}</div>
                 <div className="text-sm text-muted-foreground">Heures d'étude</div>
               </div>
               <div className="text-center p-4 bg-green-500/5 rounded-lg border border-green-500/20">
-                <div className="text-2xl font-bold text-green-600">{userData.stats.completedTopics}</div>
+                <div className="text-2xl font-bold text-green-600">{mockStats.completedTopics}</div>
                 <div className="text-sm text-muted-foreground">Sujets appris</div>
               </div>
             </div>
@@ -132,7 +230,7 @@ const Profile = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {userData.recentActivity.map((activity, index) => (
+                  {mockRecentActivity.map((activity, index) => (
                     <div key={index} className="space-y-2">
                       <div className="flex items-center justify-between">
                         <div>
@@ -144,7 +242,7 @@ const Profile = () => {
                         </Badge>
                       </div>
                       <Progress value={activity.progress} className="h-2" />
-                      {index < userData.recentActivity.length - 1 && <Separator />}
+                      {index < mockRecentActivity.length - 1 && <Separator />}
                     </div>
                   ))}
                 </CardContent>
@@ -202,7 +300,7 @@ const Profile = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4 md:grid-cols-2">
-                  {userData.achievements.map((achievement, index) => (
+                  {mockAchievements.map((achievement, index) => (
                     <div 
                       key={index}
                       className={`p-4 rounded-lg border ${
