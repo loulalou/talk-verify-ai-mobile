@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User, LogOut } from "lucide-react";
+import { HelpPopup } from "./components/HelpPopup";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
@@ -97,7 +98,10 @@ const App = () => <QueryClientProvider client={queryClient}>
                           <SidebarTrigger className="text-foreground hover:bg-accent" />
                           <WelcomeMessage />
                         </div>
-                        <UserMenu />
+                        <div className="flex items-center space-x-2">
+                          <HelpPopup />
+                          <UserMenu />
+                        </div>
                       </header>
                       <main className="flex-1">
                         <Routes>
