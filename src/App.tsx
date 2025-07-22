@@ -24,7 +24,7 @@ const App = () => (
           <div className="flex min-h-screen w-full">
             <AppSidebar />
             <div className="flex-1 flex flex-col">
-              <header className="h-12 flex items-center border-b border-border/50 bg-sidebar px-4">
+              <header className="h-12 flex items-center border-b border-border/50 bg-gray-950 px-4">
                 <SidebarTrigger />
               </header>
               <main className="flex-1">
