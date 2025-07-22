@@ -33,7 +33,7 @@ const App = () => (
                     <AppSidebar />
                     <div className="flex-1 flex flex-col">
                       <header className="h-12 flex items-center border-b border-border/50 bg-gray-950 px-4">
-                        <SidebarTrigger />
+                        <SidebarTrigger className="text-white hover:bg-gray-800" />
                       </header>
                       <main className="flex-1">
                         <Routes>
