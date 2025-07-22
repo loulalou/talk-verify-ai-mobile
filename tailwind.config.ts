@@ -52,11 +52,20 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				'ai-primary': 'hsl(var(--ai-primary))',
-				'ai-secondary': 'hsl(var(--ai-secondary))',
-				'ai-accent': 'hsl(var(--ai-accent))',
-				'ai-surface': 'hsl(var(--ai-surface))',
-				'ai-surface-elevated': 'hsl(var(--ai-surface-elevated))',
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info))',
+					foreground: 'hsl(var(--info-foreground))'
+				},
+				'duolingo-primary': 'hsl(var(--duolingo-primary))',
+				'duolingo-accent': 'hsl(var(--duolingo-accent))',
+				'duolingo-surface': 'hsl(var(--duolingo-surface))',
+				'duolingo-background': 'hsl(var(--duolingo-background))',
+				'duolingo-text-primary': 'hsl(var(--duolingo-text-primary))',
+				'duolingo-text-secondary': 'hsl(var(--duolingo-text-secondary))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

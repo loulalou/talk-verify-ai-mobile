@@ -8,51 +8,58 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Elegant Ancient Color Palette */
-    --background: 41 31% 85%; /* #e5dac5 fond clair élégant */
-    --foreground: 214 24% 24%; /* #2e3a49 texte principal raffiné */
+    /* Duolingo-Inspired Color Palette */
+    --background: 0 0% 98%; /* #f9f9f9 blanc doux */
+    --foreground: 0 0% 18%; /* #2e2e2e anthracite */
 
-    --card: 41 31% 85%;
-    --card-foreground: 214 24% 24%;
+    --card: 0 0% 98%;
+    --card-foreground: 0 0% 18%;
 
-    --popover: 41 31% 85%;
-    --popover-foreground: 214 24% 24%;
+    --popover: 0 0% 98%;
+    --popover-foreground: 0 0% 18%;
 
-    --primary: 7 43% 40%; /* #8c3e38 boutons classiques */
-    --primary-foreground: 41 31% 85%;
+    --primary: 87 100% 40%; /* #58cc02 vert Duolingo vivant */
+    --primary-foreground: 0 0% 98%;
 
-    --secondary: 75 20% 36%; /* #5c6b4c effet classique alternatif */
-    --secondary-foreground: 41 31% 85%;
+    --secondary: 112 46% 90%; /* #e8f5e1 vert menthe très clair */
+    --secondary-foreground: 0 0% 18%;
 
-    --muted: 35 28% 76%; /* #d2b58d texture ancienne alternative */
-    --muted-foreground: 214 24% 24%;
+    --muted: 112 46% 90%; /* #e8f5e1 vert menthe très clair */
+    --muted-foreground: 0 0% 43%; /* #6d6d6d gris doux */
 
-    --accent: 42 32% 57%; /* #b99f67 effet doré subtil */
-    --accent-foreground: 214 24% 24%;
+    --accent: 51 100% 50%; /* #ffd400 jaune énergie */
+    --accent-foreground: 0 0% 18%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 41 31% 85%;
+    --destructive: 0 79% 67%; /* #ff5757 rouge corail */
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 42 32% 57%;
-    --input: 41 31% 85%;
-    --ring: 42 32% 57%;
+    --success: 125 93% 85%; /* #b9fbc0 vert pastel */
+    --success-foreground: 0 0% 18%;
 
-    /* Enhanced Design System */
-    --elegant-primary: 7 43% 40%; /* #8c3e38 */
-    --elegant-secondary: 75 20% 36%; /* #5c6b4c */
-    --elegant-accent: 42 32% 57%; /* #b99f67 */
-    --elegant-background: 41 31% 85%; /* #e5dac5 */
-    --elegant-surface: 35 28% 76%; /* #d2b58d */
+    --info: 203 89% 68%; /* #62b6f2 bleu ciel doux */
+    --info-foreground: 0 0% 98%;
+
+    --border: 112 46% 90%;
+    --input: 0 0% 98%;
+    --ring: 87 100% 40%;
+
+    /* Enhanced Design System with Duolingo colors */
+    --duolingo-primary: 87 100% 40%; /* #58cc02 */
+    --duolingo-accent: 51 100% 50%; /* #ffd400 */
+    --duolingo-surface: 112 46% 90%; /* #e8f5e1 */
+    --duolingo-background: 0 0% 98%; /* #f9f9f9 */
+    --duolingo-text-primary: 0 0% 18%; /* #2e2e2e */
+    --duolingo-text-secondary: 0 0% 43%; /* #6d6d6d */
     
-    /* Gradients with elegant tones */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--elegant-primary)), hsl(var(--elegant-accent)));
-    --gradient-surface: linear-gradient(180deg, hsl(var(--elegant-background)), hsl(var(--elegant-surface)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--elegant-accent)), hsl(var(--elegant-primary)));
+    /* Gradients with Duolingo tones */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--duolingo-primary)), hsl(var(--duolingo-accent)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--duolingo-background)), hsl(var(--duolingo-surface)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--duolingo-accent)), hsl(var(--duolingo-primary)));
     
-    /* Refined shadows */
-    --shadow-elegant: 0 4px 20px hsla(var(--elegant-primary), 0.15);
-    --shadow-soft: 0 2px 10px hsla(var(--elegant-accent), 0.2);
-    --shadow-refined: 0 8px 30px hsla(var(--foreground), 0.1);
+    /* Modern shadows */
+    --shadow-elegant: 0 4px 20px hsla(var(--duolingo-primary), 0.15);
+    --shadow-soft: 0 2px 10px hsla(var(--duolingo-accent), 0.2);
+    --shadow-refined: 0 8px 30px hsla(var(--foreground), 0.08);
     
     /* Smooth transitions */
     --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -60,54 +67,60 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 41 31% 85%;
-    --sidebar-foreground: 214 24% 24%;
-    --sidebar-primary: 7 43% 40%;
-    --sidebar-primary-foreground: 41 31% 85%;
-    --sidebar-accent: 42 32% 57%;
-    --sidebar-accent-foreground: 214 24% 24%;
-    --sidebar-border: 42 32% 57%;
-    --sidebar-ring: 42 32% 57%;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 0 0% 18%;
+    --sidebar-primary: 87 100% 40%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 112 46% 90%;
+    --sidebar-accent-foreground: 0 0% 18%;
+    --sidebar-border: 112 46% 90%;
+    --sidebar-ring: 87 100% 40%;
   }
 
   .dark {
-    /* Dark mode with elegant tones */
-    --background: 214 24% 12%; /* Version sombre de #2e3a49 */
-    --foreground: 41 31% 85%; /* #e5dac5 pour le texte */
+    /* Dark mode with Duolingo tones */
+    --background: 0 0% 8%; /* #141414 fond sombre */
+    --foreground: 0 0% 95%; /* #f2f2f2 texte clair */
 
-    --card: 214 24% 15%;
-    --card-foreground: 41 31% 85%;
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
 
-    --popover: 214 24% 15%;
-    --popover-foreground: 41 31% 85%;
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
 
-    --primary: 7 43% 50%; /* Bouton plus lumineux en mode sombre */
-    --primary-foreground: 41 31% 85%;
+    --primary: 87 100% 45%; /* Vert Duolingo plus lumineux */
+    --primary-foreground: 0 0% 8%;
 
-    --secondary: 75 20% 45%; /* Secondaire plus lumineux */
-    --secondary-foreground: 41 31% 85%;
+    --secondary: 112 30% 20%; /* Vert sombre */
+    --secondary-foreground: 0 0% 95%;
 
-    --muted: 214 24% 18%;
-    --muted-foreground: 42 32% 65%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%; /* Gris moyen */
 
-    --accent: 42 32% 67%; /* Accent plus lumineux */
-    --accent-foreground: 214 24% 15%;
+    --accent: 51 100% 55%; /* Jaune plus lumineux */
+    --accent-foreground: 0 0% 8%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 41 31% 85%;
+    --destructive: 0 79% 67%;
+    --destructive-foreground: 0 0% 95%;
 
-    --border: 214 24% 20%;
-    --input: 214 24% 18%;
-    --ring: 42 32% 67%;
+    --success: 125 50% 30%;
+    --success-foreground: 0 0% 95%;
+
+    --info: 203 89% 68%;
+    --info-foreground: 0 0% 8%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 15%;
+    --ring: 87 100% 45%;
     
-    --sidebar-background: 214 24% 12%;
-    --sidebar-foreground: 41 31% 85%;
-    --sidebar-primary: 7 43% 50%;
-    --sidebar-primary-foreground: 41 31% 85%;
-    --sidebar-accent: 214 24% 18%;
-    --sidebar-accent-foreground: 42 32% 67%;
-    --sidebar-border: 214 24% 20%;
-    --sidebar-ring: 42 32% 67%;
+    --sidebar-background: 0 0% 8%;
+    --sidebar-foreground: 0 0% 95%;
+    --sidebar-primary: 87 100% 45%;
+    --sidebar-primary-foreground: 0 0% 8%;
+    --sidebar-accent: 0 0% 15%;
+    --sidebar-accent-foreground: 0 0% 95%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 87 100% 45%;
   }
 }
 
