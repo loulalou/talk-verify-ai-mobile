@@ -56,16 +56,17 @@ export default {
 					DEFAULT: 'hsl(var(--success))',
 					foreground: 'hsl(var(--success-foreground))'
 				},
-				info: {
-					DEFAULT: 'hsl(var(--info))',
-					foreground: 'hsl(var(--info-foreground))'
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
 				},
-				'duolingo-primary': 'hsl(var(--duolingo-primary))',
-				'duolingo-accent': 'hsl(var(--duolingo-accent))',
-				'duolingo-surface': 'hsl(var(--duolingo-surface))',
-				'duolingo-background': 'hsl(var(--duolingo-background))',
-				'duolingo-text-primary': 'hsl(var(--duolingo-text-primary))',
-				'duolingo-text-secondary': 'hsl(var(--duolingo-text-secondary))',
+				'elegant-primary': 'hsl(var(--elegant-primary))',
+				'elegant-accent': 'hsl(var(--elegant-accent))',
+				'elegant-warm': 'hsl(var(--elegant-warm))',
+				'elegant-background': 'hsl(var(--elegant-background))',
+				'elegant-surface': 'hsl(var(--elegant-surface))',
+				'elegant-text-primary': 'hsl(var(--elegant-text-primary))',
+				'elegant-text-secondary': 'hsl(var(--elegant-text-secondary))',
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

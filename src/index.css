@@ -8,57 +8,58 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Duolingo-Inspired Color Palette */
-    --background: 0 0% 100%; /* #ffffff blanc pur */
-    --foreground: 0 0% 18%; /* #2e2e2e anthracite */
+    /* Elegant Blue & Warm Color Palette */
+    --background: 217 29% 97%; /* #F7F9FB fond global */
+    --foreground: 225 14% 13%; /* #1E1F24 texte principal */
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 18%;
+    --card: 213 18% 91%; /* #E6EBEF cartes et panneaux secondaires */
+    --card-foreground: 225 14% 13%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 18%;
+    --popover: 213 18% 91%;
+    --popover-foreground: 225 14% 13%;
 
-    --primary: 87 100% 40%; /* #58cc02 vert Duolingo vivant */
-    --primary-foreground: 0 0% 98%;
+    --primary: 215 23% 29%; /* #2A3D66 CTA/boutons importants */
+    --primary-foreground: 217 29% 97%; /* #F7F9FB texte sur boutons */
 
-    --secondary: 112 46% 90%; /* #e8f5e1 vert menthe très clair */
-    --secondary-foreground: 0 0% 18%;
+    --secondary: 213 18% 91%; /* #E6EBEF panneaux secondaires */
+    --secondary-foreground: 225 14% 13%;
 
-    --muted: 112 46% 90%; /* #e8f5e1 vert menthe très clair */
-    --muted-foreground: 0 0% 43%; /* #6d6d6d gris doux */
+    --muted: 213 18% 91%; /* #E6EBEF */
+    --muted-foreground: 222 11% 45%; /* #6E7581 texte secondaire */
 
-    --accent: 51 100% 50%; /* #ffd400 jaune énergie */
-    --accent-foreground: 0 0% 18%;
+    --accent: 230 27% 72%; /* #A6B0D2 liens ou survols */
+    --accent-foreground: 225 14% 13%;
 
-    --destructive: 0 79% 67%; /* #ff5757 rouge corail */
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 79% 67%; /* Rouge pour erreurs */
+    --destructive-foreground: 217 29% 97%;
 
-    --success: 125 93% 85%; /* #b9fbc0 vert pastel */
-    --success-foreground: 0 0% 18%;
+    --success: 125 93% 85%; /* Vert pastel pour succès */
+    --success-foreground: 225 14% 13%;
 
-    --info: 203 89% 68%; /* #62b6f2 bleu ciel doux */
-    --info-foreground: 0 0% 98%;
+    --warning: 41 92% 79%; /* #F5D398 touches chaleureuses */
+    --warning-foreground: 225 14% 13%;
 
-    --border: 112 46% 90%;
-    --input: 0 0% 100%;
-    --ring: 87 100% 40%;
+    --border: 213 18% 91%;
+    --input: 217 29% 97%;
+    --ring: 215 23% 29%;
 
-    /* Enhanced Design System with Duolingo colors */
-    --duolingo-primary: 87 100% 40%; /* #58cc02 */
-    --duolingo-accent: 51 100% 50%; /* #ffd400 */
-    --duolingo-surface: 112 46% 90%; /* #e8f5e1 */
-    --duolingo-background: 0 0% 100%; /* #ffffff */
-    --duolingo-text-primary: 0 0% 18%; /* #2e2e2e */
-    --duolingo-text-secondary: 0 0% 43%; /* #6d6d6d */
+    /* Enhanced Design System with new palette */
+    --elegant-primary: 215 23% 29%; /* #2A3D66 */
+    --elegant-accent: 230 27% 72%; /* #A6B0D2 */
+    --elegant-warm: 41 92% 79%; /* #F5D398 */
+    --elegant-background: 217 29% 97%; /* #F7F9FB */
+    --elegant-surface: 213 18% 91%; /* #E6EBEF */
+    --elegant-text-primary: 225 14% 13%; /* #1E1F24 */
+    --elegant-text-secondary: 222 11% 45%; /* #6E7581 */
     
-    /* Gradients with Duolingo tones */
-    --gradient-primary: linear-gradient(135deg, hsl(var(--duolingo-primary)), hsl(var(--duolingo-accent)));
-    --gradient-surface: linear-gradient(180deg, hsl(var(--duolingo-background)), hsl(var(--duolingo-surface)));
-    --gradient-accent: linear-gradient(135deg, hsl(var(--duolingo-accent)), hsl(var(--duolingo-primary)));
+    /* Gradients with elegant tones */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--elegant-primary)), hsl(var(--elegant-accent)));
+    --gradient-surface: linear-gradient(180deg, hsl(var(--elegant-background)), hsl(var(--elegant-surface)));
+    --gradient-accent: linear-gradient(135deg, hsl(var(--elegant-accent)), hsl(var(--elegant-warm)));
     
     /* Modern shadows */
-    --shadow-elegant: 0 4px 20px hsla(var(--duolingo-primary), 0.15);
-    --shadow-soft: 0 2px 10px hsla(var(--duolingo-accent), 0.2);
+    --shadow-elegant: 0 4px 20px hsla(var(--elegant-primary), 0.15);
+    --shadow-soft: 0 2px 10px hsla(var(--elegant-accent), 0.2);
     --shadow-refined: 0 8px 30px hsla(var(--foreground), 0.08);
     
     /* Smooth transitions */
@@ -67,60 +68,60 @@ All colors MUST be HSL.
 
     --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 18%;
-    --sidebar-primary: 87 100% 40%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 112 46% 90%;
-    --sidebar-accent-foreground: 0 0% 18%;
-    --sidebar-border: 112 46% 90%;
-    --sidebar-ring: 87 100% 40%;
+    --sidebar-background: 217 29% 97%;
+    --sidebar-foreground: 225 14% 13%;
+    --sidebar-primary: 215 23% 29%;
+    --sidebar-primary-foreground: 217 29% 97%;
+    --sidebar-accent: 213 18% 91%;
+    --sidebar-accent-foreground: 225 14% 13%;
+    --sidebar-border: 213 18% 91%;
+    --sidebar-ring: 215 23% 29%;
   }
 
   .dark {
-    /* Dark mode with Duolingo tones */
-    --background: 0 0% 8%; /* #141414 fond sombre */
-    --foreground: 0 0% 95%; /* #f2f2f2 texte clair */
+    /* Dark mode with elegant blue tones */
+    --background: 225 14% 8%; /* Fond sombre élégant */
+    --foreground: 217 29% 95%; /* Texte clair */
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 225 14% 12%;
+    --card-foreground: 217 29% 95%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 225 14% 12%;
+    --popover-foreground: 217 29% 95%;
 
-    --primary: 87 100% 45%; /* Vert Duolingo plus lumineux */
-    --primary-foreground: 0 0% 8%;
+    --primary: 215 23% 40%; /* Bleu principal plus lumineux */
+    --primary-foreground: 217 29% 95%;
 
-    --secondary: 112 30% 20%; /* Vert sombre */
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 213 18% 20%; /* Surface sombre */
+    --secondary-foreground: 217 29% 95%;
 
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 65%; /* Gris moyen */
+    --muted: 225 14% 15%;
+    --muted-foreground: 222 11% 65%; /* Gris moyen */
 
-    --accent: 51 100% 55%; /* Jaune plus lumineux */
-    --accent-foreground: 0 0% 8%;
+    --accent: 230 27% 80%; /* Accent plus lumineux */
+    --accent-foreground: 225 14% 8%;
 
     --destructive: 0 79% 67%;
-    --destructive-foreground: 0 0% 95%;
+    --destructive-foreground: 217 29% 95%;
 
     --success: 125 50% 30%;
-    --success-foreground: 0 0% 95%;
+    --success-foreground: 217 29% 95%;
 
-    --info: 203 89% 68%;
-    --info-foreground: 0 0% 8%;
+    --warning: 41 92% 85%; /* Warm accent plus lumineux */
+    --warning-foreground: 225 14% 8%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 15%;
-    --ring: 87 100% 45%;
+    --border: 225 14% 20%;
+    --input: 225 14% 15%;
+    --ring: 215 23% 40%;
     
-    --sidebar-background: 0 0% 8%;
-    --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 87 100% 45%;
-    --sidebar-primary-foreground: 0 0% 8%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 87 100% 45%;
+    --sidebar-background: 225 14% 8%;
+    --sidebar-foreground: 217 29% 95%;
+    --sidebar-primary: 215 23% 40%;
+    --sidebar-primary-foreground: 217 29% 95%;
+    --sidebar-accent: 225 14% 15%;
+    --sidebar-accent-foreground: 217 29% 95%;
+    --sidebar-border: 225 14% 20%;
+    --sidebar-ring: 215 23% 40%;
   }
 }
 
@@ -135,42 +136,48 @@ All colors MUST be HSL.
 }
 
 @layer components {
-  /* Enhanced button hover effects */
+  /* Enhanced button hover effects with new palette */
   .btn-primary-enhanced:hover {
-    background: hsl(87 100% 35%); /* Vert plus foncé au hover */
-    box-shadow: 0 6px 25px hsla(87, 100%, 40%, 0.4);
+    background: hsl(215 23% 25%); /* Bleu plus foncé au hover */
+    box-shadow: 0 6px 25px hsla(215, 23%, 29%, 0.4);
     transform: translateY(-1px);
   }
 
   .btn-secondary-enhanced:hover {
-    background: hsl(112 46% 85%); /* Vert menthe plus foncé */
-    border-color: hsl(87 100% 40%);
+    background: hsl(213 18% 85%); /* Surface plus foncée */
+    border-color: hsl(215 23% 29%);
   }
 
   .btn-accent-enhanced:hover {
-    background: hsl(51 100% 45%); /* Jaune plus foncé */
-    box-shadow: 0 6px 25px hsla(51, 100%, 50%, 0.4);
+    background: hsl(230 27% 68%); /* Accent plus foncé */
+    box-shadow: 0 6px 25px hsla(230, 27%, 72%, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .btn-warm-enhanced:hover {
+    background: hsl(41 92% 75%); /* Warm plus foncé */
+    box-shadow: 0 6px 25px hsla(41, 92%, 79%, 0.4);
     transform: translateY(-1px);
   }
 
   /* Enhanced hover states for interactive elements */
   .hover-enhanced:hover {
-    background: hsl(112 46% 88%);
-    border-color: hsl(87 100% 40%);
-    box-shadow: 0 4px 15px hsla(87, 100%, 40%, 0.15);
+    background: hsl(213 18% 88%);
+    border-color: hsl(230 27% 72%);
+    box-shadow: 0 4px 15px hsla(230, 27%, 72%, 0.15);
     transform: translateY(-0.5px);
   }
 
   /* Card hover effects */
   .card-hover:hover {
-    box-shadow: 0 8px 35px hsla(87, 100%, 40%, 0.12);
-    border-color: hsl(87 100% 40%);
+    box-shadow: 0 8px 35px hsla(215, 23%, 29%, 0.12);
+    border-color: hsl(230 27% 72%);
     transform: translateY(-2px);
   }
 
   /* Input focus with more contrast */
   .input-enhanced:focus {
-    border-color: hsl(87 100% 40%);
-    box-shadow: 0 0 0 3px hsla(87, 100%, 40%, 0.15);
+    border-color: hsl(215 23% 29%);
+    box-shadow: 0 0 0 3px hsla(215, 23%, 29%, 0.15);
   }
 }
