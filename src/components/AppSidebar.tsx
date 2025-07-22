@@ -18,23 +18,29 @@ interface Conversation {
   messageCount: number;
 }
 export function AppSidebar() {
-  const { state } = useSidebar();
+  const {
+    state
+  } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
-  const { user, signOut } = useAuth();
-  const [userProfile, setUserProfile] = useState<{ name: string; age?: number } | null>(null);
+  const {
+    user,
+    signOut
+  } = useAuth();
+  const [userProfile, setUserProfile] = useState<{
+    name: string;
+    age?: number;
+  } | null>(null);
 
   // Fetch user profile data
   useEffect(() => {
     const fetchProfile = async () => {
       if (user) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('name, age')
-          .eq('user_id', user.id)
-          .single();
-        
+        const {
+          data,
+          error
+        } = await supabase.from('profiles').select('name, age').eq('user_id', user.id).single();
         if (data && !error) {
           setUserProfile(data);
         }
@@ -116,16 +122,13 @@ export function AppSidebar() {
       }
     });
   };
-  return <Sidebar 
-    className="border-r border-border/20 bg-gray-950"
-    collapsible="icon"
-  >
+  return <Sidebar className="border-r border-border/20 bg-gray-950" collapsible="icon">
       <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <GraduationCap className="w-6 h-6 text-blue-400" />
-                <h2 className="text-lg font-semibold text-white">Compagnon d'étude IA</h2>
+                <h2 className="text-lg font-semibold text-white">Compagnon d'étude</h2>
               </div>
             </div>
             
