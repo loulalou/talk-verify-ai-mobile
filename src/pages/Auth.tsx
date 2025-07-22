@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { AvatarSelector, AvatarType } from "@/components/AvatarSelector";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
+  const [avatar, setAvatar] = useState<AvatarType>("teacher");
 
   // Check if user is already logged in
   useEffect(() => {
@@ -51,11 +53,12 @@ export default function Auth() {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-        options: {
+options: {
           emailRedirectTo: redirectUrl,
           data: {
             name,
             age: age ? parseInt(age) : null,
+            avatar,
           }
         }
       });
@@ -200,6 +203,10 @@ export default function Auth() {
                     onChange={(e) => setName(e.target.value)}
                     required
                   />
+                  </div>
+                <div className="space-y-2">
+                  <Label>Avatar</Label>
+                  <AvatarSelector value={avatar} onChange={setAvatar} />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="signup-age">Âge</Label>

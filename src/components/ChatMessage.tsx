@@ -1,6 +1,10 @@
 import { cn } from "@/lib/utils";
-import { User, Bot } from "lucide-react";
+import { User, Bot, Brain, BookOpen, GraduationCap, Laptop, Microscope } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useAuth } from "@/contexts/AuthContext";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { AvatarType } from "./AvatarSelector";
 
 export interface Message {
   id: string;
@@ -19,6 +23,45 @@ interface ChatMessageProps {
 
 export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) {
   const isUser = message.type === 'user';
+  const { user } = useAuth();
+  const [userAvatar, setUserAvatar] = useState<AvatarType>("teacher");
+  
+  // Récupérer l'avatar de l'utilisateur depuis la base de données
+  useEffect(() => {
+    if (user) {
+      const fetchUserAvatar = async () => {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('avatar')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data && !error) {
+          setUserAvatar(data.avatar as AvatarType);
+        }
+      };
+      
+      fetchUserAvatar();
+    }
+  }, [user]);
+  
+  // Fonction pour récupérer l'icône basé sur le type d'avatar
+  const getAvatarIcon = () => {
+    switch(userAvatar) {
+      case "teacher":
+        return <Brain className="w-4 h-4" />;
+      case "student":
+        return <BookOpen className="w-4 h-4" />;
+      case "researcher":
+        return <Microscope className="w-4 h-4" />;
+      case "mentor":
+        return <GraduationCap className="w-4 h-4" />;
+      case "developer":
+        return <Laptop className="w-4 h-4" />;
+      default:
+        return <User className="w-4 h-4" />;
+    }
+  };
   
   return (
     <div className={cn(
@@ -37,7 +80,7 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
             : "bg-gradient-accent text-white"
         )}>
           {isUser ? (
-            <User className="w-4 h-4" />
+            getAvatarIcon()
           ) : (
             <Bot className="w-4 h-4" />
           )}

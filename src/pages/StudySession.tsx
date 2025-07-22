@@ -15,6 +15,9 @@ import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
 import { PerplexityService } from "@/utils/PerplexityService";
 import GeminiService from "@/utils/GeminiService";
+import { AvatarType } from "@/components/AvatarSelector";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const StudySession = () => {
   const location = useLocation();
@@ -87,6 +90,27 @@ const StudySession = () => {
     icon: <Brain className="w-8 h-8" />,
     color: categoryData.categoryColor
   };
+  
+  const { user } = useAuth();
+  
+  // Récupérer l'avatar de l'utilisateur pour l'utiliser comme avatar de l'IA
+  useEffect(() => {
+    if (user) {
+      const fetchUserAvatar = async () => {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('avatar')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data && !error && data.avatar) {
+          setAiAvatar(data.avatar as AvatarType);
+        }
+      };
+      
+      fetchUserAvatar();
+    }
+  }, [user]);
   const [messages, setMessages] = useState<Message[]>([]);
   const [knowledgeItems, setKnowledgeItems] = useState<KnowledgeItem[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -96,6 +120,7 @@ const StudySession = () => {
   const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
   const [useGemini, setUseGemini] = useState(true); // Utiliser Gemini par défaut
   const [showTipsDialog, setShowTipsDialog] = useState(true); // Popup de conseils au début
+  const [aiAvatar, setAiAvatar] = useState<AvatarType>("teacher"); // Avatar pour l'IA
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
