@@ -135,23 +135,24 @@ export function PeriodSelection() {
   }
 
   const handlePeriodToggle = (period: string) => {
-    setSelectedPeriods(prev => 
-      prev.includes(period) 
-        ? prev.filter(p => p !== period)
-        : [...prev, period]
-    );
-  };
-
-  const handleContinue = () => {
-    if (selectedPeriods.length > 0) {
-      navigate('/study', { 
-        state: { 
-          categoryId: category.id,
-          categoryName: category.name,
-          categoryColor: category.color,
-          periods: selectedPeriods 
-        }
-      });
+    const newSelectedPeriods = selectedPeriods.includes(period) 
+      ? selectedPeriods.filter(p => p !== period)
+      : [...selectedPeriods, period];
+    
+    setSelectedPeriods(newSelectedPeriods);
+    
+    // Navigation automatique dès qu'on sélectionne au moins une période
+    if (newSelectedPeriods.length > 0) {
+      setTimeout(() => {
+        navigate('/study', { 
+          state: { 
+            categoryId: category.id,
+            categoryName: category.name,
+            categoryColor: category.color,
+            periods: newSelectedPeriods 
+          }
+        });
+      }, 500); // Délai plus long pour voir la sélection
     }
   };
 
@@ -236,42 +237,7 @@ export function PeriodSelection() {
           })}
         </div>
 
-        {/* Selected Summary */}
-        {selectedPeriods.length > 0 && (
-          <Card className="bg-ai-surface-elevated border-ai-primary/20 mb-6">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h3 className="font-semibold">Prêt à étudier</h3>
-                  <p className="text-sm text-muted-foreground">
-                    {selectedPeriods.length} sujet{selectedPeriods.length > 1 ? 's' : ''} sélectionné{selectedPeriods.length > 1 ? 's' : ''}
-                  </p>
-                </div>
-                <Button 
-                  onClick={handleContinue}
-                  className="bg-ai-primary hover:bg-ai-primary/90"
-                >
-                  Commencer la session
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Sujets sélectionnés :</p>
-                <div className="space-y-1">
-                  {selectedPeriods.map((period, index) => (
-                    <div 
-                      key={index}
-                      className="text-sm bg-ai-primary/10 text-ai-primary px-3 py-2 rounded-lg border border-ai-primary/20"
-                    >
-                      {period}
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </Card>
-        )}
+        {/* Suppression de la section "Selected Summary" car navigation automatique */}
 
         {/* Study Tips */}
         <Card className="bg-ai-surface border-border/50">

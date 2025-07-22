@@ -59,19 +59,18 @@ export function CategorySelection() {
   const navigate = useNavigate();
   const handleCategorySelect = (category: StudyCategory) => {
     setSelectedCategory(category);
-  };
-  const handleContinue = () => {
-    if (selectedCategory) {
-      navigate(`/periods/${selectedCategory.id}`, {
+    // Navigation automatique après sélection
+    setTimeout(() => {
+      navigate(`/periods/${category.id}`, {
         state: {
-          categoryId: selectedCategory.id,
-          categoryName: selectedCategory.name,
-          categoryDescription: selectedCategory.description,
-          categoryColor: selectedCategory.color,
-          categoryPeriods: selectedCategory.periods
+          categoryId: category.id,
+          categoryName: category.name,
+          categoryDescription: category.description,
+          categoryColor: category.color,
+          categoryPeriods: category.periods
         }
       });
-    }
+    }, 300); // Délai court pour voir la sélection
   };
   return <div className="bg-gradient-surface min-h-screen">
       {/* Header */}
@@ -122,38 +121,7 @@ export function CategorySelection() {
             </Card>)}
         </div>
 
-        {/* Selected Category Preview */}
-        {selectedCategory && <Card className="bg-ai-surface-elevated border-ai-primary/20 mb-6">
-            <div className="p-6">
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-3">
-                  <div className={`w-10 h-10 ${selectedCategory.color} rounded-lg flex items-center justify-center text-white`}>
-                    {selectedCategory.icon}
-                  </div>
-                  <div>
-                    <h3 className="font-semibold">{selectedCategory.name}</h3>
-                    <p className="text-sm text-muted-foreground">Catégorie sélectionnée</p>
-                  </div>
-                </div>
-                <Button onClick={handleContinue} className="bg-ai-primary hover:bg-ai-primary/90">
-                  Continuer
-                  <ChevronRight className="w-4 h-4 ml-1" />
-                </Button>
-              </div>
-              
-              <div className="space-y-2">
-                <p className="text-sm font-medium">Périodes d'étude disponibles :</p>
-                <div className="flex flex-wrap gap-2">
-                  {selectedCategory.periods?.slice(0, 4).map((period, index) => <span key={index} className="text-xs bg-muted px-2 py-1 rounded-full">
-                      {period}
-                    </span>)}
-                  {selectedCategory.periods && selectedCategory.periods.length > 4 && <span className="text-xs text-muted-foreground px-2 py-1">
-                      +{selectedCategory.periods.length - 4} de plus
-                    </span>}
-                </div>
-              </div>
-            </div>
-          </Card>}
+        {/* Suppression de la section "Selected Category Preview" car navigation automatique */}
 
       </div>
     </div>;
