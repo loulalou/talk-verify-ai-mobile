@@ -228,49 +228,16 @@ export function AppSidebar() {
 
       <SidebarFooter className="p-4 border-t border-gray-800 bg-gray-950">
         {collapsed ? <div className="flex flex-col items-center space-y-2">
-            <Button variant="ghost" size="sm" onClick={() => navigate('/profile')} className="w-8 h-8 p-0 text-white hover:bg-gray-800">
-              <User className="w-4 h-4" />
-            </Button>
             <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-white hover:bg-gray-800">
               <Settings className="w-4 h-4" />
             </Button>
           </div> : <div className="space-y-2">
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-gray-800 group">
-                  <div className="flex items-center space-x-3 w-full">
-                    <Avatar className="h-8 w-8 border border-gray-700">
-                      <AvatarImage src="" alt="User" />
-                      <AvatarFallback className="bg-blue-900 text-blue-200 text-sm border border-gray-700">
-                        {userProfile?.name ? userProfile.name.split(' ').map(n => n[0]).join('').toUpperCase() : user?.email?.[0]?.toUpperCase() || 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="flex-1 text-left">
-                      <p className="text-sm font-medium text-white">{userProfile?.name || 'Utilisateur'}</p>
-                      <p className="text-xs text-gray-400">{user?.email}</p>
-                    </div>
-                    <Settings className="w-4 h-4 text-gray-400" />
-                  </div>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56 bg-gray-900 border-gray-700">
-                <DropdownMenuGroup>
-                  <DropdownMenuItem onClick={() => navigate('/profile')} className="text-gray-300 hover:bg-gray-800">
-                    <User className="mr-2 h-4 w-4" />
-                    <span>Profil</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
-                    <Settings className="mr-2 h-4 w-4" />
-                    <span>Paramètres</span>
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={signOut} className="text-gray-300 hover:bg-gray-800">
-                  <LogOut className="mr-2 h-4 w-4" />
-                  <span>Se déconnecter</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-gray-800">
+              <div className="flex items-center space-x-3 w-full">
+                <Settings className="w-4 h-4 text-gray-400" />
+                <span className="text-sm text-white">Paramètres</span>
+              </div>
+            </Button>
           </div>}
       </SidebarFooter>
     </Sidebar>;
