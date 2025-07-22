@@ -26,22 +26,38 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
   const { user } = useAuth();
   const [userAvatar, setUserAvatar] = useState<AvatarType>("teacher");
   
+  console.log("ChatMessage rendered:", { messageType: message.type, userAvatar });
+  
   // Récupérer l'avatar de l'utilisateur depuis la base de données
   useEffect(() => {
     if (user) {
+      console.log("Attempting to fetch avatar in ChatMessage for user:", user.id);
       const fetchUserAvatar = async () => {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('avatar')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (data && !error) {
-          setUserAvatar(data.avatar as AvatarType);
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('avatar')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          
+          console.log("Avatar fetch result:", { data, error, userId: user.id });
+          
+          if (data && !error && data.avatar) {
+            setUserAvatar(data.avatar as AvatarType);
+            console.log("User avatar set to:", data.avatar);
+          } else if (error) {
+            console.error("Error fetching avatar:", error);
+          } else {
+            console.log("No avatar found or profile not yet created");
+          }
+        } catch (err) {
+          console.error("Exception during avatar fetch:", err);
         }
       };
       
       fetchUserAvatar();
+    } else {
+      console.log("No user logged in, using default avatar");
     }
   }, [user]);
   
@@ -82,7 +98,7 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
           {isUser ? (
             getAvatarIcon()
           ) : (
-            <Bot className="w-4 h-4" />
+            getAvatarIcon() // Utiliser le même avatar pour l'IA
           )}
         </div>
 

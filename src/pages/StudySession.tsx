@@ -96,19 +96,33 @@ const StudySession = () => {
   // Récupérer l'avatar de l'utilisateur pour l'utiliser comme avatar de l'IA
   useEffect(() => {
     if (user) {
+      console.log("Attempting to fetch avatar in StudySession for user:", user.id);
       const fetchUserAvatar = async () => {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('avatar')
-          .eq('user_id', user.id)
-          .single();
-        
-        if (data && !error && data.avatar) {
-          setAiAvatar(data.avatar as AvatarType);
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('avatar')
+            .eq('user_id', user.id)
+            .maybeSingle();
+          
+          console.log("Study AI avatar fetch:", { data, error, userId: user.id });
+          
+          if (data && !error && data.avatar) {
+            setAiAvatar(data.avatar as AvatarType);
+            console.log("AI avatar set to:", data.avatar);
+          } else if (error) {
+            console.error("Error fetching avatar:", error);
+          } else {
+            console.log("No avatar found or profile not yet created");
+          }
+        } catch (err) {
+          console.error("Exception during avatar fetch:", err);
         }
       };
       
       fetchUserAvatar();
+    } else {
+      console.log("No user logged in, using default avatar");
     }
   }, [user]);
   const [messages, setMessages] = useState<Message[]>([]);
@@ -154,6 +168,8 @@ const StudySession = () => {
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+  
+  console.log("Current AI avatar:", aiAvatar);
 
   const simulateAIResponse = async (userMessage: string) => {
     setIsProcessing(true);
