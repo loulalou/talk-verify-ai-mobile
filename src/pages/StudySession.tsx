@@ -12,6 +12,7 @@ import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw } from "l
 import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
 import { PerplexityService } from "@/utils/PerplexityService";
+import GeminiService from "@/utils/GeminiService";
 
 const StudySession = () => {
   const location = useLocation();
@@ -91,6 +92,7 @@ const StudySession = () => {
   const [hasApiKey, setHasApiKey] = useState(!!PerplexityService.getApiKey());
   const [topicDocumentation, setTopicDocumentation] = useState<Record<string, string>>({});
   const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
+  const [useGemini, setUseGemini] = useState(true); // Utiliser Gemini par défaut
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -128,35 +130,78 @@ const StudySession = () => {
   const simulateAIResponse = async (userMessage: string) => {
     setIsProcessing(true);
     
-    // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    const response = mockAIResponses[Math.floor(Math.random() * mockAIResponses.length)];
-    const needsConfirmation = Math.random() > 0.5; // 50% chance of needing confirmation
-    
-    const aiMessage: Message = {
-      id: Date.now().toString(),
-      content: response,
-      type: 'ai',
-      timestamp: new Date(),
-      needsConfirmation,
-      confirmed: false
-    };
+    try {
+      if (useGemini) {
+        // Utiliser Gemini
+        const periodsContext = periods.join(', ');
+        const result = await GeminiService.sendMessage(
+          userMessage, 
+          category.name, 
+          `Session d'étude sur: ${periodsContext}`
+        );
+        
+        if (result.success && result.response) {
+          const aiMessage: Message = {
+            id: Date.now().toString(),
+            content: result.response,
+            type: 'ai',
+            timestamp: new Date(),
+            needsConfirmation: Math.random() > 0.7, // 30% chance
+            confirmed: false
+          };
+          setMessages(prev => [...prev, aiMessage]);
+        } else {
+          throw new Error(result.error || 'Erreur de communication avec Gemini');
+        }
+      } else {
+        // Fallback aux réponses simulées
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        const response = mockAIResponses[Math.floor(Math.random() * mockAIResponses.length)];
+        const needsConfirmation = Math.random() > 0.5;
+        
+        const aiMessage: Message = {
+          id: Date.now().toString(),
+          content: response,
+          type: 'ai',
+          timestamp: new Date(),
+          needsConfirmation,
+          confirmed: false
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      }
 
-    setMessages(prev => [...prev, aiMessage]);
-
-    // Sometimes add a knowledge item
-    if (Math.random() > 0.7) {
-      const randomKnowledge = mockKnowledgeItems[Math.floor(Math.random() * mockKnowledgeItems.length)];
-      const newKnowledge: KnowledgeItem = {
-        ...randomKnowledge,
+      // Parfois ajouter un élément de connaissance
+      if (Math.random() > 0.8) {
+        const randomKnowledge = mockKnowledgeItems[Math.floor(Math.random() * mockKnowledgeItems.length)];
+        const newKnowledge: KnowledgeItem = {
+          ...randomKnowledge,
+          id: Date.now().toString(),
+          status: 'pending'
+        };
+        setKnowledgeItems(prev => [...prev, newKnowledge]);
+      }
+    } catch (error) {
+      console.error('Erreur lors de la communication avec l\'IA:', error);
+      toast({
+        title: "Erreur",
+        description: "Impossible de communiquer avec l'IA. Utilisation du mode hors ligne.",
+        variant: "destructive",
+      });
+      
+      // Fallback en cas d'erreur
+      const response = "Je rencontre des difficultés techniques. Pouvez-vous reformuler votre question ?";
+      const aiMessage: Message = {
         id: Date.now().toString(),
-        status: 'pending'
+        content: response,
+        type: 'ai',
+        timestamp: new Date(),
+        needsConfirmation: false,
+        confirmed: false
       };
-      setKnowledgeItems(prev => [...prev, newKnowledge]);
+      setMessages(prev => [...prev, aiMessage]);
+    } finally {
+      setIsProcessing(false);
     }
-    
-    setIsProcessing(false);
   };
 
   const handleRecordingComplete = async (audioBlob: Blob) => {
@@ -227,33 +272,48 @@ const StudySession = () => {
   };
 
   const fetchTopicDocumentation = async (topic: string) => {
-    if (!hasApiKey) return;
-
     setLoadingTopics(prev => new Set(prev).add(topic));
     
     try {
-      const result = await PerplexityService.getTopicDocumentation(topic, category.name);
-      
-      if (result.success && result.content) {
-        setTopicDocumentation(prev => ({
-          ...prev,
-          [topic]: result.content!
-        }));
-        toast({
-          title: "Documentation fetched",
-          description: `Retrieved information about ${topic}`,
-        });
+      if (useGemini) {
+        // Utiliser Gemini pour la documentation
+        const result = await GeminiService.getTopicExplanation(topic, category.name);
+        
+        if (result.success && result.content) {
+          setTopicDocumentation(prev => ({
+            ...prev,
+            [topic]: result.content!
+          }));
+          toast({
+            title: "Documentation récupérée",
+            description: `Informations sur ${topic} obtenues via Gemini`,
+          });
+        } else {
+          throw new Error(result.error || "Échec de récupération via Gemini");
+        }
+      } else if (hasApiKey) {
+        // Fallback vers Perplexity si disponible
+        const result = await PerplexityService.getTopicDocumentation(topic, category.name);
+        
+        if (result.success && result.content) {
+          setTopicDocumentation(prev => ({
+            ...prev,
+            [topic]: result.content!
+          }));
+          toast({
+            title: "Documentation récupérée",
+            description: `Informations sur ${topic} récupérées`,
+          });
+        } else {
+          throw new Error(result.error || "Échec de récupération de la documentation");
+        }
       } else {
-        toast({
-          title: "Error",
-          description: result.error || "Failed to fetch documentation",
-          variant: "destructive",
-        });
+        throw new Error("Aucun service IA disponible");
       }
     } catch (error) {
       toast({
-        title: "Error",
-        description: "Failed to fetch documentation",
+        title: "Erreur",
+        description: error instanceof Error ? error.message : "Échec de récupération de la documentation",
         variant: "destructive",
       });
     } finally {
@@ -310,10 +370,17 @@ const StudySession = () => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
+            <Button 
+              variant={useGemini ? "default" : "outline"} 
+              size="sm" 
+              onClick={() => setUseGemini(!useGemini)}
+            >
+              {useGemini ? "Gemini" : "Mode hors ligne"}
+            </Button>
             <Button variant="surface" size="sm" onClick={clearChat}>
               Effacer
             </Button>
-            {activeTab === 'knowledge' && hasApiKey && (
+            {activeTab === 'knowledge' && (
               <Button 
                 variant="surface" 
                 size="sm" 
@@ -377,7 +444,7 @@ const StudySession = () => {
           >
             <Lightbulb className="w-4 h-4" />
             <span>Documentation</span>
-            {!hasApiKey && (
+            {!useGemini && !hasApiKey && (
               <span className="bg-yellow-500 text-white text-xs rounded-full w-1 h-1 flex items-center justify-center">
                 !
               </span>
@@ -431,7 +498,7 @@ const StudySession = () => {
           </div>
         ) : (
           <ScrollArea className="flex-1 p-4">
-            {!hasApiKey ? (
+            {!useGemini && !hasApiKey ? (
               <div className="flex items-center justify-center h-full">
                 <ApiKeySetup onApiKeySet={handleApiKeySet} />
               </div>
