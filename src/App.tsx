@@ -10,7 +10,8 @@ import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, LogOut } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { User, LogOut, Search, X } from "lucide-react";
 import { HelpPopup } from "./components/HelpPopup";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -47,6 +48,33 @@ function WelcomeMessage() {
       Bonjour {userProfile.name}
     </span>;
 }
+
+function HeaderSearch() {
+  const [searchQuery, setSearchQuery] = useState("");
+  
+  return (
+    <div className="relative max-w-md w-full">
+      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <Input 
+        placeholder="Rechercher des conversations..." 
+        value={searchQuery} 
+        onChange={(e) => setSearchQuery(e.target.value)} 
+        className="pl-10 pr-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground"
+      />
+      {searchQuery && (
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          onClick={() => setSearchQuery("")} 
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground"
+        >
+          <X className="w-3 h-3" />
+        </Button>
+      )}
+    </div>
+  );
+}
+
 function UserMenu() {
   const {
     user,
@@ -97,6 +125,9 @@ const App = () => <QueryClientProvider client={queryClient}>
                         <div className="flex items-center space-x-4">
                           <SidebarTrigger className="text-foreground hover:bg-accent" />
                           <WelcomeMessage />
+                        </div>
+                        <div className="flex-1 flex justify-center max-w-2xl mx-8">
+                          <HeaderSearch />
                         </div>
                         <div className="flex items-center space-x-2">
                           <HelpPopup />

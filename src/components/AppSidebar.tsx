@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Search, MessageSquare, User, Plus, History, Settings, Brain, X, MoreVertical, LogOut, GraduationCap } from "lucide-react";
+import { MessageSquare, User, Plus, History, Settings, Brain, MoreVertical, LogOut, GraduationCap } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, useSidebar } from "@/components/ui/sidebar";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
@@ -24,7 +23,7 @@ export function AppSidebar() {
   } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
-  const [searchQuery, setSearchQuery] = useState("");
+  
   const {
     user,
     signOut
@@ -100,7 +99,7 @@ export function AppSidebar() {
     // 4 days ago
     messageCount: 9
   }]);
-  const filteredConversations = conversations.filter(conv => conv.title.toLowerCase().includes(searchQuery.toLowerCase()) || conv.category.toLowerCase().includes(searchQuery.toLowerCase()) || conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()));
+  const filteredConversations = conversations; // No filtering since search is now in header
   const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
     const diff = now.getTime() - timestamp.getTime();
@@ -165,9 +164,6 @@ export function AppSidebar() {
         {collapsed && <div className="flex flex-col items-center space-y-2">
             <Button variant="ghost" size="sm" onClick={handleNewConversation} className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Plus className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
-              <Search className="w-4 h-4" />
             </Button>
           </div>}
       </SidebarHeader>
@@ -246,10 +242,10 @@ export function AppSidebar() {
               {filteredConversations.length === 0 && !collapsed && <div className="text-center py-8 px-4">
                   <MessageSquare className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
                   <p className="text-sm text-muted-foreground">
-                    {searchQuery ? "Aucune conversation trouvée" : "Aucune conversation pour le moment"}
+                    Aucune conversation pour le moment
                   </p>
                   <p className="text-xs text-muted-foreground/70 mt-1">
-                    {searchQuery ? "Essayez un autre terme de recherche" : "Commencez une nouvelle conversation"}
+                    Commencez une nouvelle conversation
                   </p>
                 </div>}
             </ScrollArea>
@@ -260,19 +256,9 @@ export function AppSidebar() {
       <SidebarFooter className="p-4 border-t border-border bg-background">
         {collapsed ? <div className="flex flex-col items-center space-y-2">
             <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
-              <Search className="w-4 h-4" />
-            </Button>
-            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Settings className="w-4 h-4" />
             </Button>
-          </div> : <div className="space-y-3">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground" />
-              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground">
-                  <X className="w-3 h-3" />
-                </Button>}
-            </div>
+          </div> : <div className="space-y-2">
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent">
               <div className="flex items-center space-x-3 w-full">
                 <Settings className="w-4 h-4 text-muted-foreground" />
