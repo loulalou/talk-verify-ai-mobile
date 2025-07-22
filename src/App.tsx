@@ -11,6 +11,8 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { User, LogOut } from "lucide-react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import Index from "./pages/Index";
 import StudySession from "./pages/StudySession";
 import Profile from "./pages/Profile";
@@ -18,6 +20,36 @@ import Auth from "./pages/Auth";
 import { CategorySelection } from "./components/CategorySelection";
 import { PeriodSelection } from "./components/PeriodSelection";
 import NotFound from "./pages/NotFound";
+
+function WelcomeMessage() {
+  const { user } = useAuth();
+  const [userProfile, setUserProfile] = useState<{ name: string } | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('name')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data && !error) {
+          setUserProfile(data);
+        }
+      }
+    };
+    fetchProfile();
+  }, [user]);
+
+  if (!userProfile?.name) return null;
+
+  return (
+    <span className="text-sm text-muted-foreground">
+      Bonjour {userProfile.name}
+    </span>
+  );
+}
 
 function UserMenu() {
   const { user, signOut } = useAuth();
@@ -69,8 +101,11 @@ const App = () => (
                   <div className="flex min-h-screen w-full">
                     <AppSidebar />
                     <div className="flex-1 flex flex-col">
-                      <header className="h-12 flex items-center justify-between border-b border-border/50 bg-gray-950 px-4">
-                        <SidebarTrigger className="text-white hover:bg-gray-800" />
+                      <header className="h-12 flex items-center justify-between border-b border-border bg-background px-4">
+                        <div className="flex items-center space-x-4">
+                          <SidebarTrigger className="text-foreground hover:bg-accent" />
+                          <WelcomeMessage />
+                        </div>
                         <UserMenu />
                       </header>
                       <main className="flex-1">
