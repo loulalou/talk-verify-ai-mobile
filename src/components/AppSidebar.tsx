@@ -112,20 +112,22 @@ export function AppSidebar() {
     return `${days}d ago`;
   };
   const getCategoryIcon = (category: string) => {
-    const iconClass = getCategoryIconClasses(category);
+    const categoryColor = getCategoryColor(category);
+    const iconStyle = { color: categoryColor?.primary || '#A6B0D2' };
+    
     switch (category.toLowerCase()) {
       case 'history':
-        return <History className={`w-3 h-3 ${iconClass}`} />;
+        return <History className="w-3 h-3" style={iconStyle} />;
       case 'geography':
-        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+        return <Brain className="w-3 h-3" style={iconStyle} />;
       case 'mathematics':
-        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+        return <Brain className="w-3 h-3" style={iconStyle} />;
       case 'science':
-        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+        return <Brain className="w-3 h-3" style={iconStyle} />;
       case 'literature':
-        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+        return <Brain className="w-3 h-3" style={iconStyle} />;
       case 'languages':
-        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+        return <Brain className="w-3 h-3" style={iconStyle} />;
       default:
         return <MessageSquare className="w-3 h-3" />;
     }
