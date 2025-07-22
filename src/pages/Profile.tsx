@@ -1,0 +1,299 @@
+import { useState } from "react";
+import { ArrowLeft, User, Mail, Calendar, BookOpen, Award, Settings, Bell } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Progress } from "@/components/ui/progress";
+import { Separator } from "@/components/ui/separator";
+import { useNavigate } from "react-router-dom";
+
+const Profile = () => {
+  const navigate = useNavigate();
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Mock user data
+  const userData = {
+    name: "John Doe",
+    email: "john.doe@example.com",
+    joinDate: "March 2024",
+    avatar: "",
+    stats: {
+      totalConversations: 47,
+      totalMessages: 1284,
+      studyHours: 127,
+      completedTopics: 23
+    },
+    recentActivity: [
+      { category: "History", topic: "Ancient Rome", time: "2 hours ago", progress: 85 },
+      { category: "Science", topic: "Photosynthesis", time: "1 day ago", progress: 92 },
+      { category: "Mathematics", topic: "Calculus", time: "3 days ago", progress: 76 },
+    ],
+    achievements: [
+      { name: "First Steps", description: "Complete your first study session", earned: true },
+      { name: "Conversationalist", description: "Send 100 messages", earned: true },
+      { name: "Knowledge Seeker", description: "Study 10 different topics", earned: true },
+      { name: "Dedicated Learner", description: "Study for 50 hours", earned: false },
+    ],
+    preferences: {
+      notifications: true,
+      autoSave: true,
+      voiceMode: true,
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-surface text-foreground">
+      {/* Header */}
+      <div className="bg-ai-surface border-b border-border/50 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => navigate(-1)}
+              className="hover:bg-ai-surface-elevated"
+            >
+              <ArrowLeft className="w-4 h-4 mr-1" />
+              Back
+            </Button>
+            <h1 className="text-xl font-semibold">Profile</h1>
+          </div>
+          <Button variant="outline" size="sm">
+            <Settings className="w-4 h-4 mr-1" />
+            Edit Profile
+          </Button>
+        </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto p-6 space-y-6">
+        {/* Profile Header */}
+        <Card className="bg-ai-surface border-border/50">
+          <CardContent className="p-6">
+            <div className="flex items-start space-x-6">
+              <Avatar className="h-20 w-20">
+                <AvatarImage src={userData.avatar} alt={userData.name} />
+                <AvatarFallback className="bg-primary text-primary-foreground text-xl">
+                  {userData.name.split(' ').map(n => n[0]).join('')}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1">
+                <h2 className="text-2xl font-bold text-foreground">{userData.name}</h2>
+                <p className="text-muted-foreground flex items-center mt-1">
+                  <Mail className="w-4 h-4 mr-1" />
+                  {userData.email}
+                </p>
+                <p className="text-muted-foreground flex items-center mt-1">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  Member since {userData.joinDate}
+                </p>
+              </div>
+            </div>
+
+            {/* Quick Stats */}
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+              <div className="text-center p-4 bg-gradient-primary/5 rounded-lg border border-primary/20">
+                <div className="text-2xl font-bold text-primary">{userData.stats.totalConversations}</div>
+                <div className="text-sm text-muted-foreground">Conversations</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-accent/5 rounded-lg border border-accent/20">
+                <div className="text-2xl font-bold text-accent">{userData.stats.totalMessages}</div>
+                <div className="text-sm text-muted-foreground">Messages</div>
+              </div>
+              <div className="text-center p-4 bg-gradient-surface/50 rounded-lg border border-border/50">
+                <div className="text-2xl font-bold text-foreground">{userData.stats.studyHours}</div>
+                <div className="text-sm text-muted-foreground">Study Hours</div>
+              </div>
+              <div className="text-center p-4 bg-green-500/5 rounded-lg border border-green-500/20">
+                <div className="text-2xl font-bold text-green-600">{userData.stats.completedTopics}</div>
+                <div className="text-sm text-muted-foreground">Topics Learned</div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Tabs */}
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3 bg-ai-surface">
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="achievements">Achievements</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              {/* Recent Activity */}
+              <Card className="bg-ai-surface border-border/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <BookOpen className="w-5 h-5 mr-2" />
+                    Recent Activity
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {userData.recentActivity.map((activity, index) => (
+                    <div key={index} className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium text-sm">{activity.topic}</p>
+                          <p className="text-xs text-muted-foreground">{activity.category} • {activity.time}</p>
+                        </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {activity.progress}%
+                        </Badge>
+                      </div>
+                      <Progress value={activity.progress} className="h-2" />
+                      {index < userData.recentActivity.length - 1 && <Separator />}
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
+
+              {/* Learning Progress */}
+              <Card className="bg-ai-surface border-border/50">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <Award className="w-5 h-5 mr-2" />
+                    Learning Progress
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>History</span>
+                      <span>12/15 topics</span>
+                    </div>
+                    <Progress value={80} className="h-2" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Science</span>
+                      <span>8/12 topics</span>
+                    </div>
+                    <Progress value={67} className="h-2" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Mathematics</span>
+                      <span>5/10 topics</span>
+                    </div>
+                    <Progress value={50} className="h-2" />
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Geography</span>
+                      <span>3/8 topics</span>
+                    </div>
+                    <Progress value={38} className="h-2" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="achievements" className="space-y-4">
+            <Card className="bg-ai-surface border-border/50">
+              <CardHeader>
+                <CardTitle>Achievements</CardTitle>
+                <CardDescription>
+                  Track your learning milestones and unlock new badges
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid gap-4 md:grid-cols-2">
+                  {userData.achievements.map((achievement, index) => (
+                    <div 
+                      key={index}
+                      className={`p-4 rounded-lg border ${
+                        achievement.earned 
+                          ? 'bg-primary/5 border-primary/20' 
+                          : 'bg-muted/20 border-border/50'
+                      }`}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                          achievement.earned 
+                            ? 'bg-primary text-primary-foreground' 
+                            : 'bg-muted text-muted-foreground'
+                        }`}>
+                          <Award className="w-5 h-5" />
+                        </div>
+                        <div className="flex-1">
+                          <h4 className={`font-medium ${
+                            achievement.earned ? 'text-foreground' : 'text-muted-foreground'
+                          }`}>
+                            {achievement.name}
+                          </h4>
+                          <p className="text-sm text-muted-foreground mt-1">
+                            {achievement.description}
+                          </p>
+                          {achievement.earned && (
+                            <Badge variant="secondary" className="mt-2 text-xs">
+                              Earned
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="settings" className="space-y-4">
+            <Card className="bg-ai-surface border-border/50">
+              <CardHeader>
+                <CardTitle>Preferences</CardTitle>
+                <CardDescription>
+                  Customize your learning experience
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="text-sm font-medium">Notifications</div>
+                    <div className="text-sm text-muted-foreground">
+                      Receive updates about your learning progress
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    <Bell className="w-4 h-4 mr-1" />
+                    Configure
+                  </Button>
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="text-sm font-medium">Auto-save conversations</div>
+                    <div className="text-sm text-muted-foreground">
+                      Automatically save your study sessions
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Enabled
+                  </Button>
+                </div>
+                <Separator />
+                <div className="flex items-center justify-between">
+                  <div className="space-y-0.5">
+                    <div className="text-sm font-medium">Voice input</div>
+                    <div className="text-sm text-muted-foreground">
+                      Use voice recording for conversations
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    Enabled
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </div>
+  );
+};
+
+export default Profile;
