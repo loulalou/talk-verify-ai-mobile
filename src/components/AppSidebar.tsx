@@ -122,38 +122,38 @@ export function AppSidebar() {
       }
     });
   };
-  return <Sidebar className="border-r border-border/20 bg-gray-950" collapsible="icon">
-      <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
+  return <Sidebar className="border-r border-border bg-background" collapsible="icon">
+      <SidebarHeader className="p-4 border-b border-border bg-card">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
-                <GraduationCap className="w-6 h-6 text-blue-400" />
-                <h2 className="text-lg font-semibold text-white">Hypatie</h2>
+                <GraduationCap className="w-6 h-6 text-primary" />
+                <h2 className="text-lg font-semibold text-foreground">Hypatie</h2>
               </div>
             </div>
             
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-gray-900 border-gray-700 focus:border-blue-500 text-white placeholder:text-gray-400" />
-              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-800 text-gray-400 hover:text-white">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground" />
+              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground">
                   <X className="w-3 h-3" />
                 </Button>}
             </div>
           </>}
         
         {collapsed && <div className="flex flex-col items-center space-y-2">
-            <Button variant="ghost" size="sm" onClick={handleNewConversation} className="w-8 h-8 p-0 text-white hover:bg-gray-800">
+            <Button variant="ghost" size="sm" onClick={handleNewConversation} className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Plus className="w-4 h-4" />
             </Button>
-            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-white hover:bg-gray-800">
+            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Search className="w-4 h-4" />
             </Button>
           </div>}
       </SidebarHeader>
 
       <SidebarContent>
-        <SidebarGroup className="bg-gray-950">
-          {!collapsed && <SidebarGroupLabel className="text-xs text-gray-400 px-4 py-2">
+        <SidebarGroup className="bg-background">
+          {!collapsed && <SidebarGroupLabel className="text-xs text-muted-foreground px-4 py-2">
               Conversations récentes ({filteredConversations.length})
             </SidebarGroupLabel>}
           
@@ -161,53 +161,53 @@ export function AppSidebar() {
             <ScrollArea className="h-[calc(100vh-300px)]">
               <SidebarMenu>
                 {filteredConversations.map(conversation => <SidebarMenuItem key={conversation.id}>
-                    <SidebarMenuButton onClick={() => handleConversationClick(conversation)} className={`w-full h-auto p-3 hover:bg-gray-800 group ${collapsed ? 'justify-center' : 'justify-start'}`}>
+                    <SidebarMenuButton onClick={() => handleConversationClick(conversation)} className={`w-full h-auto p-3 hover:bg-accent group ${collapsed ? 'justify-center' : 'justify-start'}`}>
                       {collapsed ? <div className="flex flex-col items-center">
                           {getCategoryIcon(conversation.category)}
                           <span className="text-xs mt-1 truncate w-8 text-center">
                             {conversation.messageCount}
                           </span>
                         </div> : <div className="flex items-start space-x-3 w-full">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1 bg-blue-300">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1 bg-primary">
                             {getCategoryIcon(conversation.category)}
                           </div>
                           <div className="flex-1 min-w-0">
                             <div className="flex items-center justify-between">
-                              <h4 className="text-sm font-medium text-white truncate">
+                              <h4 className="text-sm font-medium text-foreground truncate">
                                 {conversation.title}
                               </h4>
                               <DropdownMenu>
                                 <DropdownMenuTrigger asChild>
-                                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 text-gray-400 hover:text-white hover:bg-gray-700">
+                                  <Button variant="ghost" size="sm" className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 text-muted-foreground hover:text-accent-foreground hover:bg-accent">
                                   <MoreVertical className="w-3 h-3" />
                                   </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent align="end" className="bg-gray-900 border-gray-700">
-                                  <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
+                                <DropdownMenuContent align="end" className="bg-popover border-border">
+                                  <DropdownMenuItem className="text-popover-foreground hover:bg-accent">
                                     Modifier le titre
                                   </DropdownMenuItem>
-                                  <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
+                                  <DropdownMenuItem className="text-popover-foreground hover:bg-accent">
                                     Partager la conversation
                                   </DropdownMenuItem>
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem className="text-red-400 hover:bg-gray-800 hover:text-red-300">
+                                  <DropdownMenuItem className="text-destructive hover:bg-accent hover:text-destructive">
                                     Supprimer
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
                             </div>
-                            <p className="text-xs text-gray-400 truncate mt-1">
+                            <p className="text-xs text-muted-foreground truncate mt-1">
                               {conversation.lastMessage}
                             </p>
                             <div className="flex items-center justify-between mt-2">
-                              <span className="text-xs text-gray-400">
+                              <span className="text-xs text-muted-foreground">
                                 {formatTimestamp(conversation.timestamp)}
                               </span>
                               <div className="flex items-center space-x-1">
-                                <span className="text-xs bg-blue-900/50 text-blue-200 px-1.5 py-0.5 rounded border border-blue-800/50">
+                                <span className="text-xs bg-secondary text-secondary-foreground px-1.5 py-0.5 rounded border border-border/50">
                                   {conversation.category}
                                 </span>
-                                <span className="text-xs text-gray-400">
+                                <span className="text-xs text-muted-foreground">
                                   {conversation.messageCount}
                                 </span>
                               </div>
@@ -219,11 +219,11 @@ export function AppSidebar() {
               </SidebarMenu>
               
               {filteredConversations.length === 0 && !collapsed && <div className="text-center py-8 px-4">
-                  <MessageSquare className="w-8 h-8 text-gray-500 mx-auto mb-2" />
-                  <p className="text-sm text-gray-400">
+                  <MessageSquare className="w-8 h-8 text-muted-foreground mx-auto mb-2" />
+                  <p className="text-sm text-muted-foreground">
                     {searchQuery ? "Aucune conversation trouvée" : "Aucune conversation pour le moment"}
                   </p>
-                  <p className="text-xs text-gray-500 mt-1">
+                  <p className="text-xs text-muted-foreground/70 mt-1">
                     {searchQuery ? "Essayez un autre terme de recherche" : "Commencez une nouvelle conversation"}
                   </p>
                 </div>}
@@ -232,16 +232,16 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-4 border-t border-gray-800 bg-gray-950">
+      <SidebarFooter className="p-4 border-t border-border bg-background">
         {collapsed ? <div className="flex flex-col items-center space-y-2">
-            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-white hover:bg-gray-800">
+            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Settings className="w-4 h-4" />
             </Button>
           </div> : <div className="space-y-2">
-            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-gray-800">
+            <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent">
               <div className="flex items-center space-x-3 w-full">
-                <Settings className="w-4 h-4 text-gray-400" />
-                <span className="text-sm text-white">Paramètres</span>
+                <Settings className="w-4 h-4 text-muted-foreground" />
+                <span className="text-sm text-foreground">Paramètres</span>
               </div>
             </Button>
           </div>}
