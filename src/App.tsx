@@ -20,20 +20,20 @@ import Auth from "./pages/Auth";
 import { CategorySelection } from "./components/CategorySelection";
 import { PeriodSelection } from "./components/PeriodSelection";
 import NotFound from "./pages/NotFound";
-
 function WelcomeMessage() {
-  const { user } = useAuth();
-  const [userProfile, setUserProfile] = useState<{ name: string } | null>(null);
-
+  const {
+    user
+  } = useAuth();
+  const [userProfile, setUserProfile] = useState<{
+    name: string;
+  } | null>(null);
   useEffect(() => {
     const fetchProfile = async () => {
       if (user) {
-        const { data, error } = await supabase
-          .from('profiles')
-          .select('name')
-          .eq('user_id', user.id)
-          .single();
-        
+        const {
+          data,
+          error
+        } = await supabase.from('profiles').select('name').eq('user_id', user.id).single();
         if (data && !error) {
           setUserProfile(data);
         }
@@ -41,22 +41,18 @@ function WelcomeMessage() {
     };
     fetchProfile();
   }, [user]);
-
   if (!userProfile?.name) return null;
-
-  return (
-    <span className="text-sm text-muted-foreground">
+  return <span className="text-muted-foreground text-xl font-bold">
       Bonjour {userProfile.name}
-    </span>
-  );
+    </span>;
 }
-
 function UserMenu() {
-  const { user, signOut } = useAuth();
+  const {
+    user,
+    signOut
+  } = useAuth();
   const navigate = useNavigate();
-
-  return (
-    <DropdownMenu>
+  return <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
@@ -80,14 +76,10 @@ function UserMenu() {
           <span>Se déconnecter</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
-    </DropdownMenu>
-  );
+    </DropdownMenu>;
 }
-
 const queryClient = new QueryClient();
-
-const App = () => (
-  <QueryClientProvider client={queryClient}>
+const App = () => <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
@@ -95,8 +87,7 @@ const App = () => (
         <AuthProvider>
           <Routes>
             <Route path="/auth" element={<Auth />} />
-            <Route path="/*" element={
-              <ProtectedRoute>
+            <Route path="/*" element={<ProtectedRoute>
                 <SidebarProvider>
                   <div className="flex min-h-screen w-full">
                     <AppSidebar />
@@ -121,13 +112,10 @@ const App = () => (
                     </div>
                   </div>
                 </SidebarProvider>
-              </ProtectedRoute>
-            } />
+              </ProtectedRoute>} />
           </Routes>
         </AuthProvider>
       </BrowserRouter>
     </TooltipProvider>
-  </QueryClientProvider>
-);
-
+  </QueryClientProvider>;
 export default App;

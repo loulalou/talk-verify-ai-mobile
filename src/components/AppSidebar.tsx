@@ -132,13 +132,9 @@ export function AppSidebar() {
               </div>
             </div>
             
-            {userProfile?.name && (
-              <div className="mb-3">
-                <p className="text-sm text-muted-foreground">
-                  Bonjour {userProfile.name}
-                </p>
-              </div>
-            )}
+            {userProfile?.name && <div className="mb-3">
+                
+              </div>}
             
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
@@ -161,9 +157,7 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarGroup className="bg-background">
-          {!collapsed && <SidebarGroupLabel className="text-xs text-muted-foreground px-4 py-2">
-              Conversations récentes ({filteredConversations.length})
-            </SidebarGroupLabel>}
+          {!collapsed}
           
           <SidebarGroupContent>
             <ScrollArea className="h-[calc(100vh-300px)]">
@@ -176,7 +170,7 @@ export function AppSidebar() {
                             {conversation.messageCount}
                           </span>
                         </div> : <div className="flex items-start space-x-3 w-full">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1 bg-primary">
+                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1 bg-amber-700">
                             {getCategoryIcon(conversation.category)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -212,7 +206,7 @@ export function AppSidebar() {
                                 {formatTimestamp(conversation.timestamp)}
                               </span>
                               <div className="flex items-center space-x-1">
-                                <span className="text-xs bg-secondary text-secondary-foreground px-1.5 py-0.5 rounded border border-border/50">
+                                <span className="text-xs bg-secondary px-1.5 py-0.5 rounded border border-border/50 text-amber-50">
                                   {conversation.category}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
