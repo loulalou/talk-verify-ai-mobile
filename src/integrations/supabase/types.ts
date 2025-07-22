@@ -16,29 +16,41 @@ export type Database = {
     Tables: {
       profiles: {
         Row: {
+          account_type: string | null
           age: number | null
           avatar: string | null
+          country: string | null
           created_at: string
+          exam_preparation: string | null
           id: string
           name: string
+          school_level: string | null
           updated_at: string
           user_id: string
         }
         Insert: {
+          account_type?: string | null
           age?: number | null
           avatar?: string | null
+          country?: string | null
           created_at?: string
+          exam_preparation?: string | null
           id?: string
           name: string
+          school_level?: string | null
           updated_at?: string
           user_id: string
         }
         Update: {
+          account_type?: string | null
           age?: number | null
           avatar?: string | null
+          country?: string | null
           created_at?: string
+          exam_preparation?: string | null
           id?: string
           name?: string
+          school_level?: string | null
           updated_at?: string
           user_id?: string
         }

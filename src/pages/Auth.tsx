@@ -9,6 +9,11 @@ import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { AvatarSelector, AvatarType } from "@/components/AvatarSelector";
+import { AccountTypeSelection } from "@/components/AccountTypeSelection";
+import { SchoolLevelSelection } from "@/components/SchoolLevelSelection";
+import { CountrySelection } from "@/components/CountrySelection";
+import { ExamPreparationSelection } from "@/components/ExamPreparationSelection";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Auth() {
   const navigate = useNavigate();
@@ -22,6 +27,13 @@ export default function Auth() {
   const [name, setName] = useState("");
   const [age, setAge] = useState("");
   const [avatar, setAvatar] = useState<AvatarType>("teacher");
+  
+  // New signup flow states
+  const [signupStep, setSignupStep] = useState(1);
+  const [accountType, setAccountType] = useState("");
+  const [schoolLevel, setSchoolLevel] = useState("");
+  const [country, setCountry] = useState("");
+  const [examPreparation, setExamPreparation] = useState("none");
 
   // Check if user is already logged in
   useEffect(() => {
@@ -35,12 +47,64 @@ export default function Auth() {
     checkAuth();
   }, [navigate, location]);
 
+  const resetSignupForm = () => {
+    setSignupStep(1);
+    setName("");
+    setAge("");
+    setEmail("");
+    setPassword("");
+    setAccountType("");
+    setSchoolLevel("");
+    setCountry("");
+    setExamPreparation("none");
+    setAvatar("teacher");
+  };
+
+  const getMaxSteps = () => {
+    return accountType === "student" ? 4 : 2;
+  };
+
+  const validateStep = (step: number): boolean => {
+    switch (step) {
+      case 1:
+        return Boolean(accountType);
+      case 2:
+        return Boolean(name && email && password);
+      case 3:
+        if (accountType === "student") {
+          return Boolean(age && schoolLevel && country);
+        }
+        return true;
+      case 4:
+        return true; // Exam preparation is optional
+      default:
+        return true;
+    }
+  };
+
+  const nextStep = () => {
+    if (validateStep(signupStep)) {
+      setSignupStep(signupStep + 1);
+    } else {
+      toast({
+        title: "Champs requis",
+        description: "Veuillez remplir tous les champs obligatoires.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const prevStep = () => {
+    setSignupStep(signupStep - 1);
+  };
+
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !password || !name) {
+    
+    if (!validateStep(signupStep)) {
       toast({
-        title: "Error",
-        description: "Please fill in all required fields",
+        title: "Champs requis",
+        description: "Veuillez remplir tous les champs obligatoires.",
         variant: "destructive",
       });
       return;
@@ -50,24 +114,33 @@ export default function Auth() {
     try {
       const redirectUrl = `${window.location.origin}/`;
       
+      const signupData: any = {
+        name,
+        avatar,
+        account_type: accountType,
+      };
+
+      if (accountType === "student") {
+        signupData.age = age ? parseInt(age) : null;
+        signupData.school_level = schoolLevel;
+        signupData.country = country;
+        signupData.exam_preparation = examPreparation;
+      }
+      
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
-options: {
+        options: {
           emailRedirectTo: redirectUrl,
-          data: {
-            name,
-            age: age ? parseInt(age) : null,
-            avatar,
-          }
+          data: signupData
         }
       });
 
       if (error) {
         if (error.message.includes("already registered")) {
           toast({
-            title: "Account exists",
-            description: "This email is already registered. Please sign in instead.",
+            title: "Compte existant",
+            description: "Cet email est déjà enregistré. Veuillez vous connecter.",
             variant: "destructive",
           });
         } else {
@@ -78,19 +151,15 @@ options: {
 
       if (data.user) {
         toast({
-          title: "Success!",
-          description: "Account created successfully. You can now sign in.",
+          title: "Succès !",
+          description: "Compte créé avec succès. Vous pouvez maintenant vous connecter.",
         });
-        // Clear form
-        setName("");
-        setAge("");
-        setEmail("");
-        setPassword("");
+        resetSignupForm();
       }
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: error.message || "Failed to create account",
+        title: "Erreur",
+        description: error.message || "Échec de la création du compte",
         variant: "destructive",
       });
     } finally {
@@ -192,60 +261,136 @@ options: {
             </TabsContent>
 
             <TabsContent value="signup" className="space-y-4">
-              <form onSubmit={handleSignUp} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="signup-name">Nom *</Label>
-                  <Input
-                    id="signup-name"
-                    type="text"
-                    placeholder="Entrez votre nom"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
-                  />
+              <div className="mb-4">
+                <div className="flex items-center justify-between text-sm text-muted-foreground">
+                  <span>Étape {signupStep} sur {getMaxSteps()}</span>
+                  <div className="flex space-x-1">
+                    {Array.from({ length: getMaxSteps() }).map((_, i) => (
+                      <div
+                        key={i}
+                        className={`h-2 w-8 rounded-full ${
+                          i + 1 <= signupStep ? "bg-primary" : "bg-muted"
+                        }`}
+                      />
+                    ))}
                   </div>
-                <div className="space-y-2">
-                  <Label>Avatar</Label>
-                  <AvatarSelector value={avatar} onChange={setAvatar} />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-age">Âge</Label>
-                  <Input
-                    id="signup-age"
-                    type="number"
-                    placeholder="Entrez votre âge"
-                    value={age}
-                    onChange={(e) => setAge(e.target.value)}
-                    min="1"
-                    max="120"
+              </div>
+
+              <form onSubmit={signupStep === getMaxSteps() ? handleSignUp : (e) => { e.preventDefault(); nextStep(); }} className="space-y-4">
+                {signupStep === 1 && (
+                  <AccountTypeSelection
+                    value={accountType}
+                    onChange={setAccountType}
                   />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-email">Email *</Label>
-                  <Input
-                    id="signup-email"
-                    type="email"
-                    placeholder="Entrez votre email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                )}
+
+                {signupStep === 2 && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-name">Nom {accountType === "parent" ? "de l'enfant" : ""} *</Label>
+                      <Input
+                        id="signup-name"
+                        type="text"
+                        placeholder={`Entrez ${accountType === "parent" ? "le nom de l'enfant" : "votre nom"}`}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label>Avatar</Label>
+                      <AvatarSelector value={avatar} onChange={setAvatar} />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-email">Email *</Label>
+                      <Input
+                        id="signup-email"
+                        type="email"
+                        placeholder="Entrez votre email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-password">Mot de passe *</Label>
+                      <Input
+                        id="signup-password"
+                        type="password"
+                        placeholder="Créez un mot de passe"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        minLength={6}
+                      />
+                    </div>
+                  </>
+                )}
+
+                {signupStep === 3 && accountType === "student" && (
+                  <>
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-age">Âge *</Label>
+                      <Input
+                        id="signup-age"
+                        type="number"
+                        placeholder="Entrez votre âge"
+                        value={age}
+                        onChange={(e) => setAge(e.target.value)}
+                        min="1"
+                        max="120"
+                        required
+                      />
+                    </div>
+                    <SchoolLevelSelection
+                      value={schoolLevel}
+                      onChange={setSchoolLevel}
+                    />
+                    <CountrySelection
+                      value={country}
+                      onChange={setCountry}
+                    />
+                  </>
+                )}
+
+                {signupStep === 4 && accountType === "student" && (
+                  <ExamPreparationSelection
+                    value={examPreparation}
+                    onChange={setExamPreparation}
                   />
+                )}
+
+                <div className="flex space-x-2">
+                  {signupStep > 1 && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={prevStep}
+                      className="flex-1"
+                    >
+                      <ChevronLeft className="w-4 h-4 mr-1" />
+                      Précédent
+                    </Button>
+                  )}
+                  
+                  <Button
+                    type="submit"
+                    className="flex-1"
+                    disabled={isLoading || !validateStep(signupStep)}
+                  >
+                    {isLoading ? (
+                      "Création..."
+                    ) : signupStep === getMaxSteps() ? (
+                      "Créer le compte"
+                    ) : (
+                      <>
+                        Suivant
+                        <ChevronRight className="w-4 h-4 ml-1" />
+                      </>
+                    )}
+                  </Button>
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="signup-password">Mot de passe *</Label>
-                  <Input
-                    id="signup-password"
-                    type="password"
-                    placeholder="Créez un mot de passe"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    minLength={6}
-                  />
-                </div>
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Création du compte..." : "Créer un compte"}
-                </Button>
               </form>
             </TabsContent>
           </Tabs>
