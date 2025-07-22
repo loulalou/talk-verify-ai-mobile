@@ -228,9 +228,7 @@ export function AppSidebar() {
                           }}>
                                   {getCategoryColor(conversation.category)?.name || conversation.category}
                                 </span>
-                                <span className="text-xs text-muted-foreground">
-                                  {conversation.messageCount}
-                                </span>
+                                
                               </div>
                             </div>
                           </div>
