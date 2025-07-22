@@ -100,7 +100,7 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">Study AI</h2>
+              <h2 className="text-lg font-semibold text-white">AI Study Companion</h2>
               
             </div>
             
