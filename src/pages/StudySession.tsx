@@ -13,6 +13,7 @@ import { Card } from "@/components/ui/card";
 import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw, Clock, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
+import { getCategoryGradientClasses, getCategoryColor } from "@/utils/categoryColors";
 import { PerplexityService } from "@/utils/PerplexityService";
 import GeminiService from "@/utils/GeminiService";
 import { AvatarType } from "@/components/AvatarSelector";
@@ -38,7 +39,7 @@ const StudySession = () => {
       name: "Histoire",
       description: "Événements mondiaux, civilisations et chronologies",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      color: getCategoryGradientClasses("history"),
       periods: []
     },
     {
@@ -46,7 +47,7 @@ const StudySession = () => {
       name: "Géographie", 
       description: "Pays, capitales, caractéristiques physiques",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      color: getCategoryGradientClasses("geography"),
       periods: []
     },
     {
@@ -54,7 +55,7 @@ const StudySession = () => {
       name: "Mathématiques",
       description: "Algèbre, géométrie, calcul, et plus",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      color: getCategoryGradientClasses("mathematics"),
       periods: []
     },
     {
@@ -62,7 +63,7 @@ const StudySession = () => {
       name: "Sciences",
       description: "Concepts de physique, chimie, biologie",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-purple-500 to-pink-600",
+      color: getCategoryGradientClasses("science"),
       periods: []
     },
     {
@@ -70,7 +71,7 @@ const StudySession = () => {
       name: "Littérature",
       description: "Œuvres classiques, auteurs et périodes littéraires",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-rose-500 to-red-600",
+      color: getCategoryGradientClasses("literature"),
       periods: []
     },
     {
@@ -78,7 +79,7 @@ const StudySession = () => {
       name: "Langues",
       description: "Grammaire, vocabulaire et compétences linguistiques",
       icon: <Brain className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-cyan-500 to-blue-600",
+      color: getCategoryGradientClasses("languages"),
       periods: []
     }
   ];

@@ -67,6 +67,37 @@ export default {
 				'elegant-surface': 'hsl(var(--elegant-surface))',
 				'elegant-text-primary': 'hsl(var(--elegant-text-primary))',
 				'elegant-text-secondary': 'hsl(var(--elegant-text-secondary))',
+				// Category colors
+				'category-history': {
+					DEFAULT: 'hsl(var(--category-history-primary))',
+					light: 'hsl(var(--category-history-light))',
+					dark: 'hsl(var(--category-history-dark))'
+				},
+				'category-geography': {
+					DEFAULT: 'hsl(var(--category-geography-primary))',
+					light: 'hsl(var(--category-geography-light))',
+					dark: 'hsl(var(--category-geography-dark))'
+				},
+				'category-mathematics': {
+					DEFAULT: 'hsl(var(--category-mathematics-primary))',
+					light: 'hsl(var(--category-mathematics-light))',
+					dark: 'hsl(var(--category-mathematics-dark))'
+				},
+				'category-science': {
+					DEFAULT: 'hsl(var(--category-science-primary))',
+					light: 'hsl(var(--category-science-light))',
+					dark: 'hsl(var(--category-science-dark))'
+				},
+				'category-literature': {
+					DEFAULT: 'hsl(var(--category-literature-primary))',
+					light: 'hsl(var(--category-literature-light))',
+					dark: 'hsl(var(--category-literature-dark))'
+				},
+				'category-languages': {
+					DEFAULT: 'hsl(var(--category-languages-primary))',
+					light: 'hsl(var(--category-languages-light))',
+					dark: 'hsl(var(--category-languages-dark))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

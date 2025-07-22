@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { BookOpen, Globe, Calculator, Atom, Palette, Music, Languages, ChevronRight, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { categoryColors, getCategoryGradientClasses } from "@/utils/categoryColors";
 export interface StudyCategory {
   id: string;
   name: string;
@@ -16,42 +17,42 @@ const studyCategories: StudyCategory[] = [{
   name: "Histoire",
   description: "Événements mondiaux, civilisations et chronologies",
   icon: <BookOpen className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-amber-500 to-orange-600",
+  color: getCategoryGradientClasses("history"),
   periods: ["Histoire ancienne (3000 av. J.-C. - 500 ap. J.-C.)", "Période médiévale (500 - 1500 ap. J.-C.)", "Renaissance (1400 - 1600 ap. J.-C.)", "Âge des explorations (1400 - 1700 ap. J.-C.)", "Révolution industrielle (1760 - 1840 ap. J.-C.)", "Histoire moderne (1800 - 1945 ap. J.-C.)", "Histoire contemporaine (1945 - Présent)"]
 }, {
   id: "geography",
   name: "Géographie",
   description: "Pays, capitales, caractéristiques physiques",
   icon: <Globe className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-emerald-500 to-teal-600",
+  color: getCategoryGradientClasses("geography"),
   periods: ["Géographie physique", "Géographie politique", "Europe", "Asie", "Afrique", "Amériques", "Océanie"]
 }, {
   id: "mathematics",
   name: "Mathématiques",
   description: "Algèbre, géométrie, calcul, et plus",
   icon: <Calculator className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+  color: getCategoryGradientClasses("mathematics"),
   periods: ["Arithmétique de base", "Algèbre", "Géométrie", "Trigonométrie", "Calcul", "Statistiques", "Mathématiques avancées"]
 }, {
   id: "science",
   name: "Sciences",
   description: "Concepts de physique, chimie, biologie",
   icon: <Atom className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-purple-500 to-pink-600",
+  color: getCategoryGradientClasses("science"),
   periods: ["Sciences générales", "Physique", "Chimie", "Biologie", "Sciences de la Terre", "Sciences environnementales", "Sciences avancées"]
 }, {
   id: "literature",
   name: "Littérature",
   description: "Œuvres classiques, auteurs et périodes littéraires",
   icon: <Palette className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-rose-500 to-red-600",
+  color: getCategoryGradientClasses("literature"),
   periods: ["Littérature classique", "Littérature médiévale", "Littérature de la Renaissance", "Période romantique", "Ère victorienne", "Littérature moderne", "Littérature contemporaine"]
 }, {
   id: "languages",
   name: "Langues",
   description: "Grammaire, vocabulaire et compétences linguistiques",
   icon: <Languages className="w-8 h-8" />,
-  color: "bg-gradient-to-br from-cyan-500 to-blue-600",
+  color: getCategoryGradientClasses("languages"),
   periods: ["Grammaire de base", "Construction du vocabulaire", "Compréhension écrite", "Compétences rédactionnelles", "Pratique orale", "Grammaire avancée", "Analyse littéraire"]
 }];
 export function CategorySelection() {

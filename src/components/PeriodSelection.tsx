@@ -15,6 +15,7 @@ import {
   Languages
 } from "lucide-react";
 import { StudyCategory } from "./CategorySelection";
+import { getCategoryGradientClasses, getCategoryColor } from "@/utils/categoryColors";
 
 export function PeriodSelection() {
   const location = useLocation();
@@ -34,7 +35,7 @@ export function PeriodSelection() {
       name: "Histoire",
       description: "Événements mondiaux, civilisations et chronologies",
       icon: <BookOpen className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-amber-500 to-orange-600",
+      color: getCategoryGradientClasses("history"),
       periods: [
         "Histoire ancienne (3000 av. J.-C. - 500 ap. J.-C.)",
         "Période médiévale (500 - 1500 ap. J.-C.)", 
@@ -50,7 +51,7 @@ export function PeriodSelection() {
       name: "Géographie", 
       description: "Pays, capitales, caractéristiques physiques",
       icon: <Globe className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-emerald-500 to-teal-600",
+      color: getCategoryGradientClasses("geography"),
       periods: [
         "Géographie physique",
         "Géographie politique", 
@@ -66,7 +67,7 @@ export function PeriodSelection() {
       name: "Mathématiques",
       description: "Algèbre, géométrie, calcul, et plus",
       icon: <Calculator className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-blue-500 to-indigo-600",
+      color: getCategoryGradientClasses("mathematics"),
       periods: [
         "Arithmétique de base",
         "Algèbre",
@@ -82,7 +83,7 @@ export function PeriodSelection() {
       name: "Sciences",
       description: "Concepts de physique, chimie, biologie",
       icon: <Atom className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-purple-500 to-pink-600",
+      color: getCategoryGradientClasses("science"),
       periods: [
         "Sciences générales",
         "Physique",
@@ -98,7 +99,7 @@ export function PeriodSelection() {
       name: "Littérature",
       description: "Œuvres classiques, auteurs et périodes littéraires",
       icon: <Palette className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-rose-500 to-red-600",
+      color: getCategoryGradientClasses("literature"),
       periods: [
         "Littérature classique",
         "Littérature médiévale",
@@ -114,7 +115,7 @@ export function PeriodSelection() {
       name: "Langues",
       description: "Grammaire, vocabulaire et compétences linguistiques",
       icon: <Languages className="w-8 h-8" />,
-      color: "bg-gradient-to-br from-cyan-500 to-blue-600",
+      color: getCategoryGradientClasses("languages"),
       periods: [
         "Grammaire de base",
         "Construction du vocabulaire",

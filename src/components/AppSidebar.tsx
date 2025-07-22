@@ -9,6 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem,
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { getCategoryColor, getCategoryBadgeClasses, getCategoryIconClasses } from "@/utils/categoryColors";
 interface Conversation {
   id: string;
   title: string;
@@ -53,15 +54,15 @@ export function AppSidebar() {
   const [conversations] = useState<Conversation[]>([{
     id: "1",
     title: "Ancient History Discussion",
-    category: "History",
+    category: "history",
     lastMessage: "Tell me about the Roman Empire",
     timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
     // 2 hours ago
     messageCount: 15
   }, {
     id: "2",
-    title: "Geography Quiz Session",
-    category: "Geography",
+    title: "Geography Quiz Session", 
+    category: "geography",
     lastMessage: "What are the capitals of European countries?",
     timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
     // 5 hours ago
@@ -69,7 +70,7 @@ export function AppSidebar() {
   }, {
     id: "3",
     title: "Math Problem Solving",
-    category: "Mathematics",
+    category: "mathematics",
     lastMessage: "Help me solve this calculus problem",
     timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
     // 1 day ago
@@ -77,11 +78,27 @@ export function AppSidebar() {
   }, {
     id: "4",
     title: "Science Fundamentals",
-    category: "Science",
+    category: "science",
     lastMessage: "Explain photosynthesis process",
     timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
     // 2 days ago
     messageCount: 12
+  }, {
+    id: "5",
+    title: "French Literature Analysis",
+    category: "literature",
+    lastMessage: "Analyze Victor Hugo's writing style",
+    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+    // 3 days ago
+    messageCount: 18
+  }, {
+    id: "6",
+    title: "English Grammar Session",
+    category: "languages",
+    lastMessage: "Explain past perfect tense",
+    timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+    // 4 days ago
+    messageCount: 9
   }]);
   const filteredConversations = conversations.filter(conv => conv.title.toLowerCase().includes(searchQuery.toLowerCase()) || conv.category.toLowerCase().includes(searchQuery.toLowerCase()) || conv.lastMessage.toLowerCase().includes(searchQuery.toLowerCase()));
   const formatTimestamp = (timestamp: Date) => {
@@ -95,15 +112,20 @@ export function AppSidebar() {
     return `${days}d ago`;
   };
   const getCategoryIcon = (category: string) => {
+    const iconClass = getCategoryIconClasses(category);
     switch (category.toLowerCase()) {
       case 'history':
-        return <History className="w-3 h-3" />;
+        return <History className={`w-3 h-3 ${iconClass}`} />;
       case 'geography':
-        return <Brain className="w-3 h-3" />;
+        return <Brain className={`w-3 h-3 ${iconClass}`} />;
       case 'mathematics':
-        return <Brain className="w-3 h-3" />;
+        return <Brain className={`w-3 h-3 ${iconClass}`} />;
       case 'science':
-        return <Brain className="w-3 h-3" />;
+        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+      case 'literature':
+        return <Brain className={`w-3 h-3 ${iconClass}`} />;
+      case 'languages':
+        return <Brain className={`w-3 h-3 ${iconClass}`} />;
       default:
         return <MessageSquare className="w-3 h-3" />;
     }
@@ -163,7 +185,8 @@ export function AppSidebar() {
                             {conversation.messageCount}
                           </span>
                         </div> : <div className="flex items-start space-x-3 w-full">
-                          <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1 bg-amber-700">
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1`} 
+                               style={{ backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF' }}>
                             {getCategoryIcon(conversation.category)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -199,8 +222,13 @@ export function AppSidebar() {
                                 {formatTimestamp(conversation.timestamp)}
                               </span>
                               <div className="flex items-center space-x-1">
-                                <span className="text-xs bg-secondary px-1.5 py-0.5 rounded border border-border/50 text-amber-50">
-                                  {conversation.category}
+                                <span className={`text-xs px-1.5 py-0.5 rounded ${getCategoryBadgeClasses(conversation.category)}`}
+                                      style={{ 
+                                        backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF',
+                                        color: getCategoryColor(conversation.category)?.dark || '#1E1F24',
+                                        borderColor: getCategoryColor(conversation.category)?.primary || '#A6B0D2'
+                                      }}>
+                                  {getCategoryColor(conversation.category)?.name || conversation.category}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
                                   {conversation.messageCount}

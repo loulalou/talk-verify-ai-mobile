@@ -76,6 +76,31 @@ All colors MUST be HSL.
     --sidebar-accent-foreground: 225 14% 13%;
     --sidebar-border: 213 18% 91%;
     --sidebar-ring: 215 23% 29%;
+
+    /* Category Colors */
+    --category-history-primary: 25 95% 53%;
+    --category-history-light: 48 100% 88%;
+    --category-history-dark: 25 95% 33%;
+    
+    --category-geography-primary: 160 84% 39%;
+    --category-geography-light: 152 76% 90%;
+    --category-geography-dark: 160 84% 29%;
+    
+    --category-mathematics-primary: 221 83% 53%;
+    --category-mathematics-light: 214 100% 92%;
+    --category-mathematics-dark: 221 83% 43%;
+    
+    --category-science-primary: 262 83% 58%;
+    --category-science-light: 250 100% 96%;
+    --category-science-dark: 262 83% 48%;
+    
+    --category-literature-primary: 0 84% 60%;
+    --category-literature-light: 0 86% 97%;
+    --category-literature-dark: 0 84% 50%;
+    
+    --category-languages-primary: 188 94% 37%;
+    --category-languages-light: 185 96% 90%;
+    --category-languages-dark: 188 94% 27%;
   }
 
   .dark {
