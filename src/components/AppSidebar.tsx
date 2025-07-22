@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { Search, MessageSquare, User, Plus, History, Settings, Brain, X, MoreVertical } from "lucide-react";
+import { Search, MessageSquare, User, Plus, History, Settings, Brain, X, MoreVertical, LogOut } from "lucide-react";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarHeader, SidebarFooter, useSidebar } from "@/components/ui/sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 interface Conversation {
   id: string;
   title: string;
@@ -22,6 +24,26 @@ export function AppSidebar() {
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
+  const { user, signOut } = useAuth();
+  const [userProfile, setUserProfile] = useState<{ name: string; age?: number } | null>(null);
+
+  // Fetch user profile data
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('name, age')
+          .eq('user_id', user.id)
+          .single();
+        
+        if (data && !error) {
+          setUserProfile(data);
+        }
+      }
+    };
+    fetchProfile();
+  }, [user]);
 
   // Mock conversations data
   const [conversations] = useState<Conversation[]>([{
@@ -220,12 +242,12 @@ export function AppSidebar() {
                     <Avatar className="h-8 w-8 border border-gray-700">
                       <AvatarImage src="" alt="User" />
                       <AvatarFallback className="bg-blue-900 text-blue-200 text-sm border border-gray-700">
-                        JD
+                        {userProfile?.name ? userProfile.name.split(' ').map(n => n[0]).join('').toUpperCase() : user?.email?.[0]?.toUpperCase() || 'U'}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 text-left">
-                      <p className="text-sm font-medium text-white">John Doe</p>
-                      <p className="text-xs text-gray-400">john.doe@example.com</p>
+                      <p className="text-sm font-medium text-white">{userProfile?.name || 'User'}</p>
+                      <p className="text-xs text-gray-400">{user?.email}</p>
                     </div>
                     <Settings className="w-4 h-4 text-gray-400" />
                   </div>
@@ -243,7 +265,8 @@ export function AppSidebar() {
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
+                <DropdownMenuItem onClick={signOut} className="text-gray-300 hover:bg-gray-800">
+                  <LogOut className="mr-2 h-4 w-4" />
                   <span>Sign out</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
