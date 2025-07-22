@@ -10,8 +10,9 @@ export function HelpPopup() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" className="h-8 w-8 rounded-full">
+        <Button variant="ghost" size="sm" className="h-8 px-3 gap-2">
           <Lightbulb className="h-4 w-4" />
+          <span className="text-sm">Aide</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-2xl max-h-[80vh] overflow-y-auto">
