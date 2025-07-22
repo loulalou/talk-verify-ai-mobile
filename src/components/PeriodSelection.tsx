@@ -239,33 +239,7 @@ export function PeriodSelection() {
 
         {/* Suppression de la section "Selected Summary" car navigation automatique */}
 
-        {/* Study Tips */}
-        <Card className="bg-ai-surface border-border/50">
-          <div className="p-4">
-            <h4 className="font-medium mb-3 flex items-center">
-              <Clock className="w-4 h-4 mr-2 text-ai-accent" />
-              Conseils pour la session d'étude
-            </h4>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
-              <div>
-                <p className="font-medium mb-1">Avant de commencer :</p>
-                <ul className="space-y-1 list-disc list-inside text-xs">
-                  <li>Révisez vos notes pour les périodes sélectionnées</li>
-                  <li>Préparez-vous dans un environnement calme</li>
-                  <li>Ayez vos matériels d'étude à portée de main</li>
-                </ul>
-              </div>
-              <div>
-                <p className="font-medium mb-1">Pendant la session :</p>
-                <ul className="space-y-1 list-disc list-inside text-xs">
-                  <li>Parlez clairement de ce que vous savez</li>
-                  <li>Demandez des clarifications si nécessaire</li>
-                  <li>Corrigez l'IA quand l'information est incorrecte</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </Card>
+        {/* Conseils d'étude déplacés vers la session d'étude */}
       </div>
     </div>
   );

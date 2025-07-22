@@ -8,7 +8,9 @@ import { DocumentationCard } from "@/components/DocumentationCard";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Card } from "@/components/ui/card";
+import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw, Clock, Info } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
 import { PerplexityService } from "@/utils/PerplexityService";
@@ -93,6 +95,7 @@ const StudySession = () => {
   const [topicDocumentation, setTopicDocumentation] = useState<Record<string, string>>({});
   const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
   const [useGemini, setUseGemini] = useState(true); // Utiliser Gemini par défaut
+  const [showTipsDialog, setShowTipsDialog] = useState(true); // Popup de conseils au début
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 
@@ -346,6 +349,62 @@ const StudySession = () => {
 
   return (
     <div className="min-h-screen bg-gradient-surface text-foreground">
+      {/* Popup de conseils d'étude */}
+      <Dialog open={showTipsDialog} onOpenChange={setShowTipsDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center">
+              <Info className="w-5 h-5 mr-2 text-ai-primary" />
+              Conseils pour votre session d'étude
+            </DialogTitle>
+            <DialogDescription>
+              Suivez ces conseils pour optimiser votre apprentissage avec l'IA
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
+            <div>
+              <h4 className="font-medium mb-3 text-ai-primary">Avant de commencer :</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Révisez vos notes pour les périodes sélectionnées
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Préparez-vous dans un environnement calme
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Ayez vos matériels d'étude à portée de main
+                </li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-medium mb-3 text-ai-primary">Pendant la session :</h4>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Parlez clairement de ce que vous savez
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Demandez des clarifications si nécessaire
+                </li>
+                <li className="flex items-start">
+                  <div className="w-2 h-2 bg-ai-primary rounded-full mt-2 mr-3 flex-shrink-0"></div>
+                  Corrigez l'IA quand l'information est incorrecte
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className="flex justify-end mt-6">
+            <Button onClick={() => setShowTipsDialog(false)} className="bg-ai-primary hover:bg-ai-primary/90">
+              Commencer la session
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {/* Header */}
       <div className="bg-ai-surface border-b border-border/50 p-4">
         <div className="flex items-center justify-between">
@@ -494,6 +553,34 @@ const StudySession = () => {
                 onRecordingComplete={handleRecordingComplete}
                 isProcessing={isProcessing}
               />
+              
+              {/* Conseils d'étude permanents */}
+              <Card className="mt-4 bg-ai-surface-elevated border-border/30">
+                <div className="p-4">
+                  <h4 className="font-medium mb-3 flex items-center text-sm">
+                    <Clock className="w-4 h-4 mr-2 text-ai-accent" />
+                    Conseils pour cette session
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground">
+                    <div>
+                      <p className="font-medium mb-2 text-foreground">Pendant l'enregistrement :</p>
+                      <ul className="space-y-1 list-disc list-inside">
+                        <li>Parlez clairement et distinctement</li>
+                        <li>Exprimez vos connaissances librement</li>
+                        <li>N'hésitez pas à poser des questions</li>
+                      </ul>
+                    </div>
+                    <div>
+                      <p className="font-medium mb-2 text-foreground">Interaction avec l'IA :</p>
+                      <ul className="space-y-1 list-disc list-inside">
+                        <li>Confirmez ou corrigez ses réponses</li>
+                        <li>Demandez plus de détails si besoin</li>
+                        <li>Utilisez le mode Gemini pour de meilleures réponses</li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </Card>
             </div>
           </div>
         ) : (
