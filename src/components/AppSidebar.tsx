@@ -23,7 +23,6 @@ export function AppSidebar() {
   } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
-  
   const {
     user,
     signOut
@@ -60,7 +59,7 @@ export function AppSidebar() {
     messageCount: 15
   }, {
     id: "2",
-    title: "Geography Quiz Session", 
+    title: "Geography Quiz Session",
     category: "geography",
     lastMessage: "What are the capitals of European countries?",
     timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
@@ -112,8 +111,9 @@ export function AppSidebar() {
   };
   const getCategoryIcon = (category: string) => {
     const categoryColor = getCategoryColor(category);
-    const iconStyle = { color: categoryColor?.primary || '#A6B0D2' };
-    
+    const iconStyle = {
+      color: categoryColor?.primary || '#A6B0D2'
+    };
     switch (category.toLowerCase()) {
       case 'history':
         return <History className="w-3 h-3" style={iconStyle} />;
@@ -151,7 +151,7 @@ export function AppSidebar() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <GraduationCap className="w-6 h-6 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">Hypatie</h2>
+                <h2 className="text-lg font-semibold text-foreground">Ada</h2>
               </div>
             </div>
             
@@ -183,8 +183,9 @@ export function AppSidebar() {
                             {conversation.messageCount}
                           </span>
                         </div> : <div className="flex items-start space-x-3 w-full">
-                          <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1`} 
-                               style={{ backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF' }}>
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center mt-1`} style={{
+                      backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF'
+                    }}>
                             {getCategoryIcon(conversation.category)}
                           </div>
                           <div className="flex-1 min-w-0">
@@ -220,12 +221,11 @@ export function AppSidebar() {
                                 {formatTimestamp(conversation.timestamp)}
                               </span>
                               <div className="flex items-center space-x-1">
-                                <span className={`text-xs px-1.5 py-0.5 rounded ${getCategoryBadgeClasses(conversation.category)}`}
-                                      style={{ 
-                                        backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF',
-                                        color: getCategoryColor(conversation.category)?.dark || '#1E1F24',
-                                        borderColor: getCategoryColor(conversation.category)?.primary || '#A6B0D2'
-                                      }}>
+                                <span className={`text-xs px-1.5 py-0.5 rounded ${getCategoryBadgeClasses(conversation.category)}`} style={{
+                            backgroundColor: getCategoryColor(conversation.category)?.light || '#E6EBEF',
+                            color: getCategoryColor(conversation.category)?.dark || '#1E1F24',
+                            borderColor: getCategoryColor(conversation.category)?.primary || '#A6B0D2'
+                          }}>
                                   {getCategoryColor(conversation.category)?.name || conversation.category}
                                 </span>
                                 <span className="text-xs text-muted-foreground">
