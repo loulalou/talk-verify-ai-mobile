@@ -18,9 +18,7 @@ interface Conversation {
   messageCount: number;
 }
 export function AppSidebar() {
-  const {
-    state
-  } = useSidebar();
+  const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
@@ -118,7 +116,10 @@ export function AppSidebar() {
       }
     });
   };
-  return <Sidebar className={`${collapsed ? "w-16" : "w-80"} border-r border-border/20 bg-gray-950`}>
+  return <Sidebar 
+    className="border-r border-border/20 bg-gray-950"
+    collapsible="icon"
+  >
       <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
