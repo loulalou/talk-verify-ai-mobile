@@ -145,7 +145,7 @@ export function CategorySelection() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-surface">
+    <div className="bg-gradient-surface">
       {/* Header */}
       <div className="bg-ai-surface border-b border-border/50 p-6">
         <div className="max-w-4xl mx-auto">
