@@ -136,13 +136,6 @@ export function AppSidebar() {
                 
               </div>}
             
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground" />
-              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground">
-                  <X className="w-3 h-3" />
-                </Button>}
-            </div>
           </>}
         
         {collapsed && <div className="flex flex-col items-center space-y-2">
@@ -237,9 +230,19 @@ export function AppSidebar() {
       <SidebarFooter className="p-4 border-t border-border bg-background">
         {collapsed ? <div className="flex flex-col items-center space-y-2">
             <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
+              <Search className="w-4 h-4" />
+            </Button>
+            <Button variant="ghost" size="sm" className="w-8 h-8 p-0 text-foreground hover:bg-accent">
               <Settings className="w-4 h-4" />
             </Button>
-          </div> : <div className="space-y-2">
+          </div> : <div className="space-y-3">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground" />
+              {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground">
+                  <X className="w-3 h-3" />
+                </Button>}
+            </div>
             <Button variant="ghost" className="w-full justify-start h-auto p-3 hover:bg-accent">
               <div className="flex items-center space-x-3 w-full">
                 <Settings className="w-4 h-4 text-muted-foreground" />
