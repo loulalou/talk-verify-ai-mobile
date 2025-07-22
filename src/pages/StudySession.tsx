@@ -461,7 +461,7 @@ const StudySession = () => {
                   {messages.length === 0 ? (
                     <div className="flex items-center justify-center h-full min-h-[400px]">
                       <div className="text-center space-y-4 max-w-md">
-                        <div className="w-16 h-16 bg-gradient-accent rounded-full flex items-center justify-center mx-auto">
+                        <div className="w-16 h-16 bg-ai-primary rounded-full flex items-center justify-center mx-auto">
                           <MessageSquare className="w-8 h-8 text-white" />
                         </div>
                         <div>
