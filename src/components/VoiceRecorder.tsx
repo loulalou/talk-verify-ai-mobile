@@ -113,9 +113,9 @@ export function VoiceRecorder({ onRecordingComplete, isProcessing }: VoiceRecord
           )}
         >
           {isRecording ? (
-            <Square className="h-8 w-8" />
+            <Square className="h-12 w-12" />
           ) : (
-            <Mic className="h-8 w-8" />
+            <Mic className="h-12 w-12" />
           )}
           
           {/* Ripple Effect */}
