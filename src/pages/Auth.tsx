@@ -149,13 +149,13 @@ export default function Auth() {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background to-muted p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl text-center">Welcome</CardTitle>
+          <CardTitle className="text-2xl text-center">Bienvenue</CardTitle>
         </CardHeader>
         <CardContent>
           <Tabs defaultValue="signin" className="space-y-4">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="signin">Sign In</TabsTrigger>
-              <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsTrigger value="signin">Se connecter</TabsTrigger>
+              <TabsTrigger value="signup">S'inscrire</TabsTrigger>
             </TabsList>
 
             <TabsContent value="signin" className="space-y-4">
@@ -165,25 +165,25 @@ export default function Auth() {
                   <Input
                     id="signin-email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Entrez votre email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signin-password">Password</Label>
+                  <Label htmlFor="signin-password">Mot de passe</Label>
                   <Input
                     id="signin-password"
                     type="password"
-                    placeholder="Enter your password"
+                    placeholder="Entrez votre mot de passe"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Signing in..." : "Sign In"}
+                  {isLoading ? "Connexion..." : "Se connecter"}
                 </Button>
               </form>
             </TabsContent>
@@ -191,22 +191,22 @@ export default function Auth() {
             <TabsContent value="signup" className="space-y-4">
               <form onSubmit={handleSignUp} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="signup-name">Name *</Label>
+                  <Label htmlFor="signup-name">Nom *</Label>
                   <Input
                     id="signup-name"
                     type="text"
-                    placeholder="Enter your name"
+                    placeholder="Entrez votre nom"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-age">Age</Label>
+                  <Label htmlFor="signup-age">Âge</Label>
                   <Input
                     id="signup-age"
                     type="number"
-                    placeholder="Enter your age"
+                    placeholder="Entrez votre âge"
                     value={age}
                     onChange={(e) => setAge(e.target.value)}
                     min="1"
@@ -218,18 +218,18 @@ export default function Auth() {
                   <Input
                     id="signup-email"
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder="Entrez votre email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="signup-password">Password *</Label>
+                  <Label htmlFor="signup-password">Mot de passe *</Label>
                   <Input
                     id="signup-password"
                     type="password"
-                    placeholder="Create a password"
+                    placeholder="Créez un mot de passe"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
@@ -237,7 +237,7 @@ export default function Auth() {
                   />
                 </div>
                 <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Creating account..." : "Create Account"}
+                  {isLoading ? "Création du compte..." : "Créer un compte"}
                 </Button>
               </form>
             </TabsContent>
@@ -245,7 +245,7 @@ export default function Auth() {
 
           <Alert className="mt-4">
             <AlertDescription className="text-sm">
-              For testing purposes, you can disable email confirmation in your Supabase settings to speed up the signup process.
+              À des fins de test, vous pouvez désactiver la confirmation par email dans vos paramètres Supabase pour accélérer le processus d'inscription.
             </AlertDescription>
           </Alert>
         </CardContent>

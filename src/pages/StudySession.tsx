@@ -29,48 +29,48 @@ const StudySession = () => {
   const studyCategories: StudyCategory[] = [
     {
       id: "history",
-      name: "History",
-      description: "World events, civilizations, and timelines",
+      name: "Histoire",
+      description: "Événements mondiaux, civilisations et chronologies",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-amber-500 to-orange-600",
       periods: []
     },
     {
       id: "geography",
-      name: "Geography", 
-      description: "Countries, capitals, physical features",
+      name: "Géographie", 
+      description: "Pays, capitales, caractéristiques physiques",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-emerald-500 to-teal-600",
       periods: []
     },
     {
       id: "mathematics",
-      name: "Mathematics",
-      description: "Algebra, geometry, calculus, and more",
+      name: "Mathématiques",
+      description: "Algèbre, géométrie, calcul, et plus",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-blue-500 to-indigo-600",
       periods: []
     },
     {
       id: "science",
-      name: "Science",
-      description: "Physics, chemistry, biology concepts",
+      name: "Sciences",
+      description: "Concepts de physique, chimie, biologie",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-purple-500 to-pink-600",
       periods: []
     },
     {
       id: "literature",
-      name: "Literature",
-      description: "Classic works, authors, and literary periods",
+      name: "Littérature",
+      description: "Œuvres classiques, auteurs et périodes littéraires",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-rose-500 to-red-600",
       periods: []
     },
     {
       id: "languages",
-      name: "Languages",
-      description: "Grammar, vocabulary, and language skills",
+      name: "Langues",
+      description: "Grammaire, vocabulaire et compétences linguistiques",
       icon: <Brain className="w-8 h-8" />,
       color: "bg-gradient-to-br from-cyan-500 to-blue-600",
       periods: []
@@ -96,10 +96,10 @@ const StudySession = () => {
 
   // Mock AI responses for demo
   const mockAIResponses = [
-    "I understand you'd like to know about that topic. Let me share what I know.",
-    "Based on the information available, here's what I can tell you about that subject.",
-    "That's an interesting question. Let me provide you with some insights.",
-    "I'd be happy to help you understand this better. Here's what I've learned.",
+    "Je comprends que vous aimeriez en savoir plus sur ce sujet. Laissez-moi partager ce que je sais.",
+    "Basé sur les informations disponibles, voici ce que je peux vous dire sur ce sujet.",
+    "C'est une question intéressante. Permettez-moi de vous donner quelques insights.",
+    "Je serais ravi de vous aider à mieux comprendre. Voici ce que j'ai appris.",
   ];
 
   const mockKnowledgeItems = [
@@ -297,21 +297,21 @@ const StudySession = () => {
               className="hover:bg-ai-surface-elevated"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Retour
             </Button>
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 ${category.color} rounded-lg flex items-center justify-center text-white`}>
                 {category.icon}
               </div>
               <div>
-                <h1 className="font-semibold text-lg">{category.name} Study Session</h1>
-                <p className="text-sm text-muted-foreground">{periods.length} topic{periods.length > 1 ? 's' : ''} selected</p>
+                <h1 className="font-semibold text-lg">Session d'étude {category.name}</h1>
+                <p className="text-sm text-muted-foreground">{periods.length} sujet{periods.length > 1 ? 's' : ''} sélectionné{periods.length > 1 ? 's' : ''}</p>
               </div>
             </div>
           </div>
           <div className="flex items-center space-x-2">
             <Button variant="surface" size="sm" onClick={clearChat}>
-              Clear
+              Effacer
             </Button>
             {activeTab === 'knowledge' && hasApiKey && (
               <Button 
@@ -321,7 +321,7 @@ const StudySession = () => {
                 disabled={loadingTopics.size > 0}
               >
                 <RefreshCw className={`w-4 h-4 mr-1 ${loadingTopics.size > 0 ? 'animate-spin' : ''}`} />
-                Fetch All
+                Tout récupérer
               </Button>
             )}
           </div>
@@ -341,7 +341,7 @@ const StudySession = () => {
             ))}
             {periods.length > 3 && (
               <span className="text-xs text-muted-foreground px-2 py-1">
-                +{periods.length - 3} more
+                +{periods.length - 3} de plus
               </span>
             )}
           </div>
@@ -399,8 +399,8 @@ const StudySession = () => {
                       <MessageSquare className="w-8 h-8 text-white" />
                     </div>
                     <div>
-                      <h3 className="font-medium">Start a conversation</h3>
-                      <p className="text-sm text-muted-foreground">Tap the microphone to begin speaking</p>
+                      <h3 className="font-medium">Commencer une conversation</h3>
+                      <p className="text-sm text-muted-foreground">Appuyez sur le microphone pour commencer à parler</p>
                     </div>
                   </div>
                 </div>
@@ -453,7 +453,7 @@ const StudySession = () => {
                   <>
                     <Separator className="my-6" />
                     <div className="space-y-4">
-                      <h3 className="text-sm font-medium text-muted-foreground">Chat Knowledge Items</h3>
+                      <h3 className="text-sm font-medium text-muted-foreground">Éléments de connaissance du chat</h3>
                       {knowledgeItems.map((knowledge) => (
                         <KnowledgeCard
                           key={knowledge.id}

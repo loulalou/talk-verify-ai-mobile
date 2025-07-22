@@ -56,13 +56,13 @@ const Profile = () => {
               className="hover:bg-ai-surface-elevated"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Retour
             </Button>
-            <h1 className="text-xl font-semibold">Profile</h1>
+            <h1 className="text-xl font-semibold">Profil</h1>
           </div>
           <Button variant="outline" size="sm">
             <Settings className="w-4 h-4 mr-1" />
-            Edit Profile
+            Modifier le profil
           </Button>
         </div>
       </div>
@@ -86,7 +86,7 @@ const Profile = () => {
                 </p>
                 <p className="text-muted-foreground flex items-center mt-1">
                   <Calendar className="w-4 h-4 mr-1" />
-                  Member since {userData.joinDate}
+                  Membre depuis {userData.joinDate}
                 </p>
               </div>
             </div>
@@ -103,11 +103,11 @@ const Profile = () => {
               </div>
               <div className="text-center p-4 bg-gradient-surface/50 rounded-lg border border-border/50">
                 <div className="text-2xl font-bold text-foreground">{userData.stats.studyHours}</div>
-                <div className="text-sm text-muted-foreground">Study Hours</div>
+                <div className="text-sm text-muted-foreground">Heures d'étude</div>
               </div>
               <div className="text-center p-4 bg-green-500/5 rounded-lg border border-green-500/20">
                 <div className="text-2xl font-bold text-green-600">{userData.stats.completedTopics}</div>
-                <div className="text-sm text-muted-foreground">Topics Learned</div>
+                <div className="text-sm text-muted-foreground">Sujets appris</div>
               </div>
             </div>
           </CardContent>
@@ -116,9 +116,9 @@ const Profile = () => {
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
           <TabsList className="grid w-full grid-cols-3 bg-ai-surface">
-            <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="achievements">Achievements</TabsTrigger>
-            <TabsTrigger value="settings">Settings</TabsTrigger>
+            <TabsTrigger value="overview">Aperçu</TabsTrigger>
+            <TabsTrigger value="achievements">Succès</TabsTrigger>
+            <TabsTrigger value="settings">Paramètres</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -128,7 +128,7 @@ const Profile = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <BookOpen className="w-5 h-5 mr-2" />
-                    Recent Activity
+                    Activité récente
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -155,35 +155,35 @@ const Profile = () => {
                 <CardHeader>
                   <CardTitle className="flex items-center">
                     <Award className="w-5 h-5 mr-2" />
-                    Learning Progress
+                    Progression d'apprentissage
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>History</span>
-                      <span>12/15 topics</span>
+                      <span>Histoire</span>
+                      <span>12/15 sujets</span>
                     </div>
                     <Progress value={80} className="h-2" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Science</span>
-                      <span>8/12 topics</span>
+                      <span>Sciences</span>
+                      <span>8/12 sujets</span>
                     </div>
                     <Progress value={67} className="h-2" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Mathematics</span>
-                      <span>5/10 topics</span>
+                      <span>Mathématiques</span>
+                      <span>5/10 sujets</span>
                     </div>
                     <Progress value={50} className="h-2" />
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Geography</span>
-                      <span>3/8 topics</span>
+                      <span>Géographie</span>
+                      <span>3/8 sujets</span>
                     </div>
                     <Progress value={38} className="h-2" />
                   </div>
@@ -195,9 +195,9 @@ const Profile = () => {
           <TabsContent value="achievements" className="space-y-4">
             <Card className="bg-ai-surface border-border/50">
               <CardHeader>
-                <CardTitle>Achievements</CardTitle>
+                <CardTitle>Succès</CardTitle>
                 <CardDescription>
-                  Track your learning milestones and unlock new badges
+                  Suivez vos étapes d'apprentissage et débloquez de nouveaux badges
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -230,7 +230,7 @@ const Profile = () => {
                           </p>
                           {achievement.earned && (
                             <Badge variant="secondary" className="mt-2 text-xs">
-                              Earned
+                              Obtenu
                             </Badge>
                           )}
                         </div>
@@ -245,9 +245,9 @@ const Profile = () => {
           <TabsContent value="settings" className="space-y-4">
             <Card className="bg-ai-surface border-border/50">
               <CardHeader>
-                <CardTitle>Preferences</CardTitle>
+                <CardTitle>Préférences</CardTitle>
                 <CardDescription>
-                  Customize your learning experience
+                  Personnalisez votre expérience d'apprentissage
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
@@ -255,36 +255,36 @@ const Profile = () => {
                   <div className="space-y-0.5">
                     <div className="text-sm font-medium">Notifications</div>
                     <div className="text-sm text-muted-foreground">
-                      Receive updates about your learning progress
+                      Recevez des mises à jour sur vos progrès d'apprentissage
                     </div>
                   </div>
                   <Button variant="outline" size="sm">
                     <Bell className="w-4 h-4 mr-1" />
-                    Configure
+                    Configurer
                   </Button>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <div className="text-sm font-medium">Auto-save conversations</div>
+                    <div className="text-sm font-medium">Sauvegarde automatique des conversations</div>
                     <div className="text-sm text-muted-foreground">
-                      Automatically save your study sessions
+                      Sauvegardez automatiquement vos sessions d'étude
                     </div>
                   </div>
                   <Button variant="outline" size="sm">
-                    Enabled
+                    Activé
                   </Button>
                 </div>
                 <Separator />
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <div className="text-sm font-medium">Voice input</div>
+                    <div className="text-sm font-medium">Saisie vocale</div>
                     <div className="text-sm text-muted-foreground">
-                      Use voice recording for conversations
+                      Utilisez l'enregistrement vocal pour les conversations
                     </div>
                   </div>
                   <Button variant="outline" size="sm">
-                    Enabled
+                    Activé
                   </Button>
                 </div>
               </CardContent>

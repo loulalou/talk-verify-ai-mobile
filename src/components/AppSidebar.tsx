@@ -122,13 +122,13 @@ export function AppSidebar() {
       <SidebarHeader className="p-4 border-b border-gray-800 bg-gray-900">
         {!collapsed && <>
             <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-semibold text-white">AI Study Companion</h2>
+              <h2 className="text-lg font-semibold text-white">Compagnon d'étude IA</h2>
               
             </div>
             
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-              <Input placeholder="Search conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-gray-900 border-gray-700 focus:border-blue-500 text-white placeholder:text-gray-400" />
+              <Input placeholder="Rechercher des conversations..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} className="pl-10 bg-gray-900 border-gray-700 focus:border-blue-500 text-white placeholder:text-gray-400" />
               {searchQuery && <Button variant="ghost" size="sm" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-gray-800 text-gray-400 hover:text-white">
                   <X className="w-3 h-3" />
                 </Button>}
@@ -148,7 +148,7 @@ export function AppSidebar() {
       <SidebarContent>
         <SidebarGroup className="bg-gray-950">
           {!collapsed && <SidebarGroupLabel className="text-xs text-gray-400 px-4 py-2">
-              Recent Conversations ({filteredConversations.length})
+              Conversations récentes ({filteredConversations.length})
             </SidebarGroupLabel>}
           
           <SidebarGroupContent>
@@ -178,14 +178,14 @@ export function AppSidebar() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent align="end" className="bg-gray-900 border-gray-700">
                                   <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
-                                    Edit title
+                                    Modifier le titre
                                   </DropdownMenuItem>
                                   <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
-                                    Share conversation
+                                    Partager la conversation
                                   </DropdownMenuItem>
                                   <DropdownMenuSeparator />
                                   <DropdownMenuItem className="text-red-400 hover:bg-gray-800 hover:text-red-300">
-                                    Delete
+                                    Supprimer
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
                               </DropdownMenu>
@@ -215,10 +215,10 @@ export function AppSidebar() {
               {filteredConversations.length === 0 && !collapsed && <div className="text-center py-8 px-4">
                   <MessageSquare className="w-8 h-8 text-gray-500 mx-auto mb-2" />
                   <p className="text-sm text-gray-400">
-                    {searchQuery ? "No conversations found" : "No conversations yet"}
+                    {searchQuery ? "Aucune conversation trouvée" : "Aucune conversation pour le moment"}
                   </p>
                   <p className="text-xs text-gray-500 mt-1">
-                    {searchQuery ? "Try a different search term" : "Start a new conversation to begin"}
+                    {searchQuery ? "Essayez un autre terme de recherche" : "Commencez une nouvelle conversation"}
                   </p>
                 </div>}
             </ScrollArea>
@@ -246,7 +246,7 @@ export function AppSidebar() {
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 text-left">
-                      <p className="text-sm font-medium text-white">{userProfile?.name || 'User'}</p>
+                      <p className="text-sm font-medium text-white">{userProfile?.name || 'Utilisateur'}</p>
                       <p className="text-xs text-gray-400">{user?.email}</p>
                     </div>
                     <Settings className="w-4 h-4 text-gray-400" />
@@ -257,17 +257,17 @@ export function AppSidebar() {
                 <DropdownMenuGroup>
                   <DropdownMenuItem onClick={() => navigate('/profile')} className="text-gray-300 hover:bg-gray-800">
                     <User className="mr-2 h-4 w-4" />
-                    <span>Profile</span>
+                    <span>Profil</span>
                   </DropdownMenuItem>
                   <DropdownMenuItem className="text-gray-300 hover:bg-gray-800">
                     <Settings className="mr-2 h-4 w-4" />
-                    <span>Settings</span>
+                    <span>Paramètres</span>
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={signOut} className="text-gray-300 hover:bg-gray-800">
                   <LogOut className="mr-2 h-4 w-4" />
-                  <span>Sign out</span>
+                  <span>Se déconnecter</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>

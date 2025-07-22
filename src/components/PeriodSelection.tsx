@@ -31,98 +31,98 @@ export function PeriodSelection() {
   const studyCategories: StudyCategory[] = [
     {
       id: "history",
-      name: "History",
-      description: "World events, civilizations, and timelines",
+      name: "Histoire",
+      description: "Événements mondiaux, civilisations et chronologies",
       icon: <BookOpen className="w-8 h-8" />,
       color: "bg-gradient-to-br from-amber-500 to-orange-600",
       periods: [
-        "Ancient History (3000 BCE - 500 CE)",
-        "Medieval Period (500 - 1500 CE)", 
-        "Renaissance (1400 - 1600 CE)",
-        "Age of Exploration (1400 - 1700 CE)",
-        "Industrial Revolution (1760 - 1840 CE)",
-        "Modern History (1800 - 1945 CE)",
-        "Contemporary History (1945 - Present)"
+        "Histoire ancienne (3000 av. J.-C. - 500 ap. J.-C.)",
+        "Période médiévale (500 - 1500 ap. J.-C.)", 
+        "Renaissance (1400 - 1600 ap. J.-C.)",
+        "Âge des explorations (1400 - 1700 ap. J.-C.)",
+        "Révolution industrielle (1760 - 1840 ap. J.-C.)",
+        "Histoire moderne (1800 - 1945 ap. J.-C.)",
+        "Histoire contemporaine (1945 - Présent)"
       ]
     },
     {
       id: "geography",
-      name: "Geography", 
-      description: "Countries, capitals, physical features",
+      name: "Géographie", 
+      description: "Pays, capitales, caractéristiques physiques",
       icon: <Globe className="w-8 h-8" />,
       color: "bg-gradient-to-br from-emerald-500 to-teal-600",
       periods: [
-        "Physical Geography",
-        "Political Geography", 
+        "Géographie physique",
+        "Géographie politique", 
         "Europe",
-        "Asia",
-        "Africa", 
-        "Americas",
-        "Oceania"
+        "Asie",
+        "Afrique", 
+        "Amériques",
+        "Océanie"
       ]
     },
     {
       id: "mathematics",
-      name: "Mathematics",
-      description: "Algebra, geometry, calculus, and more",
+      name: "Mathématiques",
+      description: "Algèbre, géométrie, calcul, et plus",
       icon: <Calculator className="w-8 h-8" />,
       color: "bg-gradient-to-br from-blue-500 to-indigo-600",
       periods: [
-        "Basic Arithmetic",
-        "Algebra",
-        "Geometry",
-        "Trigonometry",
-        "Calculus",
-        "Statistics",
-        "Advanced Mathematics"
+        "Arithmétique de base",
+        "Algèbre",
+        "Géométrie",
+        "Trigonométrie",
+        "Calcul",
+        "Statistiques",
+        "Mathématiques avancées"
       ]
     },
     {
       id: "science",
-      name: "Science",
-      description: "Physics, chemistry, biology concepts",
+      name: "Sciences",
+      description: "Concepts de physique, chimie, biologie",
       icon: <Atom className="w-8 h-8" />,
       color: "bg-gradient-to-br from-purple-500 to-pink-600",
       periods: [
-        "General Science",
-        "Physics",
-        "Chemistry", 
-        "Biology",
-        "Earth Science",
-        "Environmental Science",
-        "Advanced Sciences"
+        "Sciences générales",
+        "Physique",
+        "Chimie", 
+        "Biologie",
+        "Sciences de la Terre",
+        "Sciences environnementales",
+        "Sciences avancées"
       ]
     },
     {
       id: "literature",
-      name: "Literature",
-      description: "Classic works, authors, and literary periods",
+      name: "Littérature",
+      description: "Œuvres classiques, auteurs et périodes littéraires",
       icon: <Palette className="w-8 h-8" />,
       color: "bg-gradient-to-br from-rose-500 to-red-600",
       periods: [
-        "Classical Literature",
-        "Medieval Literature",
-        "Renaissance Literature",
-        "Romantic Period",
-        "Victorian Era",
-        "Modern Literature",
-        "Contemporary Literature"
+        "Littérature classique",
+        "Littérature médiévale",
+        "Littérature de la Renaissance",
+        "Période romantique",
+        "Ère victorienne",
+        "Littérature moderne",
+        "Littérature contemporaine"
       ]
     },
     {
       id: "languages",
-      name: "Languages",
-      description: "Grammar, vocabulary, and language skills",
+      name: "Langues",
+      description: "Grammaire, vocabulaire et compétences linguistiques",
       icon: <Languages className="w-8 h-8" />,
       color: "bg-gradient-to-br from-cyan-500 to-blue-600",
       periods: [
-        "Basic Grammar",
-        "Vocabulary Building",
-        "Reading Comprehension",
-        "Writing Skills",
-        "Speaking Practice",
-        "Advanced Grammar",
-        "Literature Analysis"
+        "Grammaire de base",
+        "Construction du vocabulaire",
+        "Compréhension écrite",
+        "Compétences rédactionnelles",
+        "Pratique orale",
+        "Grammaire avancée",
+        "Analyse littéraire"
       ]
     }
   ];
@@ -172,7 +172,7 @@ export function PeriodSelection() {
               className="hover:bg-ai-surface-elevated"
             >
               <ArrowLeft className="w-4 h-4 mr-1" />
-              Back
+              Retour
             </Button>
             <div className="flex items-center space-x-3">
               <div className={`w-10 h-10 ${category.color} rounded-lg flex items-center justify-center text-white`}>
@@ -180,7 +180,7 @@ export function PeriodSelection() {
               </div>
               <div>
                 <h1 className="text-xl font-bold">{category.name}</h1>
-                <p className="text-muted-foreground">Choose specific topics to study</p>
+                <p className="text-muted-foreground">Choisissez des sujets spécifiques à étudier</p>
               </div>
             </div>
           </div>
@@ -192,11 +192,11 @@ export function PeriodSelection() {
         <div className="mb-8">
           <div className="flex items-center space-x-2 mb-2">
             <Clock className="w-5 h-5 text-ai-primary" />
-            <h2 className="text-xl font-semibold">Select Study Periods</h2>
+            <h2 className="text-xl font-semibold">Sélectionner les périodes d'étude</h2>
           </div>
           <p className="text-muted-foreground">
-            Choose one or more periods/topics you want to verify your knowledge about.
-            You can select multiple areas for a comprehensive study session.
+            Choisissez une ou plusieurs périodes/sujets sur lesquels vous voulez vérifier vos connaissances.
+            Vous pouvez sélectionner plusieurs domaines pour une session d'étude complète.
           </p>
         </div>
 
@@ -220,7 +220,7 @@ export function PeriodSelection() {
                       {period}
                     </h3>
                     <p className="text-sm text-muted-foreground mt-1">
-                      Test your knowledge in this area
+                      Testez vos connaissances dans ce domaine
                     </p>
                   </div>
                   <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-colors ${
@@ -242,22 +242,22 @@ export function PeriodSelection() {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <h3 className="font-semibold">Ready to Study</h3>
+                  <h3 className="font-semibold">Prêt à étudier</h3>
                   <p className="text-sm text-muted-foreground">
-                    {selectedPeriods.length} topic{selectedPeriods.length > 1 ? 's' : ''} selected
+                    {selectedPeriods.length} sujet{selectedPeriods.length > 1 ? 's' : ''} sélectionné{selectedPeriods.length > 1 ? 's' : ''}
                   </p>
                 </div>
                 <Button 
                   onClick={handleContinue}
                   className="bg-ai-primary hover:bg-ai-primary/90"
                 >
-                  Start Session
+                  Commencer la session
                   <ChevronRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
               
               <div className="space-y-2">
-                <p className="text-sm font-medium">Selected topics:</p>
+                <p className="text-sm font-medium">Sujets sélectionnés :</p>
                 <div className="space-y-1">
                   {selectedPeriods.map((period, index) => (
                     <div 
@@ -278,23 +278,23 @@ export function PeriodSelection() {
           <div className="p-4">
             <h4 className="font-medium mb-3 flex items-center">
               <Clock className="w-4 h-4 mr-2 text-ai-accent" />
-              Study Session Tips
+              Conseils pour la session d'étude
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-muted-foreground">
               <div>
-                <p className="font-medium mb-1">Before starting:</p>
+                <p className="font-medium mb-1">Avant de commencer :</p>
                 <ul className="space-y-1 list-disc list-inside text-xs">
-                  <li>Review your notes for the selected periods</li>
-                  <li>Prepare in a quiet environment</li>
-                  <li>Have your study materials nearby</li>
+                  <li>Révisez vos notes pour les périodes sélectionnées</li>
+                  <li>Préparez-vous dans un environnement calme</li>
+                  <li>Ayez vos matériels d'étude à portée de main</li>
                 </ul>
               </div>
               <div>
-                <p className="font-medium mb-1">During the session:</p>
+                <p className="font-medium mb-1">Pendant la session :</p>
                 <ul className="space-y-1 list-disc list-inside text-xs">
-                  <li>Speak clearly about what you know</li>
-                  <li>Ask for clarification when needed</li>
-                  <li>Correct the AI when information is wrong</li>
+                  <li>Parlez clairement de ce que vous savez</li>
+                  <li>Demandez des clarifications si nécessaire</li>
+                  <li>Corrigez l'IA quand l'information est incorrecte</li>
                 </ul>
               </div>
             </div>
