@@ -134,7 +134,11 @@ const StudySession = () => {
   const [topicDocumentation, setTopicDocumentation] = useState<Record<string, string>>({});
   const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
   const [useGemini, setUseGemini] = useState(true); // Utiliser Gemini par défaut
-  const [showTipsDialog, setShowTipsDialog] = useState(true); // Popup de conseils au début
+  const [showTipsDialog, setShowTipsDialog] = useState(() => {
+    // Vérifier si l'utilisateur a choisi de ne plus voir les conseils
+    const hideStudyTips = localStorage.getItem('hideStudyTips');
+    return hideStudyTips !== 'true';
+  }); // Popup de conseils au début
   const [aiAvatar, setAiAvatar] = useState<AvatarType>("avatar1"); // Avatar pour l'IA
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
@@ -438,12 +442,22 @@ const StudySession = () => {
                 </li>
               </ul>
             </div>
-          </div>
-          <div className="flex justify-end mt-6">
-            <Button onClick={() => setShowTipsDialog(false)} className="bg-ai-primary hover:bg-ai-primary/90">
-              Commencer la session
-            </Button>
-          </div>
+           </div>
+           <div className="flex items-center justify-between mt-6">
+             <Button 
+               variant="outline" 
+               onClick={() => {
+                 localStorage.setItem('hideStudyTips', 'true');
+                 setShowTipsDialog(false);
+               }}
+               className="text-muted-foreground hover:text-foreground"
+             >
+               Ne plus me le rappeler
+             </Button>
+             <Button onClick={() => setShowTipsDialog(false)} className="bg-ai-primary hover:bg-ai-primary/90">
+               Commencer la session
+             </Button>
+           </div>
         </DialogContent>
       </Dialog>
 
