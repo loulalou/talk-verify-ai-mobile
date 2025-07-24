@@ -1,44 +1,45 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils";
+import blockies from "ethereum-blockies";
 
-export type AvatarType = "fun1" | "fun2" | "fun3" | "lorelei1" | "lorelei2" | "lorelei3";
+export type AvatarType = "avatar1" | "avatar2" | "avatar3" | "avatar4" | "avatar5" | "avatar6";
 
 interface AvatarOption {
   id: AvatarType;
-  url: string;
+  seed: string;
   label: string;
 }
 
 const avatarOptions: AvatarOption[] = [
   { 
-    id: "fun1", 
-    url: "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student1",
-    label: "Fun 1" 
+    id: "avatar1", 
+    seed: "student1",
+    label: "Avatar 1" 
   },
   { 
-    id: "fun2", 
-    url: "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student2",
-    label: "Fun 2" 
+    id: "avatar2", 
+    seed: "student2",
+    label: "Avatar 2" 
   },
   { 
-    id: "fun3", 
-    url: "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student3",
-    label: "Fun 3" 
+    id: "avatar3", 
+    seed: "student3",
+    label: "Avatar 3" 
   },
   { 
-    id: "lorelei1", 
-    url: "https://api.dicebear.com/8.x/lorelei/svg?seed=emma",
-    label: "Emma" 
+    id: "avatar4", 
+    seed: "emma",
+    label: "Avatar 4" 
   },
   { 
-    id: "lorelei2", 
-    url: "https://api.dicebear.com/8.x/lorelei/svg?seed=lucas",
-    label: "Lucas" 
+    id: "avatar5", 
+    seed: "lucas",
+    label: "Avatar 5" 
   },
   { 
-    id: "lorelei3", 
-    url: "https://api.dicebear.com/8.x/lorelei/svg?seed=marie",
-    label: "Marie" 
+    id: "avatar6", 
+    seed: "marie",
+    label: "Avatar 6" 
   },
 ];
 
@@ -47,7 +48,30 @@ interface AvatarSelectorProps {
   onChange: (value: AvatarType) => void;
 }
 
+export function generateBlockiesAvatar(seed: string): string {
+  const canvas = blockies.create({
+    seed: seed,
+    size: 8,
+    scale: 8,
+  });
+  return canvas.toDataURL();
+}
+
 export function AvatarSelector({ value, onChange }: AvatarSelectorProps) {
+  const [avatarUrls, setAvatarUrls] = useState<Record<AvatarType, string>>({} as Record<AvatarType, string>);
+
+  useEffect(() => {
+    const generateAvatars = () => {
+      const urls: Record<AvatarType, string> = {} as Record<AvatarType, string>;
+      avatarOptions.forEach(option => {
+        urls[option.id] = generateBlockiesAvatar(option.seed);
+      });
+      setAvatarUrls(urls);
+    };
+
+    generateAvatars();
+  }, []);
+
   return (
     <div className="grid grid-cols-3 gap-4">
       {avatarOptions.map((option) => (
@@ -61,17 +85,17 @@ export function AvatarSelector({ value, onChange }: AvatarSelectorProps) {
           )}
         >
           <div className={cn(
-            "w-16 h-16 rounded-full mb-2 overflow-hidden border-2 transition-all",
+            "w-16 h-16 rounded-lg mb-2 overflow-hidden border-2 transition-all",
             value === option.id ? "border-primary" : "border-border"
           )}>
-            <img 
-              src={option.url} 
-              alt={option.label}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23ddd'/%3E%3C/svg%3E";
-              }}
-            />
+            {avatarUrls[option.id] && (
+              <img 
+                src={avatarUrls[option.id]} 
+                alt={option.label}
+                className="w-full h-full object-cover pixelated"
+                style={{ imageRendering: 'pixelated' }}
+              />
+            )}
           </div>
           <span className="text-sm font-medium">{option.label}</span>
         </button>

@@ -5,7 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { AvatarType } from "./AvatarSelector";
+import { AvatarType, generateBlockiesAvatar } from "./AvatarSelector";
 
 export interface Message {
   id: string;
@@ -25,7 +25,7 @@ interface ChatMessageProps {
 export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) {
   const isUser = message.type === 'user';
   const { user } = useAuth();
-  const [userAvatar, setUserAvatar] = useState<AvatarType>("fun1");
+  const [userAvatar, setUserAvatar] = useState<AvatarType>("avatar1");
   
   console.log("ChatMessage rendered:", { messageType: message.type, userAvatar });
   
@@ -64,16 +64,16 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
   
   // Fonction pour récupérer l'icône basé sur le type d'avatar
   const getAvatarUrl = (avatarType: AvatarType) => {
-    const avatarUrls: Record<AvatarType, string> = {
-      "fun1": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student1",
-      "fun2": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student2", 
-      "fun3": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student3",
-      "lorelei1": "https://api.dicebear.com/8.x/lorelei/svg?seed=emma",
-      "lorelei2": "https://api.dicebear.com/8.x/lorelei/svg?seed=lucas",
-      "lorelei3": "https://api.dicebear.com/8.x/lorelei/svg?seed=marie",
+    const seeds: Record<AvatarType, string> = {
+      "avatar1": "student1",
+      "avatar2": "student2", 
+      "avatar3": "student3",
+      "avatar4": "emma",
+      "avatar5": "lucas",
+      "avatar6": "marie",
     };
     
-    return avatarUrls[avatarType];
+    return generateBlockiesAvatar(seeds[avatarType]);
   };
   
   return (
@@ -93,6 +93,7 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
                 src={getAvatarUrl(userAvatar)} 
                 alt="Avatar utilisateur"
                 className="object-cover"
+                style={{ imageRendering: 'pixelated' }}
               />
               <AvatarFallback className="bg-primary text-primary-foreground text-xs">
                 U

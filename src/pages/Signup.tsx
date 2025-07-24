@@ -129,7 +129,7 @@ export default function Signup() {
             age: parseInt(age),
             school_level: schoolLevel,
             name: name,
-            avatar: 'fun1' // Avatar par défaut
+            avatar: 'avatar1' // Avatar par défaut
           });
 
         if (profileError) {

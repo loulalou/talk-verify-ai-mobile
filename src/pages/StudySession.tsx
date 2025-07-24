@@ -135,7 +135,7 @@ const StudySession = () => {
   const [loadingTopics, setLoadingTopics] = useState<Set<string>>(new Set());
   const [useGemini, setUseGemini] = useState(true); // Utiliser Gemini par défaut
   const [showTipsDialog, setShowTipsDialog] = useState(true); // Popup de conseils au début
-  const [aiAvatar, setAiAvatar] = useState<AvatarType>("fun1"); // Avatar pour l'IA
+  const [aiAvatar, setAiAvatar] = useState<AvatarType>("avatar1"); // Avatar pour l'IA
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
 

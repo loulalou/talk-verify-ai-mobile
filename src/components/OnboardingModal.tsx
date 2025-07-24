@@ -17,7 +17,7 @@ interface OnboardingModalProps {
 
 export function OnboardingModal({ isOpen, onClose, userName, userId }: OnboardingModalProps) {
   const [step, setStep] = useState(1);
-  const [selectedAvatar, setSelectedAvatar] = useState<AvatarType>("fun1");
+  const [selectedAvatar, setSelectedAvatar] = useState<AvatarType>("avatar1");
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 

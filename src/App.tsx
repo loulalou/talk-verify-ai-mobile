@@ -16,6 +16,7 @@ import { User, LogOut, Search, X } from "lucide-react";
 import { HelpPopup } from "./components/HelpPopup";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { generateBlockiesAvatar } from "./components/AvatarSelector";
 import Index from "./pages/Index";
 import StudySession from "./pages/StudySession";
 import Profile from "./pages/Profile";
@@ -98,17 +99,17 @@ function UserMenu() {
     fetchProfile();
   }, [user]);
 
-  const getAvatarIcon = (avatarType: string) => {
-    const avatarUrls: Record<string, string> = {
-      "fun1": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student1",
-      "fun2": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student2", 
-      "fun3": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student3",
-      "lorelei1": "https://api.dicebear.com/8.x/lorelei/svg?seed=emma",
-      "lorelei2": "https://api.dicebear.com/8.x/lorelei/svg?seed=lucas",
-      "lorelei3": "https://api.dicebear.com/8.x/lorelei/svg?seed=marie",
+  const getAvatarUrl = (avatarType: string) => {
+    const seeds: Record<string, string> = {
+      "avatar1": "student1",
+      "avatar2": "student2", 
+      "avatar3": "student3",
+      "avatar4": "emma",
+      "avatar5": "lucas",
+      "avatar6": "marie",
     };
     
-    return avatarUrls[avatarType] || avatarUrls["fun1"];
+    return generateBlockiesAvatar(seeds[avatarType] || seeds["avatar1"]);
   };
   return <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -116,9 +117,10 @@ function UserMenu() {
           <Avatar className="h-8 w-8">
             {userProfile?.avatar ? (
               <AvatarImage 
-                src={getAvatarIcon(userProfile.avatar)} 
+                src={getAvatarUrl(userProfile.avatar)} 
                 alt="Avatar utilisateur" 
                 className="object-cover"
+                style={{ imageRendering: 'pixelated' }}
               />
             ) : null}
             <AvatarFallback className="bg-primary text-primary-foreground text-sm">
