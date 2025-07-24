@@ -10,6 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { OnboardingModal } from "@/components/OnboardingModal";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -24,6 +25,8 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [newUserId, setNewUserId] = useState("");
 
   const maxSteps = 4;
 
@@ -120,11 +123,24 @@ export default function Signup() {
       }
 
       if (data.user) {
-        toast({
-          title: "Compte créé !",
-          description: "Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter."
-        });
-        navigate("/auth");
+        // Créer le profil utilisateur
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert({
+            user_id: data.user.id,
+            account_type: accountType,
+            age: parseInt(age),
+            school_level: schoolLevel,
+            name: name,
+            avatar: 'student' // Avatar par défaut
+          });
+
+        if (profileError) {
+          console.error('Erreur lors de la création du profil:', profileError);
+        }
+
+        setNewUserId(data.user.id);
+        setShowOnboarding(true);
       }
     } catch (error: any) {
       toast({
@@ -135,6 +151,15 @@ export default function Signup() {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const handleOnboardingClose = () => {
+    setShowOnboarding(false);
+    toast({
+      title: "Compte créé !",
+      description: "Bienvenue sur Hypatie ! Vous pouvez maintenant vous connecter."
+    });
+    navigate("/auth");
   };
 
   const renderStepContent = () => {
@@ -300,6 +325,13 @@ export default function Signup() {
           </div>
         </CardContent>
       </Card>
+
+      <OnboardingModal
+        isOpen={showOnboarding}
+        onClose={handleOnboardingClose}
+        userName={name}
+        userId={newUserId}
+      />
     </div>
   );
 }

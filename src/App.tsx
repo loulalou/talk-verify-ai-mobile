@@ -78,18 +78,44 @@ function HeaderSearch() {
 }
 
 function UserMenu() {
-  const {
-    user,
-    signOut
-  } = useAuth();
+  const { user, signOut } = useAuth();
   const navigate = useNavigate();
+  const [userProfile, setUserProfile] = useState<{ avatar: string } | null>(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      if (user) {
+        const { data, error } = await supabase
+          .from('profiles')
+          .select('avatar')
+          .eq('user_id', user.id)
+          .single();
+        if (data && !error) {
+          setUserProfile(data);
+        }
+      }
+    };
+    fetchProfile();
+  }, [user]);
+
+  const getAvatarIcon = (avatarType: string) => {
+    switch (avatarType) {
+      case "teacher": return "🧠";
+      case "student": return "📚";
+      case "researcher": return "🔬";
+      case "mentor": return "🎓";
+      case "developer": return "💻";
+      case "scientist": return "👤";
+      default: return "👤";
+    }
+  };
   return <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src="" alt="Utilisateur" />
             <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-              {user?.email?.[0]?.toUpperCase() || 'U'}
+              {userProfile?.avatar ? getAvatarIcon(userProfile.avatar) : (user?.email?.[0]?.toUpperCase() || 'U')}
             </AvatarFallback>
           </Avatar>
         </Button>
