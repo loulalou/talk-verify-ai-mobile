@@ -10,7 +10,6 @@ import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
-import { OnboardingModal } from "@/components/OnboardingModal";
 
 export default function Signup() {
   const navigate = useNavigate();
@@ -25,8 +24,6 @@ export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showOnboarding, setShowOnboarding] = useState(false);
-  const [newUserId, setNewUserId] = useState("");
 
   const maxSteps = 4;
 
@@ -139,8 +136,17 @@ export default function Signup() {
           console.error('Erreur lors de la création du profil:', profileError);
         }
 
-        setNewUserId(data.user.id);
-        setShowOnboarding(true);
+        // Marquer que l'utilisateur vient de s'inscrire pour l'onboarding
+        localStorage.setItem('showOnboarding', 'true');
+        localStorage.setItem('newUserName', name);
+
+        toast({
+          title: "Compte créé !",
+          description: "Bienvenue sur Hypatie ! Redirection en cours..."
+        });
+
+        // Rediriger vers la page d'accueil
+        window.location.href = '/';
       }
     } catch (error: any) {
       toast({
@@ -153,14 +159,6 @@ export default function Signup() {
     }
   };
 
-  const handleOnboardingClose = () => {
-    setShowOnboarding(false);
-    toast({
-      title: "Compte créé !",
-      description: "Bienvenue sur Hypatie ! Vous pouvez maintenant vous connecter."
-    });
-    navigate("/auth");
-  };
 
   const renderStepContent = () => {
     switch (step) {
@@ -325,13 +323,6 @@ export default function Signup() {
           </div>
         </CardContent>
       </Card>
-
-      <OnboardingModal
-        isOpen={showOnboarding}
-        onClose={handleOnboardingClose}
-        userName={name}
-        userId={newUserId}
-      />
     </div>
   );
 }
