@@ -39,15 +39,29 @@ export default function Auth() {
       });
       return;
     }
+    
     setIsLoading(true);
+    
     try {
-      const {
-        data,
-        error
-      } = await supabase.auth.signInWithPassword({
+      // Clean up any existing auth state first
+      Object.keys(localStorage).forEach((key) => {
+        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+          localStorage.removeItem(key);
+        }
+      });
+
+      // Attempt global sign out first to clean state
+      try {
+        await supabase.auth.signOut({ scope: 'global' });
+      } catch (err) {
+        // Continue even if this fails
+      }
+
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
       });
+      
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
           toast({
@@ -60,15 +74,16 @@ export default function Auth() {
         }
         return;
       }
+      
       if (data.user) {
         toast({
           title: "Welcome back!",
           description: "Successfully signed in."
         });
+        
+        // Force page reload to ensure clean state
         const from = location.state?.from?.pathname || "/";
-        navigate(from, {
-          replace: true
-        });
+        window.location.href = from;
       }
     } catch (error: any) {
       toast({
