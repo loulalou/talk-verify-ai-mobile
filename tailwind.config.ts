@@ -98,6 +98,31 @@ export default {
 					light: 'hsl(var(--category-languages-light))',
 					dark: 'hsl(var(--category-languages-dark))'
 				},
+				// Duolingo-inspired colors
+				'duolingo-green': {
+					DEFAULT: 'hsl(var(--duolingo-green))',
+					light: 'hsl(var(--duolingo-green-light))'
+				},
+				'duolingo-blue': {
+					DEFAULT: 'hsl(var(--duolingo-blue))',
+					light: 'hsl(var(--duolingo-blue-light))'
+				},
+				'duolingo-yellow': {
+					DEFAULT: 'hsl(var(--duolingo-yellow))',
+					light: 'hsl(var(--duolingo-yellow-light))'
+				},
+				'duolingo-red': {
+					DEFAULT: 'hsl(var(--duolingo-red))',
+					light: 'hsl(var(--duolingo-red-light))'
+				},
+				'duolingo-purple': {
+					DEFAULT: 'hsl(var(--duolingo-purple))',
+					light: 'hsl(var(--duolingo-purple-light))'
+				},
+				'duolingo-orange': {
+					DEFAULT: 'hsl(var(--duolingo-orange))',
+					light: 'hsl(var(--duolingo-orange-light))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',

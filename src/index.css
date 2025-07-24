@@ -101,6 +101,20 @@ All colors MUST be HSL.
     --category-languages-primary: 188 94% 37%;
     --category-languages-light: 185 96% 90%;
     --category-languages-dark: 188 94% 27%;
+
+    /* Duolingo-inspired colors */
+    --duolingo-green: 122 100% 35%; /* #00B300 */
+    --duolingo-green-light: 122 100% 95%; /* #E6FFE6 */
+    --duolingo-blue: 214 93% 55%; /* #1899D6 */
+    --duolingo-blue-light: 214 100% 96%; /* #F0F9FF */
+    --duolingo-yellow: 46 100% 50%; /* #FFD700 */
+    --duolingo-yellow-light: 46 100% 95%; /* #FFFCE6 */
+    --duolingo-red: 0 85% 60%; /* #FF4B4B */
+    --duolingo-red-light: 0 100% 97%; /* #FFF5F5 */
+    --duolingo-purple: 262 80% 60%; /* #8B5CF6 */
+    --duolingo-purple-light: 262 100% 97%; /* #F9F5FF */
+    --duolingo-orange: 25 95% 55%; /* #FF9500 */
+    --duolingo-orange-light: 25 100% 96%; /* #FFF8F0 */
   }
 
   .dark {
