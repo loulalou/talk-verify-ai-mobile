@@ -151,7 +151,7 @@ export function AppSidebar() {
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-2">
                 <GraduationCap className="w-6 h-6 text-primary" />
-                <h2 className="text-lg font-semibold text-foreground">Ada</h2>
+                <h2 className="text-lg font-semibold text-foreground">Hypatie</h2>
               </div>
             </div>
             
