@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
-import { User, Bot, Brain, BookOpen, GraduationCap, Laptop, Microscope } from "lucide-react";
+import { Bot } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { useAuth } from "@/contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -24,7 +25,7 @@ interface ChatMessageProps {
 export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) {
   const isUser = message.type === 'user';
   const { user } = useAuth();
-  const [userAvatar, setUserAvatar] = useState<AvatarType>("teacher");
+  const [userAvatar, setUserAvatar] = useState<AvatarType>("fun1");
   
   console.log("ChatMessage rendered:", { messageType: message.type, userAvatar });
   
@@ -62,21 +63,17 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
   }, [user]);
   
   // Fonction pour récupérer l'icône basé sur le type d'avatar
-  const getAvatarIcon = () => {
-    switch(userAvatar) {
-      case "teacher":
-        return <Brain className="w-4 h-4" />;
-      case "student":
-        return <BookOpen className="w-4 h-4" />;
-      case "researcher":
-        return <Microscope className="w-4 h-4" />;
-      case "mentor":
-        return <GraduationCap className="w-4 h-4" />;
-      case "developer":
-        return <Laptop className="w-4 h-4" />;
-      default:
-        return <User className="w-4 h-4" />;
-    }
+  const getAvatarUrl = (avatarType: AvatarType) => {
+    const avatarUrls: Record<AvatarType, string> = {
+      "fun1": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student1",
+      "fun2": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student2", 
+      "fun3": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student3",
+      "lorelei1": "https://api.dicebear.com/8.x/lorelei/svg?seed=emma",
+      "lorelei2": "https://api.dicebear.com/8.x/lorelei/svg?seed=lucas",
+      "lorelei3": "https://api.dicebear.com/8.x/lorelei/svg?seed=marie",
+    };
+    
+    return avatarUrls[avatarType];
   };
   
   return (
@@ -89,18 +86,26 @@ export function ChatMessage({ message, onConfirm, onReject }: ChatMessageProps) 
         isUser ? "flex-row-reverse space-x-reverse" : "flex-row"
       )}>
         {/* Avatar */}
-        <div className={cn(
-          "w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0",
-          isUser 
-            ? "bg-ai-primary text-white" 
-            : "bg-gradient-accent text-white"
-        )}>
+        <Avatar className="h-8 w-8 flex-shrink-0">
           {isUser ? (
-            getAvatarIcon()
+            <>
+              <AvatarImage 
+                src={getAvatarUrl(userAvatar)} 
+                alt="Avatar utilisateur"
+                className="object-cover"
+              />
+              <AvatarFallback className="bg-primary text-primary-foreground text-xs">
+                U
+              </AvatarFallback>
+            </>
           ) : (
-            getAvatarIcon() // Utiliser le même avatar pour l'IA
+            <>
+              <AvatarFallback className="bg-gradient-accent text-white">
+                <Bot className="w-4 h-4" />
+              </AvatarFallback>
+            </>
           )}
-        </div>
+        </Avatar>
 
         {/* Message Content */}
         <div className="flex flex-col space-y-2">

@@ -30,7 +30,7 @@ export function DuolingoSignup({ onSuccess }: DuolingoSignupProps) {
   const [examPreparation, setExamPreparation] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [avatar, setAvatar] = useState<AvatarType>("teacher");
+  const [avatar, setAvatar] = useState<AvatarType>("fun1");
 
   const countries = [
     { code: "FR", name: "France" },

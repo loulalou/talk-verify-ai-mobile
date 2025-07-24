@@ -99,23 +99,30 @@ function UserMenu() {
   }, [user]);
 
   const getAvatarIcon = (avatarType: string) => {
-    switch (avatarType) {
-      case "teacher": return "🧠";
-      case "student": return "📚";
-      case "researcher": return "🔬";
-      case "mentor": return "🎓";
-      case "developer": return "💻";
-      case "scientist": return "👤";
-      default: return "👤";
-    }
+    const avatarUrls: Record<string, string> = {
+      "fun1": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student1",
+      "fun2": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student2", 
+      "fun3": "https://api.dicebear.com/8.x/fun-emoji/svg?seed=student3",
+      "lorelei1": "https://api.dicebear.com/8.x/lorelei/svg?seed=emma",
+      "lorelei2": "https://api.dicebear.com/8.x/lorelei/svg?seed=lucas",
+      "lorelei3": "https://api.dicebear.com/8.x/lorelei/svg?seed=marie",
+    };
+    
+    return avatarUrls[avatarType] || avatarUrls["fun1"];
   };
   return <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            <AvatarImage src="" alt="Utilisateur" />
+            {userProfile?.avatar ? (
+              <AvatarImage 
+                src={getAvatarIcon(userProfile.avatar)} 
+                alt="Avatar utilisateur" 
+                className="object-cover"
+              />
+            ) : null}
             <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-              {userProfile?.avatar ? getAvatarIcon(userProfile.avatar) : (user?.email?.[0]?.toUpperCase() || 'U')}
+              {user?.email?.[0]?.toUpperCase() || 'U'}
             </AvatarFallback>
           </Avatar>
         </Button>
