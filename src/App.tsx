@@ -20,6 +20,7 @@ import Index from "./pages/Index";
 import StudySession from "./pages/StudySession";
 import Profile from "./pages/Profile";
 import Auth from "./pages/Auth";
+import Signup from "./pages/Signup";
 import { CategorySelection } from "./components/CategorySelection";
 import { PeriodSelection } from "./components/PeriodSelection";
 import NotFound from "./pages/NotFound";
@@ -117,6 +118,7 @@ const App = () => <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <Routes>
             <Route path="/auth" element={<Auth />} />
+            <Route path="/signup" element={<Signup />} />
             <Route path="/*" element={<ProtectedRoute>
                 <SidebarProvider>
                   <div className="flex min-h-screen w-full">
