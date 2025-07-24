@@ -29,15 +29,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Clean up auth state on startup
-    const cleanupAuthState = () => {
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
-    };
-
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (event, session) => {
@@ -48,8 +39,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
         // Handle sign out event
         if (event === 'SIGNED_OUT') {
-          cleanupAuthState();
-          window.location.href = '/auth';
+          // Only clean up on explicit sign out
+          Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+              localStorage.removeItem(key);
+            }
+          });
         }
       }
     );
@@ -58,7 +53,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
     supabase.auth.getSession().then(({ data: { session }, error }) => {
       if (error) {
         console.error('Session error:', error);
-        cleanupAuthState();
+        // Only clean up if there's a refresh token error
+        if (error.message?.includes('refresh_token_not_found') || error.message?.includes('Invalid Refresh Token')) {
+          Object.keys(localStorage).forEach((key) => {
+            if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
+              localStorage.removeItem(key);
+            }
+          });
+        }
         setSession(null);
         setUser(null);
       } else {
@@ -68,7 +70,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setLoading(false);
     }).catch((error) => {
       console.error('Failed to get session:', error);
-      cleanupAuthState();
       setLoading(false);
     });
 

@@ -43,20 +43,7 @@ export default function Auth() {
     setIsLoading(true);
     
     try {
-      // Clean up any existing auth state first
-      Object.keys(localStorage).forEach((key) => {
-        if (key.startsWith('supabase.auth.') || key.includes('sb-')) {
-          localStorage.removeItem(key);
-        }
-      });
-
-      // Attempt global sign out first to clean state
-      try {
-        await supabase.auth.signOut({ scope: 'global' });
-      } catch (err) {
-        // Continue even if this fails
-      }
-
+      // Only clean up auth state if there are token errors, not on every login
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password
@@ -81,9 +68,9 @@ export default function Auth() {
           description: "Successfully signed in."
         });
         
-        // Force page reload to ensure clean state
+        // Use React Router navigation instead of window.location
         const from = location.state?.from?.pathname || "/";
-        window.location.href = from;
+        navigate(from, { replace: true });
       }
     } catch (error: any) {
       toast({
