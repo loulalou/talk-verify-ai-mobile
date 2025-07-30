@@ -1,0 +1,8 @@
+pipecat-ai[google,openai,daily]
+python-dotenv
+uvicorn
+fastapi
+loguru
+aiofiles
+aiohttp
+onnxruntime
