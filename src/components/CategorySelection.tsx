@@ -1,9 +1,16 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { BookOpen, Globe, Calculator, Atom, Palette, Music, Languages, ChevronRight, GraduationCap } from "lucide-react";
+import { BookOpen, Globe, Calculator, Atom, Palette, Languages } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { categoryColors, getCategoryGradientClasses } from "@/utils/categoryColors";
+import { 
+  Container, 
+  Typography, 
+  Box, 
+  Card, 
+  CardContent, 
+  CardActionArea,
+  Chip
+} from "@mui/material";
 export interface StudyCategory {
   id: string;
   name: string;
@@ -73,42 +80,84 @@ export function CategorySelection() {
       });
     }, 300); // Délai court pour voir la sélection
   };
-  return <div className="bg-gradient-surface min-h-screen">
-      {/* Header */}
-      
-
-      {/* Content */}
-      <div className="max-w-4xl mx-auto p-6">
-        <div className="mb-8">
-          <h2 className="font-semibold mb-2 text-center text-3xl">Que souhaitez-vous étudier aujourd'hui ?</h2>
-          <p className="text-muted-foreground text-center">
+  return (
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', py: 4 }}>
+      <Container maxWidth="lg">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ 
+            fontWeight: 'bold', 
+            color: 'text.primary',
+            mb: 2,
+            fontSize: { xs: '2rem', md: '2.5rem' }
+          }}>
+            Que souhaitez-vous étudier aujourd'hui ?
+          </Typography>
+          <Typography variant="h6" color="text.secondary">
             Sélectionnez une catégorie de matière pour commencer votre session de vérification de connaissances avec l'IA
-          </p>
-        </div>
+          </Typography>
+        </Box>
 
-
-        {/* Category Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-          {studyCategories.map(category => <Card key={category.id} className={`cursor-pointer transition-all duration-300 hover:scale-105 ${selectedCategory?.id === category.id ? 'ring-2 ring-ai-primary bg-ai-primary/5' : 'hover:shadow-lg'}`} onClick={() => handleCategorySelect(category)}>
-              <div className="p-6">
-                <div className={`w-16 h-16 ${category.color} rounded-xl flex items-center justify-center text-white mb-4 mx-auto`}>
-                  {category.icon}
-                </div>
-                <h3 className="font-semibold text-lg text-center mb-2">
-                  {category.name}
-                </h3>
-                <p className="text-sm text-muted-foreground text-center mb-4">
-                  {category.description}
-                </p>
-                <div className="text-xs text-muted-foreground text-center">
-                  {category.periods?.length} sujets disponibles
-                </div>
-              </div>
-            </Card>)}
-        </div>
-
-        {/* Suppression de la section "Selected Category Preview" car navigation automatique */}
-
-      </div>
-    </div>;
+        <Box sx={{ 
+          display: 'grid', 
+          gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, 
+          gap: 3 
+        }}>
+          {studyCategories.map((category) => (
+            <Card 
+              key={category.id}
+              sx={{ 
+                height: '100%',
+                transition: 'all 0.3s ease-in-out',
+                '&:hover': {
+                  transform: 'scale(1.05)',
+                  boxShadow: 6,
+                },
+                ...(selectedCategory?.id === category.id && {
+                  transform: 'scale(1.05)',
+                  boxShadow: 8,
+                  border: '2px solid',
+                  borderColor: 'primary.main'
+                })
+              }}
+            >
+              <CardActionArea onClick={() => handleCategorySelect(category)} sx={{ height: '100%' }}>
+                <CardContent sx={{ p: 3, textAlign: 'center', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+                  <Box>
+                    <Box 
+                      sx={{ 
+                        width: 64, 
+                        height: 64,
+                        background: `linear-gradient(135deg, ${categoryColors[category.id]?.gradient || 'hsl(220, 70%, 50%), hsl(220, 70%, 60%)'})`,
+                        borderRadius: 2,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: 'white',
+                        mx: 'auto',
+                        mb: 2
+                      }}
+                    >
+                      {category.icon}
+                    </Box>
+                    <Typography variant="h6" component="h3" sx={{ fontWeight: 'bold', mb: 1 }}>
+                      {category.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {category.description}
+                    </Typography>
+                  </Box>
+                  <Chip 
+                    label={`${category.periods?.length} sujets disponibles`}
+                    size="small"
+                    variant="outlined"
+                    color="primary"
+                  />
+                </CardContent>
+              </CardActionArea>
+            </Card>
+          ))}
+        </Box>
+      </Container>
+    </Box>
+  );
 }

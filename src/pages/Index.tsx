@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { CategorySelection } from "@/components/CategorySelection";
 import { OnboardingModal } from "@/components/OnboardingModal";
 import { useAuth } from "@/contexts/AuthContext";
+import { Box } from "@mui/material";
 
 const Index = () => {
   const { user } = useAuth();
@@ -28,7 +29,7 @@ const Index = () => {
   };
 
   return (
-    <>
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', p: 2 }}>
       <CategorySelection />
       
       <OnboardingModal
@@ -37,7 +38,7 @@ const Index = () => {
         userName={userName}
         userId={user?.id || ""}
       />
-    </>
+    </Box>
   );
 };
 

@@ -2,6 +2,8 @@ import React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "next-themes";
+import { Material3Provider } from "@/components/providers/Material3Provider";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
@@ -10,9 +12,8 @@ import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { User, LogOut, Search, X } from "lucide-react";
+import { Button, IconButton, TextField, InputAdornment, Typography, Box, AppBar, Toolbar, Menu, MenuItem, Avatar as MuiAvatar, ListItemIcon, ListItemText, Divider } from "@mui/material";
+import { User, LogOut, Search, X, Menu as MenuIcon } from "lucide-react";
 import { HelpPopup } from "./components/HelpPopup";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -47,34 +48,42 @@ function WelcomeMessage() {
     fetchProfile();
   }, [user]);
   if (!userProfile?.name) return null;
-  return <span className="text-muted-foreground text-xl font-bold">
+  return <Typography variant="h5" color="text.secondary" sx={{ fontWeight: 'bold' }}>
       Bonjour {userProfile.name}
-    </span>;
+    </Typography>;
 }
 
 function HeaderSearch() {
   const [searchQuery, setSearchQuery] = useState("");
   
   return (
-    <div className="relative max-w-md w-full">
-      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-      <Input 
-        placeholder="Rechercher des conversations..." 
-        value={searchQuery} 
-        onChange={(e) => setSearchQuery(e.target.value)} 
-        className="pl-10 pr-10 bg-input border-border focus:border-primary text-foreground placeholder:text-muted-foreground"
+    <Box sx={{ maxWidth: '400px', width: '100%' }}>
+      <TextField
+        placeholder="Rechercher des conversations..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        size="small"
+        fullWidth
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search size={20} />
+            </InputAdornment>
+          ),
+          endAdornment: searchQuery && (
+            <InputAdornment position="end">
+              <IconButton
+                size="small"
+                onClick={() => setSearchQuery("")}
+                edge="end"
+              >
+                <X size={16} />
+              </IconButton>
+            </InputAdornment>
+          ),
+        }}
       />
-      {searchQuery && (
-        <Button 
-          variant="ghost" 
-          size="sm" 
-          onClick={() => setSearchQuery("")} 
-          className="absolute right-2 top-1/2 transform -translate-y-1/2 h-6 w-6 p-0 hover:bg-accent text-muted-foreground hover:text-accent-foreground"
-        >
-          <X className="w-3 h-3" />
-        </Button>
-      )}
-    </div>
+    </Box>
   );
 }
 
@@ -82,6 +91,7 @@ function UserMenu() {
   const { user, signOut } = useAuth();
   const navigate = useNavigate();
   const [userProfile, setUserProfile] = useState<{ avatar: string } | null>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -111,44 +121,72 @@ function UserMenu() {
     
     return generateBlockiesAvatar(seeds[avatarType] || seeds["avatar1"]);
   };
-  return <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            {userProfile?.avatar ? (
-              <AvatarImage 
-                src={getAvatarUrl(userProfile.avatar)} 
-                alt="Avatar utilisateur" 
-                className="object-cover"
-                style={{ imageRendering: 'pixelated' }}
-              />
-            ) : null}
-            <AvatarFallback className="bg-primary text-primary-foreground text-sm">
-              {user?.email?.[0]?.toUpperCase() || 'U'}
-            </AvatarFallback>
-          </Avatar>
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuGroup>
-          <DropdownMenuItem onClick={() => navigate('/profile')}>
-            <User className="mr-2 h-4 w-4" />
-            <span>Profil</span>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={signOut}>
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Se déconnecter</span>
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>;
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <IconButton onClick={handleClick} size="small">
+        <MuiAvatar sx={{ width: 32, height: 32 }}>
+          {userProfile?.avatar ? (
+            <img 
+              src={getAvatarUrl(userProfile.avatar)} 
+              alt="Avatar utilisateur" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                imageRendering: 'pixelated' 
+              }}
+            />
+          ) : (
+            user?.email?.[0]?.toUpperCase() || 'U'
+          )}
+        </MuiAvatar>
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'right',
+        }}
+      >
+        <MenuItem onClick={() => { navigate('/profile'); handleClose(); }}>
+          <ListItemIcon>
+            <User size={20} />
+          </ListItemIcon>
+          <ListItemText>Profil</ListItemText>
+        </MenuItem>
+        <Divider />
+        <MenuItem onClick={() => { signOut(); handleClose(); }}>
+          <ListItemIcon>
+            <LogOut size={20} />
+          </ListItemIcon>
+          <ListItemText>Se déconnecter</ListItemText>
+        </MenuItem>
+      </Menu>
+    </>
+  );
 }
 const queryClient = new QueryClient();
 const App = () => <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <Material3Provider>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
       <BrowserRouter>
         <AuthProvider>
           <Routes>
@@ -159,19 +197,25 @@ const App = () => <QueryClientProvider client={queryClient}>
                   <div className="flex min-h-screen w-full">
                     <AppSidebar />
                     <div className="flex-1 flex flex-col">
-                      <header className="h-12 flex items-center justify-between border-b border-border bg-background px-4">
-                        <div className="flex items-center space-x-4">
-                          <SidebarTrigger className="text-foreground hover:bg-accent" />
-                          <WelcomeMessage />
-                        </div>
-                        <div className="flex-1 flex justify-center max-w-2xl mx-8">
-                          <HeaderSearch />
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <HelpPopup />
-                          <UserMenu />
-                        </div>
-                      </header>
+                      <AppBar position="static" color="default" elevation={1} sx={{ 
+                        borderBottom: 1, 
+                        borderColor: 'divider',
+                        backgroundColor: 'background.paper'
+                      }}>
+                        <Toolbar sx={{ minHeight: '48px !important', px: 2 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                            <SidebarTrigger className="text-foreground hover:bg-accent" />
+                            <WelcomeMessage />
+                          </Box>
+                          <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', px: 4 }}>
+                            <HeaderSearch />
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <HelpPopup />
+                            <UserMenu />
+                          </Box>
+                        </Toolbar>
+                      </AppBar>
                       <main className="flex-1">
                         <Routes>
                           <Route path="/" element={<Index />} />
@@ -189,6 +233,8 @@ const App = () => <QueryClientProvider client={queryClient}>
           </Routes>
         </AuthProvider>
       </BrowserRouter>
-    </TooltipProvider>
+        </TooltipProvider>
+      </Material3Provider>
+    </ThemeProvider>
   </QueryClientProvider>;
 export default App;
