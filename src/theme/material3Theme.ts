@@ -5,10 +5,10 @@ const material3Theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: 'hsl(220, 70%, 50%)', // --primary
-      light: 'hsl(220, 70%, 60%)',
-      dark: 'hsl(220, 70%, 40%)',
-      contrastText: '#ffffff',
+      main: 'hsl(270, 50%, 40%)', // Primary
+      light: 'hsl(270, 40%, 85%)', // Primary Container
+      dark: 'hsl(270, 60%, 30%)',
+      contrastText: '#ffffff', // On Primary
     },
     secondary: {
       main: 'hsl(220, 15%, 25%)', // --secondary
@@ -85,9 +85,9 @@ const material3Theme = createTheme({
           fontWeight: 500,
         },
         containedPrimary: {
-          backgroundColor: 'hsl(220, 70%, 50%)',
+          backgroundColor: 'hsl(270, 50%, 40%)',
           '&:hover': {
-            backgroundColor: 'hsl(220, 70%, 45%)',
+            backgroundColor: 'hsl(270, 60%, 35%)',
           },
         },
       },
@@ -126,9 +126,9 @@ const darkMaterial3Theme = createTheme({
     ...material3Theme.palette,
     mode: 'dark',
     primary: {
-      main: 'hsl(220, 70%, 60%)',
-      light: 'hsl(220, 70%, 70%)',
-      dark: 'hsl(220, 70%, 50%)',
+      main: 'hsl(270, 60%, 60%)',
+      light: 'hsl(270, 50%, 80%)',
+      dark: 'hsl(270, 70%, 40%)',
       contrastText: '#000000',
     },
     background: {
