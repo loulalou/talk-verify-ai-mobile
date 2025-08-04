@@ -49,7 +49,7 @@ export function AppSidebar() {
   }, [user]);
 
   // Mock conversations data
-  const [conversations] = useState<Conversation[]>([{
+  const [conversations, setConversations] = useState<Conversation[]>([{
     id: "1",
     title: "Ancient History Discussion",
     category: "history",
@@ -145,6 +145,13 @@ export function AppSidebar() {
       }
     });
   };
+
+  const handleDeleteConversation = (conversationId: string, event: React.MouseEvent) => {
+    event.stopPropagation(); // Prevent navigation when clicking delete
+    setConversations(prevConversations => 
+      prevConversations.filter(conv => conv.id !== conversationId)
+    );
+  };
   return <Sidebar className="border-r border-border bg-background" collapsible="icon">
       <SidebarHeader className="p-4 border-b border-border bg-card">
         {!collapsed && <>
@@ -207,7 +214,10 @@ export function AppSidebar() {
                                     Partager la conversation
                                   </DropdownMenuItem>
                                   <DropdownMenuSeparator />
-                                  <DropdownMenuItem className="text-destructive hover:bg-accent hover:text-destructive">
+                                  <DropdownMenuItem 
+                                    className="text-destructive hover:bg-accent hover:text-destructive"
+                                    onClick={(e) => handleDeleteConversation(conversation.id, e)}
+                                  >
                                     Supprimer
                                   </DropdownMenuItem>
                                 </DropdownMenuContent>
