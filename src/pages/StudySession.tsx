@@ -19,7 +19,6 @@ import GeminiService from "@/utils/GeminiService";
 import { AvatarType } from "@/components/AvatarSelector";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
-
 const StudySession = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -33,57 +32,49 @@ const StudySession = () => {
   }
 
   // Find the category from our data to get the icon
-  const studyCategories: StudyCategory[] = [
-    {
-      id: "history",
-      name: "Histoire",
-      description: "Événements mondiaux, civilisations et chronologies",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("history"),
-      periods: []
-    },
-    {
-      id: "geography",
-      name: "Géographie", 
-      description: "Pays, capitales, caractéristiques physiques",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("geography"),
-      periods: []
-    },
-    {
-      id: "mathematics",
-      name: "Mathématiques",
-      description: "Algèbre, géométrie, calcul, et plus",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("mathematics"),
-      periods: []
-    },
-    {
-      id: "science",
-      name: "Sciences",
-      description: "Concepts de physique, chimie, biologie",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("science"),
-      periods: []
-    },
-    {
-      id: "literature",
-      name: "Littérature",
-      description: "Œuvres classiques, auteurs et périodes littéraires",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("literature"),
-      periods: []
-    },
-    {
-      id: "languages",
-      name: "Langues",
-      description: "Grammaire, vocabulaire et compétences linguistiques",
-      icon: <Brain className="w-8 h-8" />,
-      color: getCategoryGradientClasses("languages"),
-      periods: []
-    }
-  ];
-
+  const studyCategories: StudyCategory[] = [{
+    id: "history",
+    name: "Histoire",
+    description: "Événements mondiaux, civilisations et chronologies",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("history"),
+    periods: []
+  }, {
+    id: "geography",
+    name: "Géographie",
+    description: "Pays, capitales, caractéristiques physiques",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("geography"),
+    periods: []
+  }, {
+    id: "mathematics",
+    name: "Mathématiques",
+    description: "Algèbre, géométrie, calcul, et plus",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("mathematics"),
+    periods: []
+  }, {
+    id: "science",
+    name: "Sciences",
+    description: "Concepts de physique, chimie, biologie",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("science"),
+    periods: []
+  }, {
+    id: "literature",
+    name: "Littérature",
+    description: "Œuvres classiques, auteurs et périodes littéraires",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("literature"),
+    periods: []
+  }, {
+    id: "languages",
+    name: "Langues",
+    description: "Grammaire, vocabulaire et compétences linguistiques",
+    icon: <Brain className="w-8 h-8" />,
+    color: getCategoryGradientClasses("languages"),
+    periods: []
+  }];
   const category = studyCategories.find(cat => cat.id === categoryData.categoryId) || {
     id: categoryData.categoryId,
     name: categoryData.categoryName,
@@ -91,23 +82,25 @@ const StudySession = () => {
     icon: <Brain className="w-8 h-8" />,
     color: categoryData.categoryColor
   };
-  
-  const { user } = useAuth();
-  
+  const {
+    user
+  } = useAuth();
+
   // Récupérer l'avatar de l'utilisateur pour l'utiliser comme avatar de l'IA
   useEffect(() => {
     if (user) {
       console.log("Attempting to fetch avatar in StudySession for user:", user.id);
       const fetchUserAvatar = async () => {
         try {
-          const { data, error } = await supabase
-            .from('profiles')
-            .select('avatar')
-            .eq('user_id', user.id)
-            .maybeSingle();
-          
-          console.log("Study AI avatar fetch:", { data, error, userId: user.id });
-          
+          const {
+            data,
+            error
+          } = await supabase.from('profiles').select('avatar').eq('user_id', user.id).maybeSingle();
+          console.log("Study AI avatar fetch:", {
+            data,
+            error,
+            userId: user.id
+          });
           if (data && !error && data.avatar) {
             setAiAvatar(data.avatar as AvatarType);
             console.log("AI avatar set to:", data.avatar);
@@ -120,7 +113,6 @@ const StudySession = () => {
           console.error("Exception during avatar fetch:", err);
         }
       };
-      
       fetchUserAvatar();
     } else {
       console.log("No user logged in, using default avatar");
@@ -141,61 +133,47 @@ const StudySession = () => {
   }); // Popup de conseils au début
   const [aiAvatar, setAiAvatar] = useState<AvatarType>("avatar1"); // Avatar pour l'IA
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
 
   // Mock AI responses for demo
-  const mockAIResponses = [
-    "Je comprends que vous aimeriez en savoir plus sur ce sujet. Laissez-moi partager ce que je sais.",
-    "Basé sur les informations disponibles, voici ce que je peux vous dire sur ce sujet.",
-    "C'est une question intéressante. Permettez-moi de vous donner quelques insights.",
-    "Je serais ravi de vous aider à mieux comprendre. Voici ce que j'ai appris.",
-  ];
-
-  const mockKnowledgeItems = [
-    {
-      title: "Python Programming",
-      content: "Python is a high-level programming language known for its simplicity and readability.",
-      category: "Technology",
-      confidence: 0.95
-    },
-    {
-      title: "Climate Change",
-      content: "Global average temperatures have risen by approximately 1.1°C since the late 19th century.",
-      category: "Science",
-      confidence: 0.88
-    }
-  ];
-
+  const mockAIResponses = ["Je comprends que vous aimeriez en savoir plus sur ce sujet. Laissez-moi partager ce que je sais.", "Basé sur les informations disponibles, voici ce que je peux vous dire sur ce sujet.", "C'est une question intéressante. Permettez-moi de vous donner quelques insights.", "Je serais ravi de vous aider à mieux comprendre. Voici ce que j'ai appris."];
+  const mockKnowledgeItems = [{
+    title: "Python Programming",
+    content: "Python is a high-level programming language known for its simplicity and readability.",
+    category: "Technology",
+    confidence: 0.95
+  }, {
+    title: "Climate Change",
+    content: "Global average temperatures have risen by approximately 1.1°C since the late 19th century.",
+    category: "Science",
+    confidence: 0.88
+  }];
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
-
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    messagesEndRef.current?.scrollIntoView({
+      behavior: "smooth"
+    });
   };
-  
   console.log("Current AI avatar:", aiAvatar);
-
   const simulateAIResponse = async (userMessage: string) => {
     setIsProcessing(true);
-    
     try {
       if (useGemini) {
         // Utiliser Gemini
         const periodsContext = periods.join(', ');
-        const result = await GeminiService.sendMessage(
-          userMessage, 
-          category.name, 
-          `Session d'étude sur: ${periodsContext}`
-        );
-        
+        const result = await GeminiService.sendMessage(userMessage, category.name, `Session d'étude sur: ${periodsContext}`);
         if (result.success && result.response) {
           const aiMessage: Message = {
             id: Date.now().toString(),
             content: result.response,
             type: 'ai',
             timestamp: new Date(),
-            needsConfirmation: Math.random() > 0.7, // 30% chance
+            needsConfirmation: Math.random() > 0.7,
+            // 30% chance
             confirmed: false
           };
           setMessages(prev => [...prev, aiMessage]);
@@ -207,7 +185,6 @@ const StudySession = () => {
         await new Promise(resolve => setTimeout(resolve, 1500));
         const response = mockAIResponses[Math.floor(Math.random() * mockAIResponses.length)];
         const needsConfirmation = Math.random() > 0.5;
-        
         const aiMessage: Message = {
           id: Date.now().toString(),
           content: response,
@@ -234,9 +211,9 @@ const StudySession = () => {
       toast({
         title: "Erreur",
         description: "Impossible de communiquer avec l'IA. Utilisation du mode hors ligne.",
-        variant: "destructive",
+        variant: "destructive"
       });
-      
+
       // Fallback en cas d'erreur
       const response = "Je rencontre des difficultés techniques. Pouvez-vous reformuler votre question ?";
       const aiMessage: Message = {
@@ -252,82 +229,72 @@ const StudySession = () => {
       setIsProcessing(false);
     }
   };
-
   const handleRecordingComplete = async (audioBlob: Blob) => {
     // In a real app, you'd send this to a speech-to-text service
     const mockTranscription = "This is a sample transcription of the recorded audio.";
-    
     const userMessage: Message = {
       id: Date.now().toString(),
       content: mockTranscription,
       type: 'user',
       timestamp: new Date()
     };
-
     setMessages(prev => [...prev, userMessage]);
-    
     toast({
       title: "Voice recorded",
-      description: "Processing your message...",
+      description: "Processing your message..."
     });
-
     await simulateAIResponse(mockTranscription);
   };
-
   const handleMessageConfirm = (messageId: string) => {
-    setMessages(prev => prev.map(msg => 
-      msg.id === messageId ? { ...msg, confirmed: true } : msg
-    ));
+    setMessages(prev => prev.map(msg => msg.id === messageId ? {
+      ...msg,
+      confirmed: true
+    } : msg));
     toast({
       title: "Information confirmed",
-      description: "Thank you for confirming this information.",
+      description: "Thank you for confirming this information."
     });
   };
-
   const handleMessageReject = (messageId: string) => {
     toast({
       title: "Feedback noted",
-      description: "We'll improve our responses based on your feedback.",
+      description: "We'll improve our responses based on your feedback."
     });
   };
-
   const handleKnowledgeConfirm = (knowledgeId: string) => {
-    setKnowledgeItems(prev => prev.map(item => 
-      item.id === knowledgeId ? { ...item, status: 'confirmed' as const } : item
-    ));
+    setKnowledgeItems(prev => prev.map(item => item.id === knowledgeId ? {
+      ...item,
+      status: 'confirmed' as const
+    } : item));
     toast({
       title: "Knowledge confirmed",
-      description: "This information has been added to the confirmed knowledge base.",
+      description: "This information has been added to the confirmed knowledge base."
     });
   };
-
   const handleKnowledgeReject = (knowledgeId: string) => {
-    setKnowledgeItems(prev => prev.map(item => 
-      item.id === knowledgeId ? { ...item, status: 'rejected' as const } : item
-    ));
+    setKnowledgeItems(prev => prev.map(item => item.id === knowledgeId ? {
+      ...item,
+      status: 'rejected' as const
+    } : item));
     toast({
       title: "Knowledge rejected",
-      description: "This information has been marked as incorrect.",
+      description: "This information has been marked as incorrect."
     });
   };
-
   const clearChat = () => {
     setMessages([]);
     setKnowledgeItems([]);
     toast({
       title: "Chat cleared",
-      description: "Starting fresh conversation.",
+      description: "Starting fresh conversation."
     });
   };
-
   const fetchTopicDocumentation = async (topic: string) => {
     setLoadingTopics(prev => new Set(prev).add(topic));
-    
     try {
       if (useGemini) {
         // Utiliser Gemini pour la documentation
         const result = await GeminiService.getTopicExplanation(topic, category.name);
-        
         if (result.success && result.content) {
           setTopicDocumentation(prev => ({
             ...prev,
@@ -335,7 +302,7 @@ const StudySession = () => {
           }));
           toast({
             title: "Documentation récupérée",
-            description: `Informations sur ${topic} obtenues via Gemini`,
+            description: `Informations sur ${topic} obtenues via Gemini`
           });
         } else {
           throw new Error(result.error || "Échec de récupération via Gemini");
@@ -343,7 +310,6 @@ const StudySession = () => {
       } else if (hasApiKey) {
         // Fallback vers Perplexity si disponible
         const result = await PerplexityService.getTopicDocumentation(topic, category.name);
-        
         if (result.success && result.content) {
           setTopicDocumentation(prev => ({
             ...prev,
@@ -351,7 +317,7 @@ const StudySession = () => {
           }));
           toast({
             title: "Documentation récupérée",
-            description: `Informations sur ${topic} récupérées`,
+            description: `Informations sur ${topic} récupérées`
           });
         } else {
           throw new Error(result.error || "Échec de récupération de la documentation");
@@ -363,7 +329,7 @@ const StudySession = () => {
       toast({
         title: "Erreur",
         description: error instanceof Error ? error.message : "Échec de récupération de la documentation",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setLoadingTopics(prev => {
@@ -373,7 +339,6 @@ const StudySession = () => {
       });
     }
   };
-
   const fetchAllDocumentation = async () => {
     if (!hasApiKey || periods.length === 0) return;
 
@@ -384,17 +349,14 @@ const StudySession = () => {
       }
     }
   };
-
   const handleApiKeySet = () => {
     setHasApiKey(true);
     toast({
       title: "API Key Set",
-      description: "You can now fetch documentation for your study topics",
+      description: "You can now fetch documentation for your study topics"
     });
   };
-
-  return (
-    <div className="min-h-screen bg-gradient-surface text-foreground">
+  return <div className="min-h-screen bg-gradient-surface text-foreground">
       {/* Popup de conseils d'étude */}
       <Dialog open={showTipsDialog} onOpenChange={setShowTipsDialog}>
         <DialogContent className="max-w-2xl">
@@ -444,14 +406,10 @@ const StudySession = () => {
             </div>
            </div>
            <div className="flex items-center justify-between mt-6">
-             <Button 
-               variant="outline" 
-               onClick={() => {
-                 localStorage.setItem('hideStudyTips', 'true');
-                 setShowTipsDialog(false);
-               }}
-               className="text-muted-foreground hover:text-foreground"
-             >
+             <Button variant="outline" onClick={() => {
+            localStorage.setItem('hideStudyTips', 'true');
+            setShowTipsDialog(false);
+          }} className="text-muted-foreground hover:text-foreground">
                Ne plus me le rappeler
              </Button>
              <Button onClick={() => setShowTipsDialog(false)} className="bg-ai-primary hover:bg-ai-primary/90">
@@ -465,12 +423,7 @@ const StudySession = () => {
       <div className="bg-ai-surface border-b border-border/50 p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-4">
-            <Button
-              variant="ghost" 
-              size="sm"
-              onClick={() => navigate('/')}
-              className="hover:bg-ai-surface-elevated"
-            >
+            <Button variant="ghost" size="sm" onClick={() => navigate('/')} className="hover:bg-ai-surface-elevated">
               <ArrowLeft className="w-4 h-4 mr-1" />
               Retour
             </Button>
@@ -485,37 +438,25 @@ const StudySession = () => {
             </div>
           </div>
           <div className="flex items-center space-x-2">
-            <Button 
-              variant={useGemini ? "default" : "outline"} 
-              size="sm" 
-              onClick={() => setUseGemini(!useGemini)}
-            >
-              {useGemini ? "Gemini" : "Mode hors ligne"}
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm" 
-              onClick={() => setActiveTab(activeTab === 'chat' ? 'knowledge' : 'chat')}
-            >
+            
+            <Button variant="outline" size="sm" onClick={() => setActiveTab(activeTab === 'chat' ? 'knowledge' : 'chat')}>
               {activeTab === 'chat' ? <Lightbulb className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
             </Button>
-            <Button variant="surface" size="sm" onClick={clearChat}>
-              Effacer
-            </Button>
+            
           </div>
         </div>
       </div>
 
       {/* Zone de chat principale */}
-      <div className="flex-1 flex flex-col bg-gradient-to-b from-background to-muted/30" style={{ height: 'calc(100vh - 80px)' }}>
-        {activeTab === 'chat' ? (
-          <>
+      <div className="flex-1 flex flex-col bg-gradient-to-b from-background to-muted/30" style={{
+      height: 'calc(100vh - 80px)'
+    }}>
+        {activeTab === 'chat' ? <>
             {/* Messages de chat */}
             <div className="flex-1 overflow-hidden">
               <ScrollArea className="h-full">
                 <div className="p-4 space-y-4">
-                  {messages.length === 0 ? (
-                    <div className="flex items-center justify-center h-full min-h-[400px]">
+                  {messages.length === 0 ? <div className="flex items-center justify-center h-full min-h-[400px]">
                       <div className="text-center space-y-4 max-w-md">
                         <div className="w-16 h-16 bg-ai-primary rounded-full flex items-center justify-center mx-auto">
                           <MessageSquare className="w-8 h-8 text-white" />
@@ -531,20 +472,10 @@ const StudySession = () => {
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="space-y-4 pb-4">
-                      {messages.map((message) => (
-                        <ChatMessage
-                          key={message.id}
-                          message={message}
-                          onConfirm={handleMessageConfirm}
-                          onReject={handleMessageReject}
-                        />
-                      ))}
+                    </div> : <div className="space-y-4 pb-4">
+                      {messages.map(message => <ChatMessage key={message.id} message={message} onConfirm={handleMessageConfirm} onReject={handleMessageReject} />)}
                       <div ref={messagesEndRef} />
-                    </div>
-                  )}
+                    </div>}
                 </div>
               </ScrollArea>
             </div>
@@ -552,10 +483,7 @@ const StudySession = () => {
             {/* Zone d'input style chat */}
             <div className="border-t border-border/50 bg-ai-surface p-4">
               <div className="max-w-4xl mx-auto">
-                <VoiceRecorder 
-                  onRecordingComplete={handleRecordingComplete}
-                  isProcessing={isProcessing}
-                />
+                <VoiceRecorder onRecordingComplete={handleRecordingComplete} isProcessing={isProcessing} />
                 
                 {/* Conseils rapides sous forme de badges */}
                 <div className="flex flex-wrap gap-2 mt-3">
@@ -571,66 +499,34 @@ const StudySession = () => {
                 </div>
               </div>
             </div>
-          </>
-        ) : (
-          /* Vue Documentation dans un panneau latéral */
-          <div className="flex-1 p-4">
+          </> : (/* Vue Documentation dans un panneau latéral */
+      <div className="flex-1 p-4">
             <ScrollArea className="h-full">
-              {!useGemini && !hasApiKey ? (
-                <div className="flex items-center justify-center h-full">
+              {!useGemini && !hasApiKey ? <div className="flex items-center justify-center h-full">
                   <ApiKeySetup onApiKeySet={handleApiKeySet} />
-                </div>
-              ) : (
-                <div className="space-y-4">
+                </div> : <div className="space-y-4">
                   <div className="flex items-center justify-between mb-4">
                     <h3 className="text-lg font-semibold">Documentation des sujets</h3>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      onClick={fetchAllDocumentation}
-                      disabled={loadingTopics.size > 0}
-                    >
+                    <Button variant="outline" size="sm" onClick={fetchAllDocumentation} disabled={loadingTopics.size > 0}>
                       <RefreshCw className={`w-4 h-4 mr-1 ${loadingTopics.size > 0 ? 'animate-spin' : ''}`} />
                       Tout récupérer
                     </Button>
                   </div>
                   
-                  {periods.map((period) => (
-                    <DocumentationCard
-                      key={period}
-                      topic={period}
-                      category={category.name}
-                      content={topicDocumentation[period]}
-                      isLoading={loadingTopics.has(period)}
-                      onFetchDocumentation={fetchTopicDocumentation}
-                    />
-                  ))}
+                  {periods.map(period => <DocumentationCard key={period} topic={period} category={category.name} content={topicDocumentation[period]} isLoading={loadingTopics.has(period)} onFetchDocumentation={fetchTopicDocumentation} />)}
                   
                   {/* Legacy knowledge items */}
-                  {knowledgeItems.length > 0 && (
-                    <>
+                  {knowledgeItems.length > 0 && <>
                       <Separator className="my-6" />
                       <div className="space-y-4">
                         <h3 className="text-sm font-medium text-muted-foreground">Éléments de connaissance du chat</h3>
-                        {knowledgeItems.map((knowledge) => (
-                          <KnowledgeCard
-                            key={knowledge.id}
-                            knowledge={knowledge}
-                            onConfirm={handleKnowledgeConfirm}
-                            onReject={handleKnowledgeReject}
-                          />
-                        ))}
+                        {knowledgeItems.map(knowledge => <KnowledgeCard key={knowledge.id} knowledge={knowledge} onConfirm={handleKnowledgeConfirm} onReject={handleKnowledgeReject} />)}
                       </div>
-                    </>
-                  )}
-                </div>
-              )}
+                    </>}
+                </div>}
             </ScrollArea>
-          </div>
-        )}
+          </div>)}
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default StudySession;
