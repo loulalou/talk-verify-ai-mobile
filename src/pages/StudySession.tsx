@@ -10,7 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Card } from "@/components/ui/card";
-import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw, Clock, Info } from "lucide-react";
+import { Brain, MessageSquare, Lightbulb, ArrowLeft, Target, RefreshCw, Clock, Info, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { StudyCategory } from "@/components/CategorySelection";
 import { getCategoryGradientClasses, getCategoryColor } from "@/utils/categoryColors";
@@ -440,7 +440,7 @@ const StudySession = () => {
           <div className="flex items-center space-x-2">
             
             <Button variant="outline" size="sm" onClick={() => setActiveTab(activeTab === 'chat' ? 'knowledge' : 'chat')}>
-              {activeTab === 'chat' ? <Lightbulb className="w-4 h-4" /> : <MessageSquare className="w-4 h-4" />}
+              {activeTab === 'chat' ? <><BookOpen className="w-4 h-4 mr-2" />Documentation</> : <><MessageSquare className="w-4 h-4 mr-2" />Chat</>}
             </Button>
             
           </div>
