@@ -48,56 +48,57 @@ export function AppSidebar() {
     fetchProfile();
   }, [user]);
 
-  // Mock conversations data
-  const [conversations, setConversations] = useState<Conversation[]>([{
-    id: "1",
-    title: "Ancient History Discussion",
-    category: "history",
-    lastMessage: "Tell me about the Roman Empire",
-    timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
-    // 2 hours ago
-    messageCount: 15
-  }, {
-    id: "2",
-    title: "Geography Quiz Session",
-    category: "geography",
-    lastMessage: "What are the capitals of European countries?",
-    timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
-    // 5 hours ago
-    messageCount: 8
-  }, {
-    id: "3",
-    title: "Math Problem Solving",
-    category: "mathematics",
-    lastMessage: "Help me solve this calculus problem",
-    timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
-    // 1 day ago
-    messageCount: 22
-  }, {
-    id: "4",
-    title: "Science Fundamentals",
-    category: "science",
-    lastMessage: "Explain photosynthesis process",
-    timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
-    // 2 days ago
-    messageCount: 12
-  }, {
-    id: "5",
-    title: "French Literature Analysis",
-    category: "literature",
-    lastMessage: "Analyze Victor Hugo's writing style",
-    timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
-    // 3 days ago
-    messageCount: 18
-  }, {
-    id: "6",
-    title: "English Grammar Session",
-    category: "languages",
-    lastMessage: "Explain past perfect tense",
-    timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
-    // 4 days ago
-    messageCount: 9
-  }]);
+  // Mock conversations data with localStorage persistence
+  const getInitialConversations = (): Conversation[] => {
+    const deletedIds = JSON.parse(localStorage.getItem('deletedConversations') || '[]');
+    const allConversations = [{
+      id: "1",
+      title: "Ancient History Discussion",
+      category: "history",
+      lastMessage: "Tell me about the Roman Empire",
+      timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000),
+      messageCount: 15
+    }, {
+      id: "2",
+      title: "Geography Quiz Session",
+      category: "geography",
+      lastMessage: "What are the capitals of European countries?",
+      timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000),
+      messageCount: 8
+    }, {
+      id: "3",
+      title: "Math Problem Solving",
+      category: "mathematics",
+      lastMessage: "Help me solve this calculus problem",
+      timestamp: new Date(Date.now() - 24 * 60 * 60 * 1000),
+      messageCount: 22
+    }, {
+      id: "4",
+      title: "Science Fundamentals",
+      category: "science",
+      lastMessage: "Explain photosynthesis process",
+      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      messageCount: 12
+    }, {
+      id: "5",
+      title: "French Literature Analysis",
+      category: "literature",
+      lastMessage: "Analyze Victor Hugo's writing style",
+      timestamp: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000),
+      messageCount: 18
+    }, {
+      id: "6",
+      title: "English Grammar Session",
+      category: "languages",
+      lastMessage: "Explain past perfect tense",
+      timestamp: new Date(Date.now() - 4 * 24 * 60 * 60 * 1000),
+      messageCount: 9
+    }];
+    
+    return allConversations.filter(conv => !deletedIds.includes(conv.id));
+  };
+
+  const [conversations, setConversations] = useState<Conversation[]>(getInitialConversations);
   const filteredConversations = conversations; // No filtering since search is now in header
   const formatTimestamp = (timestamp: Date) => {
     const now = new Date();
@@ -148,6 +149,13 @@ export function AppSidebar() {
 
   const handleDeleteConversation = (conversationId: string, event: React.MouseEvent) => {
     event.stopPropagation(); // Prevent navigation when clicking delete
+    
+    // Update localStorage with deleted conversation ID
+    const deletedIds = JSON.parse(localStorage.getItem('deletedConversations') || '[]');
+    const updatedDeletedIds = [...deletedIds, conversationId];
+    localStorage.setItem('deletedConversations', JSON.stringify(updatedDeletedIds));
+    
+    // Update state to remove the conversation
     setConversations(prevConversations => 
       prevConversations.filter(conv => conv.id !== conversationId)
     );
